@@ -45,3 +45,9 @@ return [
         'ns1' => env('CPANEL_NS1', 'ns1.example.com'),
         'ns2' => env('CPANEL_NS2', 'ns2.example.com'),
     ],
+
+    'stripe' => [
+        'key' => env('STRIPE_KEY'),
+        'secret' => env('STRIPE_SECRET'),
+        'webhook_secret' => env('STRIPE_WEBHOOK_SECRET'),
+    ],
