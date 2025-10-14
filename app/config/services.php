@@ -35,8 +35,6 @@ return [
         ],
     ],
 
-];
-
     'cpanel' => [
         'host' => env('CPANEL_HOST'),
         'api_token' => env('CPANEL_API_TOKEN'),
@@ -51,3 +49,5 @@ return [
         'secret' => env('STRIPE_SECRET'),
         'webhook_secret' => env('STRIPE_WEBHOOK_SECRET'),
     ],
+
+];
