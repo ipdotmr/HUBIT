@@ -1,0 +1,51 @@
+# Laravel & PHP
+app/vendor/
+app/node_modules/
+app/npm-debug.log
+app/yarn-error.log
+app/.env
+app/.env.backup
+app/.env.production
+app/.phpunit.result.cache
+app/Homestead.json
+app/Homestead.yaml
+app/auth.json
+app/storage/*.key
+app/.phpunit.cache
+app/.php-cs-fixer.cache
+
+# Build artifacts
+app/public/hot
+app/public/storage
+app/public/build
+app/bootstrap/cache/*
+app/storage/framework/cache/*
+app/storage/framework/sessions/*
+app/storage/framework/testing/*
+app/storage/framework/views/*
+app/storage/logs/*
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Docs
+docs/node_modules/
+docs/build/
+docs/.docusaurus/
+docs/.cache/
+
+# Docker
+.docker/
+
+# Deployment
+deploy/*.key
+deploy/*.pem
+deploy/secrets/
+
+# OS
+Thumbs.db

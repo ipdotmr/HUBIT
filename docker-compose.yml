@@ -1,0 +1,90 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: ./app
+      dockerfile: ../deploy/Dockerfile
+      target: development
+    container_name: hubit-app
+    restart: unless-stopped
+    working_dir: /var/www
+    volumes:
+      - ./app:/var/www
+      - ./app/storage:/var/www/storage
+    ports:
+      - "8000:8000"
+    environment:
+      - APP_ENV=local
+      - APP_DEBUG=true
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - hubit-network
+    command: php artisan serve --host=0.0.0.0 --port=8000
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: hubit-postgres
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: hubit
+      POSTGRES_USER: hubit
+      POSTGRES_PASSWORD: hubit_secure_password
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - hubit-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: hubit-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - hubit-network
+
+  horizon:
+    build:
+      context: ./app
+      dockerfile: ../deploy/Dockerfile
+      target: development
+    container_name: hubit-horizon
+    restart: unless-stopped
+    working_dir: /var/www
+    volumes:
+      - ./app:/var/www
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - hubit-network
+    command: php artisan horizon
+
+  docs:
+    build:
+      context: ./docs
+      dockerfile: ../deploy/Dockerfile.docs
+    container_name: hubit-docs
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./docs:/app
+      - /app/node_modules
+    networks:
+      - hubit-network
+
+networks:
+  hubit-network:
+    driver: bridge
+
+volumes:
+  postgres-data:
+  redis-data:
