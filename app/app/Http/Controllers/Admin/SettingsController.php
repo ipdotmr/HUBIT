@@ -25,6 +25,61 @@ class SettingsController extends Controller
     }
 
     /**
+     * Show company settings page
+     */
+    public function company()
+    {
+        return Inertia::render('Admin/Settings/Company', [
+            'settings' => $this->getAllSettings(),
+            'auditLogs' => $this->settingsService->getAuditLogsForKeys([
+                'company.name', 'company.legal_name', 'company.tax_id', 'company.address',
+                'company.logo', 'company.logo_dark', 'invoice.prefix', 'invoice.currency',
+                'invoice.tax_rate', 'invoice.footer'
+            ]),
+        ]);
+    }
+
+    /**
+     * Show themes settings page
+     */
+    public function themes()
+    {
+        return Inertia::render('Admin/Settings/Themes', [
+            'settings' => $this->getAllSettings(),
+            'auditLogs' => $this->settingsService->getAuditLogsForKeys([
+                'theme.default', 'theme.allow_user_selection', 'theme.rtl_enabled', 'theme.custom_css'
+            ]),
+        ]);
+    }
+
+    /**
+     * Show Stripe settings page
+     */
+    public function stripe()
+    {
+        return Inertia::render('Admin/Settings/StripePayments', [
+            'settings' => $this->getAllSettings(),
+            'auditLogs' => $this->settingsService->getAuditLogsForKeys([
+                'stripe.mode', 'stripe.publishable_key', 'stripe.secret_key', 'stripe.webhook_secret'
+            ]),
+        ]);
+    }
+
+    /**
+     * Show cPanel settings page
+     */
+    public function cpanel()
+    {
+        return Inertia::render('Admin/Settings/CPanelProvisioning', [
+            'settings' => $this->getAllSettings(),
+            'auditLogs' => $this->settingsService->getAuditLogsForKeys([
+                'cpanel.host', 'cpanel.api_token', 'cpanel.use_ssl', 'cpanel.default_package',
+                'cpanel.nameserver1', 'cpanel.nameserver2', 'cpanel.nameserver3', 'cpanel.nameserver4'
+            ]),
+        ]);
+    }
+
+    /**
      * Update settings
      */
     public function update(Request $request)
@@ -76,11 +131,15 @@ class SettingsController extends Controller
         return [
             'general' => [
                 'company.name' => $this->settingsService->get('company.name'),
+                'company.legal_name' => $this->settingsService->get('company.legal_name'),
                 'company.address' => $this->settingsService->get('company.address'),
                 'company.tax_id' => $this->settingsService->get('company.tax_id'),
                 'company.logo' => $this->settingsService->get('company.logo'),
+                'company.logo_dark' => $this->settingsService->get('company.logo_dark'),
+                'invoice.prefix' => $this->settingsService->get('invoice.prefix', 'INV-'),
                 'invoice.currency' => $this->settingsService->get('invoice.currency', 'USD'),
                 'invoice.tax_rate' => $this->settingsService->get('invoice.tax_rate', 0),
+                'invoice.footer' => $this->settingsService->get('invoice.footer'),
             ],
             'localization' => [
                 'app.locale' => $this->settingsService->get('app.locale', 'en'),
@@ -91,6 +150,7 @@ class SettingsController extends Controller
             'theme' => [
                 'theme.default' => $this->settingsService->get('theme.default', 'ipmr'),
                 'theme.allow_user_selection' => $this->settingsService->get('theme.allow_user_selection', true),
+                'theme.rtl_enabled' => $this->settingsService->get('theme.rtl_enabled', true),
                 'theme.custom_css' => $this->settingsService->get('theme.custom_css'),
             ],
             'email' => [
@@ -122,6 +182,8 @@ class SettingsController extends Controller
                 'cpanel.default_package' => $this->settingsService->get('cpanel.default_package'),
                 'cpanel.nameserver1' => $this->settingsService->get('cpanel.nameserver1'),
                 'cpanel.nameserver2' => $this->settingsService->get('cpanel.nameserver2'),
+                'cpanel.nameserver3' => $this->settingsService->get('cpanel.nameserver3'),
+                'cpanel.nameserver4' => $this->settingsService->get('cpanel.nameserver4'),
             ],
             'plesk' => [
                 'plesk.host' => $this->settingsService->get('plesk.host'),

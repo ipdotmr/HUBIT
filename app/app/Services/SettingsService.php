@@ -307,4 +307,16 @@ class SettingsService
             ->limit($limit)
             ->get();
     }
+
+    /**
+     * Get audit logs for specific keys
+     */
+    public function getAuditLogsForKeys(array $keys, $limit = 50)
+    {
+        return \App\Models\SettingsAudit::with('changedBy')
+            ->whereIn('key', $keys)
+            ->orderBy('created_at', 'desc')
+            ->limit($limit)
+            ->get();
+    }
 }
