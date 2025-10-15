@@ -147,6 +147,33 @@ class SettingsController extends Controller
     }
 
     /**
+     * Show Name.com settings page
+     */
+    public function namecom()
+    {
+        return Inertia::render('Admin/Settings/NamecomDomains', [
+            'settings' => $this->getAllSettings(),
+            'auditLogs' => $this->settingsService->getAuditLogsForKeys([
+                'namecom.api_username', 'namecom.api_token', 'namecom.mode', 'namecom.sandbox_url',
+            ]),
+        ]);
+    }
+
+    /**
+     * Show Coccaep settings page
+     */
+    public function coccaep()
+    {
+        return Inertia::render('Admin/Settings/CoccaepDomains', [
+            'settings' => $this->getAllSettings(),
+            'auditLogs' => $this->settingsService->getAuditLogsForKeys([
+                'coccaep.api_base_url', 'coccaep.username', 'coccaep.password', 'coccaep.registrar_code',
+                'coccaep.enabled_tlds', 'coccaep.whois_languages',
+            ]),
+        ]);
+    }
+
+    /**
      * Update settings
      */
     public function update(Request $request)
@@ -182,7 +209,7 @@ class SettingsController extends Controller
     public function testConnection(Request $request)
     {
         $validated = $request->validate([
-            'service' => 'required|string|in:stripe,paypal,cpanel,plesk,namecheap,resellerclub,smtp',
+            'service' => 'required|string|in:stripe,paypal,cpanel,plesk,namecheap,resellerclub,namecom,coccaep,smtp',
         ]);
 
         $result = $this->settingsService->testConnection($validated['service']);
@@ -271,6 +298,20 @@ class SettingsController extends Controller
                 'resellerclub.reseller_id' => $this->settingsService->get('resellerclub.reseller_id'),
                 'resellerclub.api_key' => $this->settingsService->get('resellerclub.api_key'),
                 'resellerclub.mode' => $this->settingsService->get('resellerclub.mode', 'test'),
+            ],
+            'namecom' => [
+                'namecom.api_username' => $this->settingsService->get('namecom.api_username'),
+                'namecom.api_token' => $this->settingsService->get('namecom.api_token'),
+                'namecom.mode' => $this->settingsService->get('namecom.mode', 'test'),
+                'namecom.sandbox_url' => $this->settingsService->get('namecom.sandbox_url'),
+            ],
+            'coccaep' => [
+                'coccaep.api_base_url' => $this->settingsService->get('coccaep.api_base_url', 'https://registry.coccaep.mr/api'),
+                'coccaep.username' => $this->settingsService->get('coccaep.username'),
+                'coccaep.password' => $this->settingsService->get('coccaep.password'),
+                'coccaep.registrar_code' => $this->settingsService->get('coccaep.registrar_code'),
+                'coccaep.enabled_tlds' => json_decode($this->settingsService->get('coccaep.enabled_tlds', '[ ".mr"]'), true),
+                'coccaep.whois_languages' => json_decode($this->settingsService->get('coccaep.whois_languages', '["en","ar"]'), true),
             ],
         ];
     }

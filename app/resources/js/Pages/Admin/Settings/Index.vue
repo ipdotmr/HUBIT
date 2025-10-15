@@ -172,6 +172,43 @@
         </div>
       </Link>
 
+      <!-- Name.com Domains -->
+      <Link :href="route('managit.settings.namecom')" class="settings-card">
+        <div class="card-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="card-content">
+          <h3 class="card-title">Name.com Domains</h3>
+          <p class="card-description">Name.com registrar REST API integration</p>
+        </div>
+        <div class="card-arrow">
+          <svg width="20" height="20" viewBox="0 0 20 20">
+            <path d="M7 4L13 10L7 16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </Link>
+
+      <!-- Coccaep (.mr Registry) -->
+      <Link :href="route('managit.settings.coccaep')" class="settings-card">
+        <div class="card-icon" style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 18a8 8 0 110-16 8 8 0 010 16z" stroke="currentColor" stroke-width="2"/>
+            <path d="M12 6v6l4 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="card-content">
+          <h3 class="card-title">Coccaep (.mr Registry) 🇲🇷</h3>
+          <p class="card-description">Mauritanian national TLDs with IDN support</p>
+        </div>
+        <div class="card-arrow">
+          <svg width="20" height="20" viewBox="0 0 20 20">
+            <path d="M7 4L13 10L7 16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </Link>
+
       <!-- Coming Soon: Security & Auth -->
       <div class="settings-card coming-soon">
         <div class="card-icon" style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);">
@@ -208,7 +245,7 @@
         <div class="stat-label">Recent Changes</div>
       </div>
       <div class="stat-card">
-        <div class="stat-value">9</div>
+        <div class="stat-value">11</div>
         <div class="stat-label">Configured Pages</div>
       </div>
       <div class="stat-card">

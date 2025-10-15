@@ -40,6 +40,8 @@ Route::middleware(['auth', 'verified', 'throttle:60,1'])->prefix('managit')->gro
         Route::get('/provisioning/plesk', [App\Http\Controllers\Admin\SettingsController::class, 'plesk'])->name('plesk');
         Route::get('/domains/namecheap', [App\Http\Controllers\Admin\SettingsController::class, 'namecheap'])->name('namecheap');
         Route::get('/domains/resellerclub', [App\Http\Controllers\Admin\SettingsController::class, 'resellerclub'])->name('resellerclub');
+        Route::get('/domains/namecom', [App\Http\Controllers\Admin\SettingsController::class, 'namecom'])->name('namecom');
+        Route::get('/domains/coccaep', [App\Http\Controllers\Admin\SettingsController::class, 'coccaep'])->name('coccaep');
         Route::post('/', [App\Http\Controllers\Admin\SettingsController::class, 'update'])->name('update');
         Route::post('/test/{service}', [App\Http\Controllers\Admin\SettingsController::class, 'testConnection'])->name('test');
     });
