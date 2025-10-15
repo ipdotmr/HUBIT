@@ -33,8 +33,13 @@ Route::middleware(['auth', 'verified', 'throttle:60,1'])->prefix('managit')->gro
         Route::get('/', [App\Http\Controllers\Admin\SettingsController::class, 'index'])->name('index');
         Route::get('/company', [App\Http\Controllers\Admin\SettingsController::class, 'company'])->name('company');
         Route::get('/themes', [App\Http\Controllers\Admin\SettingsController::class, 'themes'])->name('themes');
+        Route::get('/email', [App\Http\Controllers\Admin\SettingsController::class, 'email'])->name('email');
         Route::get('/payments/stripe', [App\Http\Controllers\Admin\SettingsController::class, 'stripe'])->name('stripe');
+        Route::get('/payments/paypal', [App\Http\Controllers\Admin\SettingsController::class, 'paypal'])->name('paypal');
         Route::get('/provisioning/cpanel', [App\Http\Controllers\Admin\SettingsController::class, 'cpanel'])->name('cpanel');
+        Route::get('/provisioning/plesk', [App\Http\Controllers\Admin\SettingsController::class, 'plesk'])->name('plesk');
+        Route::get('/domains/namecheap', [App\Http\Controllers\Admin\SettingsController::class, 'namecheap'])->name('namecheap');
+        Route::get('/domains/resellerclub', [App\Http\Controllers\Admin\SettingsController::class, 'resellerclub'])->name('resellerclub');
         Route::post('/', [App\Http\Controllers\Admin\SettingsController::class, 'update'])->name('update');
         Route::post('/test/{service}', [App\Http\Controllers\Admin\SettingsController::class, 'testConnection'])->name('test');
     });

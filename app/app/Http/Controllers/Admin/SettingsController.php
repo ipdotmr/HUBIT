@@ -66,6 +66,33 @@ class SettingsController extends Controller
     }
 
     /**
+     * Show email settings page
+     */
+    public function email()
+    {
+        return Inertia::render('Admin/Settings/Email', [
+            'settings' => $this->getAllSettings(),
+            'auditLogs' => $this->settingsService->getAuditLogsForKeys([
+                'mail.mailer', 'mail.host', 'mail.port', 'mail.username', 'mail.password',
+                'mail.encryption', 'mail.from_address', 'mail.from_name',
+            ]),
+        ]);
+    }
+
+    /**
+     * Show PayPal settings page
+     */
+    public function paypal()
+    {
+        return Inertia::render('Admin/Settings/PayPalPayments', [
+            'settings' => $this->getAllSettings(),
+            'auditLogs' => $this->settingsService->getAuditLogsForKeys([
+                'paypal.mode', 'paypal.client_id', 'paypal.client_secret', 'paypal.webhook_id',
+            ]),
+        ]);
+    }
+
+    /**
      * Show cPanel settings page
      */
     public function cpanel()
@@ -75,6 +102,46 @@ class SettingsController extends Controller
             'auditLogs' => $this->settingsService->getAuditLogsForKeys([
                 'cpanel.host', 'cpanel.api_token', 'cpanel.use_ssl', 'cpanel.default_package',
                 'cpanel.nameserver1', 'cpanel.nameserver2', 'cpanel.nameserver3', 'cpanel.nameserver4',
+            ]),
+        ]);
+    }
+
+    /**
+     * Show Plesk settings page
+     */
+    public function plesk()
+    {
+        return Inertia::render('Admin/Settings/PleskProvisioning', [
+            'settings' => $this->getAllSettings(),
+            'auditLogs' => $this->settingsService->getAuditLogsForKeys([
+                'plesk.host', 'plesk.api_key', 'plesk.use_ssl', 'plesk.default_plan',
+                'plesk.auth_type', 'plesk.username', 'plesk.password',
+            ]),
+        ]);
+    }
+
+    /**
+     * Show Namecheap settings page
+     */
+    public function namecheap()
+    {
+        return Inertia::render('Admin/Settings/NamecheapDomains', [
+            'settings' => $this->getAllSettings(),
+            'auditLogs' => $this->settingsService->getAuditLogsForKeys([
+                'namecheap.api_user', 'namecheap.api_key', 'namecheap.client_ip', 'namecheap.sandbox',
+            ]),
+        ]);
+    }
+
+    /**
+     * Show ResellerClub settings page
+     */
+    public function resellerclub()
+    {
+        return Inertia::render('Admin/Settings/ResellerClubDomains', [
+            'settings' => $this->getAllSettings(),
+            'auditLogs' => $this->settingsService->getAuditLogsForKeys([
+                'resellerclub.reseller_id', 'resellerclub.api_key', 'resellerclub.mode',
             ]),
         ]);
     }
@@ -188,6 +255,9 @@ class SettingsController extends Controller
             'plesk' => [
                 'plesk.host' => $this->settingsService->get('plesk.host'),
                 'plesk.api_key' => $this->settingsService->get('plesk.api_key'),
+                'plesk.auth_type' => $this->settingsService->get('plesk.auth_type', 'api_key'),
+                'plesk.username' => $this->settingsService->get('plesk.username'),
+                'plesk.password' => $this->settingsService->get('plesk.password'),
                 'plesk.use_ssl' => $this->settingsService->get('plesk.use_ssl', true),
                 'plesk.default_plan' => $this->settingsService->get('plesk.default_plan'),
             ],

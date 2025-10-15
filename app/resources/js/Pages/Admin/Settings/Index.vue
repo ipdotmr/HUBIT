@@ -82,8 +82,8 @@
         </div>
       </Link>
 
-      <!-- Coming Soon Cards -->
-      <div class="settings-card coming-soon">
+      <!-- Email/SMTP -->
+      <Link :href="route('managit.settings.email')" class="settings-card">
         <div class="card-icon" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
             <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -91,11 +91,88 @@
         </div>
         <div class="card-content">
           <h3 class="card-title">Email & SMTP</h3>
-          <p class="card-description">Mail server configuration and templates</p>
-          <span class="coming-soon-badge">Coming Soon</span>
+          <p class="card-description">Mail server configuration and test email</p>
         </div>
-      </div>
+        <div class="card-arrow">
+          <svg width="20" height="20" viewBox="0 0 20 20">
+            <path d="M7 4L13 10L7 16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </Link>
 
+      <!-- PayPal Payments -->
+      <Link :href="route('managit.settings.paypal')" class="settings-card">
+        <div class="card-icon" style="background: linear-gradient(135deg, #0070ba 0%, #1546a0 100%);">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3v-8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="card-content">
+          <h3 class="card-title">PayPal Payments</h3>
+          <p class="card-description">PayPal REST API and webhook configuration</p>
+        </div>
+        <div class="card-arrow">
+          <svg width="20" height="20" viewBox="0 0 20 20">
+            <path d="M7 4L13 10L7 16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </Link>
+
+      <!-- Plesk Provisioning -->
+      <Link :href="route('managit.settings.plesk')" class="settings-card">
+        <div class="card-icon" style="background: linear-gradient(135deg, #52c5fd 0%, #1e88e5 100%);">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="card-content">
+          <h3 class="card-title">Plesk Server</h3>
+          <p class="card-description">Plesk provisioning server and service plans</p>
+        </div>
+        <div class="card-arrow">
+          <svg width="20" height="20" viewBox="0 0 20 20">
+            <path d="M7 4L13 10L7 16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </Link>
+
+      <!-- Namecheap Domains -->
+      <Link :href="route('managit.settings.namecheap')" class="settings-card">
+        <div class="card-icon" style="background: linear-gradient(135deg, #ff6c2f 0%, #ff4500 100%);">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="card-content">
+          <h3 class="card-title">Namecheap Domains</h3>
+          <p class="card-description">Namecheap registrar API configuration</p>
+        </div>
+        <div class="card-arrow">
+          <svg width="20" height="20" viewBox="0 0 20 20">
+            <path d="M7 4L13 10L7 16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </Link>
+
+      <!-- ResellerClub Domains -->
+      <Link :href="route('managit.settings.resellerclub')" class="settings-card">
+        <div class="card-icon" style="background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="card-content">
+          <h3 class="card-title">ResellerClub Domains</h3>
+          <p class="card-description">ResellerClub registrar API configuration</p>
+        </div>
+        <div class="card-arrow">
+          <svg width="20" height="20" viewBox="0 0 20 20">
+            <path d="M7 4L13 10L7 16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </Link>
+
+      <!-- Coming Soon: Security & Auth -->
       <div class="settings-card coming-soon">
         <div class="card-icon" style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -105,23 +182,11 @@
         <div class="card-content">
           <h3 class="card-title">Security & Authentication</h3>
           <p class="card-description">2FA, password policies, and rate limiting</p>
-          <span class="coming-soon-badge">Coming Soon</span>
+          <span class="coming-soon-badge">Phase 3</span>
         </div>
       </div>
 
-      <div class="settings-card coming-soon">
-        <div class="card-icon" style="background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-            <path d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </div>
-        <div class="card-content">
-          <h3 class="card-title">Domain Registrars</h3>
-          <p class="card-description">Namecheap, ResellerClub, and more</p>
-          <span class="coming-soon-badge">Coming Soon</span>
-        </div>
-      </div>
-
+      <!-- Coming Soon: Webhooks & API -->
       <div class="settings-card coming-soon">
         <div class="card-icon" style="background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -131,7 +196,7 @@
         <div class="card-content">
           <h3 class="card-title">Webhooks & API</h3>
           <p class="card-description">Configure webhooks and API access</p>
-          <span class="coming-soon-badge">Coming Soon</span>
+          <span class="coming-soon-badge">Phase 3</span>
         </div>
       </div>
     </div>
@@ -143,12 +208,12 @@
         <div class="stat-label">Recent Changes</div>
       </div>
       <div class="stat-card">
-        <div class="stat-value">4</div>
-        <div class="stat-label">Configured Services</div>
+        <div class="stat-value">9</div>
+        <div class="stat-label">Configured Pages</div>
       </div>
       <div class="stat-card">
-        <div class="stat-value">12</div>
-        <div class="stat-label">More Coming</div>
+        <div class="stat-value">5</div>
+        <div class="stat-label">Themes Available</div>
       </div>
     </div>
   </div>
