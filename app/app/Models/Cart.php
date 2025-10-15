@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\SettingsService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -36,13 +37,18 @@ class Cart extends Model
     public function calculateTotals(): array
     {
         $subtotal = $this->items->sum('price');
-        $tax = $subtotal * 0.16; // TODO: Make configurable
+        
+        $settings = app(SettingsService::class);
+        $taxRate = (float) $settings->get('company.tax_rate', '16') / 100;
+        
+        $tax = $subtotal * $taxRate;
         $total = $subtotal + $tax;
 
         return [
             'subtotal' => round($subtotal, 2),
             'tax' => round($tax, 2),
             'total' => round($total, 2),
+            'tax_rate' => $taxRate * 100,
         ];
     }
 }
