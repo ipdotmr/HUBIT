@@ -204,12 +204,58 @@ class SettingsController extends Controller
     }
 
     /**
+     * Show Payment Accounts settings page
+     */
+    public function paymentAccounts()
+    {
+        $accounts = \App\Models\PaymentAccount::with('currency')->get();
+
+        return Inertia::render('Admin/Settings/PaymentAccounts', [
+            'accounts' => $accounts,
+            'currencies' => \App\Models\Currency::where('enabled', true)->get(),
+            'settings' => $this->getAllSettings(),
+        ]);
+    }
+
+    /**
+     * Show Exchange Rates settings page
+     */
+    public function exchangeRates()
+    {
+        $rates = \App\Models\ExchangeRate::with(['baseCurrency', 'quoteCurrency'])
+            ->latest('fetched_at')
+            ->get();
+
+        return Inertia::render('Admin/Settings/ExchangeRates', [
+            'rates' => $rates,
+            'settings' => $this->getAllSettings(),
+            'auditLogs' => $this->settingsService->getAuditLogsForKeys([
+                'currency.use_manual_rates', 'currency.rate_mru_usd', 'currency.rate_mru_eur', 'currency.rate_usd_eur',
+            ]),
+        ]);
+    }
+
+    /**
+     * Show Localization/Currency settings page
+     */
+    public function localization()
+    {
+        return Inertia::render('Admin/Settings/Localization', [
+            'currencies' => \App\Models\Currency::all(),
+            'settings' => $this->getAllSettings(),
+            'auditLogs' => $this->settingsService->getAuditLogsForKeys([
+                'currency.default', 'currency.allowed', 'app.locale', 'app.timezone',
+            ]),
+        ]);
+    }
+
+    /**
      * Test connection
      */
     public function testConnection(Request $request)
     {
         $validated = $request->validate([
-            'service' => 'required|string|in:stripe,paypal,cpanel,plesk,namecheap,resellerclub,namecom,coccaep,smtp',
+            'service' => 'required|string|in:stripe,paypal,cpanel,plesk,namecheap,resellerclub,namecom,coccaep,smtp,currency',
         ]);
 
         $result = $this->settingsService->testConnection($validated['service']);
@@ -312,6 +358,14 @@ class SettingsController extends Controller
                 'coccaep.registrar_code' => $this->settingsService->get('coccaep.registrar_code'),
                 'coccaep.enabled_tlds' => json_decode($this->settingsService->get('coccaep.enabled_tlds', '[ ".mr"]'), true),
                 'coccaep.whois_languages' => json_decode($this->settingsService->get('coccaep.whois_languages', '["en","ar"]'), true),
+            ],
+            'currency' => [
+                'currency.default' => $this->settingsService->get('currency.default', 'MRU'),
+                'currency.allowed' => json_decode($this->settingsService->get('currency.allowed', '["MRU","USD","EUR"]'), true),
+                'currency.use_manual_rates' => $this->settingsService->get('currency.use_manual_rates', true),
+                'currency.rate_mru_usd' => $this->settingsService->get('currency.rate_mru_usd', 0.0274),
+                'currency.rate_mru_eur' => $this->settingsService->get('currency.rate_mru_eur', 0.0250),
+                'currency.rate_usd_eur' => $this->settingsService->get('currency.rate_usd_eur', 0.92),
             ],
         ];
     }
