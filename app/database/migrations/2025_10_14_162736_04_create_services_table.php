@@ -23,7 +23,7 @@ return new class extends Migration
             $table->json('config')->nullable();
             $table->timestamps();
             $table->softDeletes();
-            
+
             $table->index(['client_id', 'status']);
             $table->index('status');
             $table->index('next_due_at');

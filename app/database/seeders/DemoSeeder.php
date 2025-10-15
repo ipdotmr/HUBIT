@@ -197,7 +197,7 @@ class DemoSeeder extends Seeder
 
         $invoice1 = Invoice::create([
             'client_id' => $client1->id,
-            'number' => 'INV-' . str_pad(1, 6, '0', STR_PAD_LEFT),
+            'number' => 'INV-'.str_pad(1, 6, '0', STR_PAD_LEFT),
             'status' => 'paid',
             'issue_date' => now()->subDays(15),
             'due_date' => now()->subDays(5),
@@ -220,7 +220,7 @@ class DemoSeeder extends Seeder
 
         $invoice2 = Invoice::create([
             'client_id' => $client2->id,
-            'number' => 'INV-' . str_pad(2, 6, '0', STR_PAD_LEFT),
+            'number' => 'INV-'.str_pad(2, 6, '0', STR_PAD_LEFT),
             'status' => 'open',
             'issue_date' => now()->subDays(5),
             'due_date' => now()->addDays(10),

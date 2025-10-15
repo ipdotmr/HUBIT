@@ -23,7 +23,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->timestamps();
             $table->softDeletes();
-            
+
             $table->index(['client_id', 'role']);
             $table->unique(['client_id', 'email']);
         });

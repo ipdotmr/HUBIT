@@ -24,7 +24,7 @@ return new class extends Migration
             $table->integer('sort_order')->default(0);
             $table->timestamps();
             $table->softDeletes();
-            
+
             $table->index(['group', 'is_active']);
             $table->index('slug');
         });

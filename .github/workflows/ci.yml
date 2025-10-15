@@ -81,6 +81,19 @@ jobs:
         working-directory: ./app
         run: composer install --no-interaction --prefer-dist
       
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      
+      - name: Install npm dependencies
+        working-directory: ./app
+        run: npm ci --legacy-peer-deps
+      
+      - name: Build assets
+        working-directory: ./app
+        run: npm run build
+      
       - name: Copy .env
         working-directory: ./app
         run: cp .env.example .env

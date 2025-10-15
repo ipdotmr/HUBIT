@@ -20,7 +20,7 @@ return new class extends Migration
             $table->timestamp('paid_at')->nullable();
             $table->json('meta')->nullable();
             $table->timestamps();
-            
+
             $table->index(['invoice_id', 'status']);
             $table->index(['client_id', 'status']);
             $table->index('provider_ref');

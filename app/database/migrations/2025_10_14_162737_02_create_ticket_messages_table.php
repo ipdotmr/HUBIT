@@ -16,7 +16,7 @@ return new class extends Migration
             $table->text('body');
             $table->json('attachments')->nullable();
             $table->timestamps();
-            
+
             $table->index('ticket_id');
             $table->index(['author_type', 'author_id']);
         });

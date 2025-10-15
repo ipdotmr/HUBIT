@@ -17,7 +17,7 @@ return new class extends Migration
             $table->decimal('unit_amount', 10, 2)->default(0);
             $table->decimal('amount', 10, 2)->default(0);
             $table->timestamps();
-            
+
             $table->index('invoice_id');
         });
     }

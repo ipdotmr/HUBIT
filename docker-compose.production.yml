@@ -1,0 +1,124 @@
+version: '3.8'
+
+services:
+  nginx:
+    image: nginx:alpine
+    container_name: hubit-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./app:/var/www
+      - ./deploy/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./deploy/nginx/conf.d:/etc/nginx/conf.d
+      - ./deploy/ssl:/etc/nginx/ssl
+      - ./app/storage/app/public:/var/www/storage/app/public
+    depends_on:
+      - app
+      - docs
+    networks:
+      - hubit-network
+
+  app:
+    build:
+      context: ./app
+      dockerfile: ../deploy/Dockerfile
+      target: production
+    container_name: hubit-app
+    restart: unless-stopped
+    working_dir: /var/www
+    volumes:
+      - ./app:/var/www
+      - ./app/storage:/var/www/storage
+    environment:
+      - APP_ENV=production
+      - APP_DEBUG=false
+    env_file:
+      - ./deploy/env/.env.production
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - hubit-network
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: hubit-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_DATABASE:-hubit}
+      POSTGRES_USER: ${DB_USERNAME:-hubit}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-hubit_secure_password}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - hubit-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: hubit-redis
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+    volumes:
+      - redis-data:/data
+    networks:
+      - hubit-network
+
+  horizon:
+    build:
+      context: ./app
+      dockerfile: ../deploy/Dockerfile
+      target: production
+    container_name: hubit-horizon
+    restart: unless-stopped
+    working_dir: /var/www
+    volumes:
+      - ./app:/var/www
+    env_file:
+      - ./deploy/env/.env.production
+    depends_on:
+      - postgres
+      - redis
+      - app
+    networks:
+      - hubit-network
+    command: php artisan horizon
+
+  scheduler:
+    build:
+      context: ./app
+      dockerfile: ../deploy/Dockerfile
+      target: production
+    container_name: hubit-scheduler
+    restart: unless-stopped
+    working_dir: /var/www
+    volumes:
+      - ./app:/var/www
+    env_file:
+      - ./deploy/env/.env.production
+    depends_on:
+      - postgres
+      - redis
+      - app
+    networks:
+      - hubit-network
+    command: sh -c "while true; do php artisan schedule:run --verbose --no-interaction & sleep 60; done"
+
+  docs:
+    build:
+      context: ./docs
+      dockerfile: ../deploy/Dockerfile.docs
+      target: production
+    container_name: hubit-docs
+    restart: unless-stopped
+    networks:
+      - hubit-network
+
+networks:
+  hubit-network:
+    driver: bridge
+
+volumes:
+  postgres-data:
+  redis-data:
