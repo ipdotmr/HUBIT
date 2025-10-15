@@ -1,6 +1,6 @@
 <template>
     <Head title="Localization - Settings" />
-    <AdminLayout>
+    <AuthenticatedLayout>
         <div class="space-y-6">
             <div>
                 <h2 class="text-2xl font-semibold text-gray-900">Localization & Currencies</h2>
@@ -34,12 +34,12 @@
                 </table>
             </div>
         </div>
-    </AdminLayout>
+    </AuthenticatedLayout>
 </template>
 
 <script setup>
 import { Head } from '@inertiajs/vue3';
-import AdminLayout from '@/Layouts/AdminLayout.vue';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 
 const props = defineProps({
     currencies: Array,

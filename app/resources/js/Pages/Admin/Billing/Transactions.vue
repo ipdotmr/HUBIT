@@ -1,6 +1,6 @@
 <template>
     <Head title="Payment Transactions - Admin" />
-    <AdminLayout>
+    <AuthenticatedLayout>
         <div class="space-y-6">
             <div class="flex items-center justify-between">
                 <div>
@@ -79,13 +79,13 @@
                 </table>
             </div>
         </div>
-    </AdminLayout>
+    </AuthenticatedLayout>
 </template>
 
 <script setup>
 import { ref } from 'vue';
 import { Head, router } from '@inertiajs/vue3';
-import AdminLayout from '@/Layouts/AdminLayout.vue';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 
 const props = defineProps({
     transactions: Object,
