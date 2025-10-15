@@ -10,12 +10,12 @@ class ProvisionSync
         public ?string $status = null,
         public ?string $error = null
     ) {}
-    
+
     public static function success(array $usage, string $status): self
     {
         return new self(true, $usage, $status);
     }
-    
+
     public static function failure(string $error): self
     {
         return new self(false, null, null, $error);

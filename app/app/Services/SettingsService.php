@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Log;
 class SettingsService
 {
     private const CACHE_PREFIX = 'settings:';
+
     private const CACHE_TTL = 3600; // 1 hour
 
     /**
@@ -17,7 +18,7 @@ class SettingsService
     public function get($key, $default = null)
     {
         return Cache::remember(
-            self::CACHE_PREFIX . $key,
+            self::CACHE_PREFIX.$key,
             self::CACHE_TTL,
             function () use ($key, $default) {
                 return SystemSetting::getValue($key, $default);
@@ -31,11 +32,11 @@ class SettingsService
     public function set($key, $value, $type = 'string', $isSecret = false, $userId = null)
     {
         $setting = SystemSetting::setValue($key, $value, $type, $isSecret, $userId);
-        
-        Cache::forget(self::CACHE_PREFIX . $key);
-        
+
+        Cache::forget(self::CACHE_PREFIX.$key);
+
         $this->logSettingChange($setting, null, $value, $userId);
-        
+
         return $setting;
     }
 
@@ -48,6 +49,7 @@ class SettingsService
         foreach ($keys as $key) {
             $results[$key] = $this->get($key);
         }
+
         return $results;
     }
 
@@ -60,7 +62,7 @@ class SettingsService
             $value = $data['value'] ?? $data;
             $type = $data['type'] ?? 'string';
             $isSecret = $data['is_secret'] ?? false;
-            
+
             $this->set($key, $value, $type, $isSecret, $userId);
         }
     }
@@ -71,11 +73,11 @@ class SettingsService
     public function getAllGrouped()
     {
         $settings = SystemSetting::all();
-        
+
         $grouped = [];
         foreach ($settings as $setting) {
             $section = $this->extractSection($setting->key);
-            if (!isset($grouped[$section])) {
+            if (! isset($grouped[$section])) {
                 $grouped[$section] = [];
             }
             $grouped[$section][] = [
@@ -86,7 +88,7 @@ class SettingsService
                 'meta' => $setting->meta,
             ];
         }
-        
+
         return $grouped;
     }
 
@@ -96,7 +98,7 @@ class SettingsService
     public function testConnection($service)
     {
         try {
-            return match($service) {
+            return match ($service) {
                 'stripe' => $this->testStripeConnection(),
                 'paypal' => $this->testPayPalConnection(),
                 'cpanel' => $this->testCPanelConnection(),
@@ -106,11 +108,12 @@ class SettingsService
                 'smtp' => $this->testSMTPConnection(),
                 default => [
                     'success' => false,
-                    'message' => 'Unknown service: ' . $service,
+                    'message' => 'Unknown service: '.$service,
                 ],
             };
         } catch (\Exception $e) {
-            Log::error('Connection test failed: ' . $e->getMessage());
+            Log::error('Connection test failed: '.$e->getMessage());
+
             return [
                 'success' => false,
                 'message' => $e->getMessage(),
@@ -124,8 +127,8 @@ class SettingsService
     private function testStripeConnection()
     {
         $secretKey = $this->get('stripe.secret_key');
-        
-        if (!$secretKey) {
+
+        if (! $secretKey) {
             return [
                 'success' => false,
                 'message' => 'Stripe secret key not configured',
@@ -135,7 +138,7 @@ class SettingsService
         try {
             \Stripe\Stripe::setApiKey($secretKey);
             \Stripe\Balance::retrieve();
-            
+
             return [
                 'success' => true,
                 'message' => 'Successfully connected to Stripe',
@@ -143,7 +146,7 @@ class SettingsService
         } catch (\Exception $e) {
             return [
                 'success' => false,
-                'message' => 'Stripe connection failed: ' . $e->getMessage(),
+                'message' => 'Stripe connection failed: '.$e->getMessage(),
             ];
         }
     }
@@ -155,8 +158,8 @@ class SettingsService
     {
         $clientId = $this->get('paypal.client_id');
         $clientSecret = $this->get('paypal.client_secret');
-        
-        if (!$clientId || !$clientSecret) {
+
+        if (! $clientId || ! $clientSecret) {
             return [
                 'success' => false,
                 'message' => 'PayPal credentials not configured',
@@ -176,8 +179,8 @@ class SettingsService
     {
         $host = $this->get('cpanel.host');
         $apiToken = $this->get('cpanel.api_token');
-        
-        if (!$host || !$apiToken) {
+
+        if (! $host || ! $apiToken) {
             return [
                 'success' => false,
                 'message' => 'cPanel credentials not configured',
@@ -187,7 +190,7 @@ class SettingsService
         try {
             $cpanelService = app(\App\Services\Provisioning\CpanelProvisioner::class);
             $packages = $cpanelService->listPackages();
-            
+
             return [
                 'success' => true,
                 'message' => 'Successfully connected to cPanel/WHM',
@@ -198,7 +201,7 @@ class SettingsService
         } catch (\Exception $e) {
             return [
                 'success' => false,
-                'message' => 'cPanel connection failed: ' . $e->getMessage(),
+                'message' => 'cPanel connection failed: '.$e->getMessage(),
             ];
         }
     }
@@ -245,7 +248,7 @@ class SettingsService
             \Mail::raw('Test email from HUBIT', function ($message) {
                 $message->to('test@example.com')->subject('HUBIT Connection Test');
             });
-            
+
             return [
                 'success' => true,
                 'message' => 'SMTP configured correctly',
@@ -253,7 +256,7 @@ class SettingsService
         } catch (\Exception $e) {
             return [
                 'success' => false,
-                'message' => 'SMTP test failed: ' . $e->getMessage(),
+                'message' => 'SMTP test failed: '.$e->getMessage(),
             ];
         }
     }
@@ -264,6 +267,7 @@ class SettingsService
     private function extractSection($key)
     {
         $parts = explode('.', $key);
+
         return $parts[0] ?? 'general';
     }
 

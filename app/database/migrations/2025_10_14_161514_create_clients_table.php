@@ -33,7 +33,7 @@ return new class extends Migration
             $table->json('notes')->nullable();
             $table->timestamps();
             $table->softDeletes();
-            
+
             $table->index(['organization_id', 'status']);
             $table->index('email');
         });

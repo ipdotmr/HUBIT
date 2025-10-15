@@ -18,7 +18,7 @@ return new class extends Migration
             $table->timestamp('last_reply_at')->nullable();
             $table->timestamps();
             $table->softDeletes();
-            
+
             $table->index(['client_id', 'status']);
             $table->index('status');
         });

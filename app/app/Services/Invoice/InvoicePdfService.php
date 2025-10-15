@@ -13,20 +13,20 @@ class InvoicePdfService
             'invoice' => $invoice->load(['client', 'invoice_items']),
             'company' => $this->getCompanyDetails(),
         ]);
-        
-        return $pdf->download('invoice-' . $invoice->number . '.pdf');
+
+        return $pdf->download('invoice-'.$invoice->number.'.pdf');
     }
-    
+
     public function stream(Invoice $invoice): \Illuminate\Http\Response
     {
         $pdf = Pdf::loadView('invoices.pdf', [
             'invoice' => $invoice->load(['client', 'invoice_items']),
             'company' => $this->getCompanyDetails(),
         ]);
-        
+
         return $pdf->stream();
     }
-    
+
     private function getCompanyDetails(): array
     {
         return [

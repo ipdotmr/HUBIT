@@ -21,7 +21,7 @@ return new class extends Migration
             $table->json('meta')->nullable(); // validation rules, description, etc
             $table->foreignId('updated_by')->nullable()->constrained('users')->nullOnDelete();
             $table->timestamps();
-            
+
             $table->index('key');
             $table->index('scope');
         });
@@ -37,7 +37,7 @@ return new class extends Migration
             $table->json('meta')->nullable();
             $table->foreignId('updated_by')->nullable()->constrained('users')->nullOnDelete();
             $table->timestamps();
-            
+
             $table->unique(['organization_id', 'key']);
             $table->index('key');
         });
@@ -52,7 +52,7 @@ return new class extends Migration
             $table->json('meta')->nullable();
             $table->foreignId('updated_by')->nullable()->constrained('users')->nullOnDelete();
             $table->timestamps();
-            
+
             $table->unique(['product_id', 'key']);
             $table->index('key');
         });
@@ -68,7 +68,7 @@ return new class extends Migration
             $table->string('ip_address', 45)->nullable();
             $table->text('user_agent')->nullable();
             $table->timestamps();
-            
+
             $table->index(['setting_type', 'setting_id']);
             $table->index('changed_by');
             $table->index('created_at');

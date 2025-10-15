@@ -36,8 +36,8 @@ class SystemSetting extends Model
 
         try {
             $decrypted = Crypt::decryptString($this->value_encrypted);
-            
-            return match($this->type) {
+
+            return match ($this->type) {
                 'int' => (int) $decrypted,
                 'bool' => filter_var($decrypted, FILTER_VALIDATE_BOOLEAN),
                 'json' => json_decode($decrypted, true),
@@ -56,10 +56,11 @@ class SystemSetting extends Model
     {
         if ($value === null) {
             $this->attributes['value_encrypted'] = null;
+
             return;
         }
 
-        $stringValue = match($this->type) {
+        $stringValue = match ($this->type) {
             'int' => (string) $value,
             'bool' => $value ? '1' : '0',
             'json', 'array' => json_encode($value),
@@ -109,6 +110,7 @@ class SystemSetting extends Model
     public static function getValue($key, $default = null)
     {
         $setting = static::where('key', $key)->first();
+
         return $setting ? $setting->value : $default;
     }
 

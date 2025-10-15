@@ -34,7 +34,7 @@ class SettingsController extends Controller
             'auditLogs' => $this->settingsService->getAuditLogsForKeys([
                 'company.name', 'company.legal_name', 'company.tax_id', 'company.address',
                 'company.logo', 'company.logo_dark', 'invoice.prefix', 'invoice.currency',
-                'invoice.tax_rate', 'invoice.footer'
+                'invoice.tax_rate', 'invoice.footer',
             ]),
         ]);
     }
@@ -47,7 +47,7 @@ class SettingsController extends Controller
         return Inertia::render('Admin/Settings/Themes', [
             'settings' => $this->getAllSettings(),
             'auditLogs' => $this->settingsService->getAuditLogsForKeys([
-                'theme.default', 'theme.allow_user_selection', 'theme.rtl_enabled', 'theme.custom_css'
+                'theme.default', 'theme.allow_user_selection', 'theme.rtl_enabled', 'theme.custom_css',
             ]),
         ]);
     }
@@ -60,7 +60,7 @@ class SettingsController extends Controller
         return Inertia::render('Admin/Settings/StripePayments', [
             'settings' => $this->getAllSettings(),
             'auditLogs' => $this->settingsService->getAuditLogsForKeys([
-                'stripe.mode', 'stripe.publishable_key', 'stripe.secret_key', 'stripe.webhook_secret'
+                'stripe.mode', 'stripe.publishable_key', 'stripe.secret_key', 'stripe.webhook_secret',
             ]),
         ]);
     }
@@ -74,7 +74,7 @@ class SettingsController extends Controller
             'settings' => $this->getAllSettings(),
             'auditLogs' => $this->settingsService->getAuditLogsForKeys([
                 'cpanel.host', 'cpanel.api_token', 'cpanel.use_ssl', 'cpanel.default_package',
-                'cpanel.nameserver1', 'cpanel.nameserver2', 'cpanel.nameserver3', 'cpanel.nameserver4'
+                'cpanel.nameserver1', 'cpanel.nameserver2', 'cpanel.nameserver3', 'cpanel.nameserver4',
             ]),
         ]);
     }
@@ -105,7 +105,7 @@ class SettingsController extends Controller
 
             return back()->with('success', 'Settings updated successfully');
         } catch (\Exception $e) {
-            return back()->with('error', 'Failed to update settings: ' . $e->getMessage());
+            return back()->with('error', 'Failed to update settings: '.$e->getMessage());
         }
     }
 

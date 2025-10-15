@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('billing_cycle');
             $table->json('config_selected')->nullable();
             $table->timestamps();
-            
+
             $table->index('order_id');
         });
     }
