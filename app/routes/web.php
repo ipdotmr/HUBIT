@@ -28,7 +28,7 @@ require __DIR__.'/auth.php';
 
 Route::post('/webhooks/stripe', [App\Http\Controllers\WebhookController::class, 'stripe'])->name('webhooks.stripe');
 
-Route::middleware(['auth', 'verified'])->prefix('managit')->group(function () {
+Route::middleware(['auth', 'verified', 'throttle:60,1'])->prefix('managit')->group(function () {
     Route::prefix('settings')->name('managit.settings.')->group(function () {
         Route::get('/', [App\Http\Controllers\Admin\SettingsController::class, 'index'])->name('index');
         Route::get('/company', [App\Http\Controllers\Admin\SettingsController::class, 'company'])->name('company');
