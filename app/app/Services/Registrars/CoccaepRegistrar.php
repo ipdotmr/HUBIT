@@ -12,11 +12,17 @@ use Illuminate\Support\Facades\Log;
 class CoccaepRegistrar implements RegistrarInterface
 {
     private SettingsService $settings;
+
     private string $apiUrl;
+
     private string $username;
+
     private string $password;
+
     private string $registrarCode;
+
     private array $enabledTlds;
+
     private array $whoisLanguages;
 
     public function __construct(SettingsService $settings)
@@ -31,12 +37,12 @@ class CoccaepRegistrar implements RegistrarInterface
         $this->username = $this->settings->get('coccaep.username', '');
         $this->password = $this->settings->get('coccaep.password', '');
         $this->registrarCode = $this->settings->get('coccaep.registrar_code', '');
-        
+
         $this->enabledTlds = json_decode(
             $this->settings->get('coccaep.enabled_tlds', '[".mr"]'),
             true
         ) ?? ['.mr'];
-        
+
         $this->whoisLanguages = json_decode(
             $this->settings->get('coccaep.whois_languages', '["en","ar"]'),
             true
@@ -47,7 +53,7 @@ class CoccaepRegistrar implements RegistrarInterface
     {
         try {
             $startTime = microtime(true);
-            
+
             $response = Http::withBasicAuth($this->username, $this->password)
                 ->timeout(10)
                 ->retry(3, 1000, function ($exception, $request) {
@@ -97,14 +103,15 @@ class CoccaepRegistrar implements RegistrarInterface
      */
     private function toPunycode(string $domain): string
     {
-        if (!mb_check_encoding($domain, 'ASCII')) {
+        if (! mb_check_encoding($domain, 'ASCII')) {
             $parts = explode('.', $domain);
             $encoded = array_map(function ($part) {
                 return idn_to_ascii($part, IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46);
             }, $parts);
+
             return implode('.', $encoded);
         }
-        
+
         return $domain;
     }
 
@@ -116,19 +123,19 @@ class CoccaepRegistrar implements RegistrarInterface
         if (str_starts_with($domain, 'xn--')) {
             return idn_to_utf8($domain, IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46) ?: $domain;
         }
-        
+
         return $domain;
     }
 
     public function checkAvailability(string $domain): array
     {
         $punycode = $this->toPunycode($domain);
-        
+
         $result = $this->makeRequest('POST', 'domains/check', [
             'domain' => $punycode,
         ]);
 
-        if (!$result['success']) {
+        if (! $result['success']) {
             return [
                 'available' => false,
                 'price' => null,
@@ -152,7 +159,7 @@ class CoccaepRegistrar implements RegistrarInterface
     public function register(DomainOrder $order): array
     {
         $punycode = $this->toPunycode($order->domain);
-        
+
         $data = [
             'domain' => $punycode,
             'years' => $order->years,
@@ -163,7 +170,7 @@ class CoccaepRegistrar implements RegistrarInterface
 
         $result = $this->makeRequest('POST', 'domains/register', $data);
 
-        if (!$result['success']) {
+        if (! $result['success']) {
             return [
                 'success' => false,
                 'domain_id' => null,
@@ -183,12 +190,12 @@ class CoccaepRegistrar implements RegistrarInterface
     public function renew(Domain $domain, int $years = 1): array
     {
         $punycode = $domain->punycode ?? $this->toPunycode($domain->fqdn);
-        
+
         $result = $this->makeRequest('POST', "domains/{$punycode}/renew", [
             'years' => $years,
         ]);
 
-        if (!$result['success']) {
+        if (! $result['success']) {
             return [
                 'success' => false,
                 'expiry_date' => null,
@@ -206,7 +213,7 @@ class CoccaepRegistrar implements RegistrarInterface
     public function transfer(Domain $domain, string $authCode): array
     {
         $punycode = $domain->punycode ?? $this->toPunycode($domain->fqdn);
-        
+
         $data = [
             'domain' => $punycode,
             'auth_code' => $authCode,
@@ -214,7 +221,7 @@ class CoccaepRegistrar implements RegistrarInterface
 
         $result = $this->makeRequest('POST', 'domains/transfer', $data);
 
-        if (!$result['success']) {
+        if (! $result['success']) {
             return [
                 'success' => false,
                 'transfer_id' => null,
@@ -232,12 +239,12 @@ class CoccaepRegistrar implements RegistrarInterface
     public function setNameservers(Domain $domain, array $nameservers): array
     {
         $punycode = $domain->punycode ?? $this->toPunycode($domain->fqdn);
-        
+
         $result = $this->makeRequest('PUT', "domains/{$punycode}/nameservers", [
             'nameservers' => $nameservers,
         ]);
 
-        if (!$result['success']) {
+        if (! $result['success']) {
             return [
                 'success' => false,
                 'message' => $result['message'] ?? 'Failed to update nameservers',
@@ -253,10 +260,10 @@ class CoccaepRegistrar implements RegistrarInterface
     public function getAuthCode(Domain $domain): array
     {
         $punycode = $domain->punycode ?? $this->toPunycode($domain->fqdn);
-        
+
         $result = $this->makeRequest('GET', "domains/{$punycode}/auth-code");
 
-        if (!$result['success']) {
+        if (! $result['success']) {
             return [
                 'success' => false,
                 'auth_code' => null,
@@ -274,12 +281,12 @@ class CoccaepRegistrar implements RegistrarInterface
     public function setLock(Domain $domain, bool $locked): array
     {
         $punycode = $domain->punycode ?? $this->toPunycode($domain->fqdn);
-        
+
         $result = $this->makeRequest('PUT', "domains/{$punycode}/lock", [
             'locked' => $locked,
         ]);
 
-        if (!$result['success']) {
+        if (! $result['success']) {
             return [
                 'success' => false,
                 'message' => $result['message'] ?? 'Failed to update lock status',
@@ -295,12 +302,12 @@ class CoccaepRegistrar implements RegistrarInterface
     public function setPrivacy(Domain $domain, bool $enabled): array
     {
         $punycode = $domain->punycode ?? $this->toPunycode($domain->fqdn);
-        
+
         $result = $this->makeRequest('PUT', "domains/{$punycode}/privacy", [
             'enabled' => $enabled,
         ]);
 
-        if (!$result['success']) {
+        if (! $result['success']) {
             return [
                 'success' => false,
                 'message' => $result['message'] ?? 'Failed to update privacy settings',
@@ -316,16 +323,16 @@ class CoccaepRegistrar implements RegistrarInterface
     public function getWhois(Domain $domain, string $language = 'en'): array
     {
         $punycode = $domain->punycode ?? $this->toPunycode($domain->fqdn);
-        
-        if (!in_array($language, $this->whoisLanguages)) {
+
+        if (! in_array($language, $this->whoisLanguages)) {
             $language = 'en';
         }
-        
+
         $result = $this->makeRequest('GET', "domains/{$punycode}/whois", [
             'language' => $language,
         ]);
 
-        if (!$result['success']) {
+        if (! $result['success']) {
             return [
                 'success' => false,
                 'whois' => null,
@@ -334,7 +341,7 @@ class CoccaepRegistrar implements RegistrarInterface
         }
 
         $data = $result['data'] ?? [];
-        
+
         return [
             'success' => true,
             'whois' => [
@@ -356,10 +363,10 @@ class CoccaepRegistrar implements RegistrarInterface
     public function sync(Domain $domain): array
     {
         $punycode = $domain->punycode ?? $this->toPunycode($domain->fqdn);
-        
+
         $result = $this->makeRequest('GET', "domains/{$punycode}");
 
-        if (!$result['success']) {
+        if (! $result['success']) {
             return [
                 'success' => false,
                 'data' => null,
@@ -387,7 +394,7 @@ class CoccaepRegistrar implements RegistrarInterface
     {
         $result = $this->makeRequest('GET', 'status');
 
-        if (!$result['success']) {
+        if (! $result['success']) {
             return [
                 'success' => false,
                 'latency' => null,
@@ -437,15 +444,15 @@ class CoccaepRegistrar implements RegistrarInterface
     private function extractTld(string $domain): string
     {
         $parts = explode('.', $domain);
-        
+
         if (count($parts) >= 3) {
-            $possibleTld = '.' . $parts[count($parts) - 2] . '.' . $parts[count($parts) - 1];
+            $possibleTld = '.'.$parts[count($parts) - 2].'.'.$parts[count($parts) - 1];
             if (in_array($possibleTld, $this->enabledTlds)) {
                 return $possibleTld;
             }
         }
-        
-        return '.' . end($parts);
+
+        return '.'.end($parts);
     }
 
     private function getDefaultNameservers(): array

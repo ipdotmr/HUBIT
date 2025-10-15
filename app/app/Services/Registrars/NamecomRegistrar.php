@@ -12,8 +12,11 @@ use Illuminate\Support\Facades\Log;
 class NamecomRegistrar implements RegistrarInterface
 {
     private SettingsService $settings;
+
     private string $apiUrl;
+
     private string $username;
+
     private string $token;
 
     public function __construct(SettingsService $settings)
@@ -26,11 +29,11 @@ class NamecomRegistrar implements RegistrarInterface
     {
         $mode = $this->settings->get('namecom.mode', 'test');
         $sandboxUrl = $this->settings->get('namecom.sandbox_url');
-        
-        $this->apiUrl = $mode === 'live' 
+
+        $this->apiUrl = $mode === 'live'
             ? 'https://api.name.com/v4'
             : ($sandboxUrl ?: 'https://api.dev.name.com/v4');
-            
+
         $this->username = $this->settings->get('namecom.api_username', '');
         $this->token = $this->settings->get('namecom.api_token', '');
     }
@@ -39,7 +42,7 @@ class NamecomRegistrar implements RegistrarInterface
     {
         try {
             $startTime = microtime(true);
-            
+
             $response = Http::withBasicAuth($this->username, $this->token)
                 ->timeout(30)
                 ->accept('application/json')
@@ -83,7 +86,7 @@ class NamecomRegistrar implements RegistrarInterface
     {
         $result = $this->makeRequest('GET', "domains:checkAvailability?domainName={$domain}");
 
-        if (!$result['success']) {
+        if (! $result['success']) {
             return [
                 'available' => false,
                 'price' => null,
@@ -117,7 +120,7 @@ class NamecomRegistrar implements RegistrarInterface
 
         $result = $this->makeRequest('POST', 'domains', $data);
 
-        if (!$result['success']) {
+        if (! $result['success']) {
             return [
                 'success' => false,
                 'domain_id' => null,
@@ -139,7 +142,7 @@ class NamecomRegistrar implements RegistrarInterface
             'years' => $years,
         ]);
 
-        if (!$result['success']) {
+        if (! $result['success']) {
             return [
                 'success' => false,
                 'expiry_date' => null,
@@ -163,7 +166,7 @@ class NamecomRegistrar implements RegistrarInterface
 
         $result = $this->makeRequest('POST', 'domains:transfer', $data);
 
-        if (!$result['success']) {
+        if (! $result['success']) {
             return [
                 'success' => false,
                 'transfer_id' => null,
@@ -184,7 +187,7 @@ class NamecomRegistrar implements RegistrarInterface
             'nameservers' => $nameservers,
         ]);
 
-        if (!$result['success']) {
+        if (! $result['success']) {
             return [
                 'success' => false,
                 'message' => $result['message'] ?? 'Failed to update nameservers',
@@ -201,7 +204,7 @@ class NamecomRegistrar implements RegistrarInterface
     {
         $result = $this->makeRequest('GET', "domains/{$domain->name}:getAuthCode");
 
-        if (!$result['success']) {
+        if (! $result['success']) {
             return [
                 'success' => false,
                 'auth_code' => null,
@@ -222,7 +225,7 @@ class NamecomRegistrar implements RegistrarInterface
             'locked' => $locked,
         ]);
 
-        if (!$result['success']) {
+        if (! $result['success']) {
             return [
                 'success' => false,
                 'message' => $result['message'] ?? 'Failed to update lock status',
@@ -241,7 +244,7 @@ class NamecomRegistrar implements RegistrarInterface
             'privacy' => $enabled,
         ]);
 
-        if (!$result['success']) {
+        if (! $result['success']) {
             return [
                 'success' => false,
                 'message' => $result['message'] ?? 'Failed to update privacy settings',
@@ -258,7 +261,7 @@ class NamecomRegistrar implements RegistrarInterface
     {
         $result = $this->makeRequest('GET', "domains/{$domain->name}");
 
-        if (!$result['success']) {
+        if (! $result['success']) {
             return [
                 'success' => false,
                 'whois' => null,
@@ -267,7 +270,7 @@ class NamecomRegistrar implements RegistrarInterface
         }
 
         $domainData = $result['data'] ?? [];
-        
+
         return [
             'success' => true,
             'whois' => [
@@ -289,7 +292,7 @@ class NamecomRegistrar implements RegistrarInterface
     {
         $result = $this->makeRequest('GET', "domains/{$domain->name}");
 
-        if (!$result['success']) {
+        if (! $result['success']) {
             return [
                 'success' => false,
                 'data' => null,
@@ -317,7 +320,7 @@ class NamecomRegistrar implements RegistrarInterface
     {
         $result = $this->makeRequest('GET', 'domains');
 
-        if (!$result['success']) {
+        if (! $result['success']) {
             return [
                 'success' => false,
                 'latency' => null,

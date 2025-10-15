@@ -6,21 +6,19 @@ use App\Models\Domain;
 use App\Models\DomainOrder;
 use App\Services\Registrars\NamecomRegistrar;
 use App\Services\SettingsService;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
 
 class NamecomRegistrarTest extends TestCase
 {
-    use RefreshDatabase;
-
     private NamecomRegistrar $registrar;
+
     private SettingsService $settings;
 
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         $this->settings = $this->createMock(SettingsService::class);
         $this->settings->method('get')->willReturnMap([
             ['namecom.mode', 'test', 'test'],
@@ -28,7 +26,7 @@ class NamecomRegistrarTest extends TestCase
             ['namecom.api_username', '', 'testuser'],
             ['namecom.api_token', '', 'testtoken123'],
         ]);
-        
+
         $this->registrar = new NamecomRegistrar($this->settings);
     }
 
@@ -48,6 +46,28 @@ class NamecomRegistrarTest extends TestCase
         $this->assertTrue($result['available']);
         $this->assertEquals(12.99, $result['price']);
         $this->assertFalse($result['premium']);
+    }
+
+    private function createMockDomain(string $name): Domain
+    {
+        return new Domain([
+            'name' => $name,
+            'fqdn' => $name,
+        ]);
+    }
+
+    private function createMockDomainOrder(array $data): DomainOrder
+    {
+        $defaults = [
+            'domain' => 'example.com',
+            'price' => 12.99,
+            'years' => 1,
+            'contact_first_name' => 'John',
+            'contact_last_name' => 'Doe',
+            'contact_email' => 'john@example.com',
+        ];
+
+        return new DomainOrder(array_merge($defaults, $data));
     }
 
     /** @test */
@@ -75,14 +95,7 @@ class NamecomRegistrarTest extends TestCase
             ], 200),
         ]);
 
-        $order = new DomainOrder([
-            'domain' => 'newdomain.com',
-            'price' => 12.99,
-            'years' => 1,
-            'contact_first_name' => 'John',
-            'contact_last_name' => 'Doe',
-            'contact_email' => 'john@example.com',
-        ]);
+        $order = $this->createMockDomainOrder(['domain' => 'newdomain.com']);
 
         $result = $this->registrar->register($order);
 
@@ -100,14 +113,7 @@ class NamecomRegistrarTest extends TestCase
             ], 400),
         ]);
 
-        $order = new DomainOrder([
-            'domain' => 'taken.com',
-            'price' => 12.99,
-            'years' => 1,
-            'contact_first_name' => 'John',
-            'contact_last_name' => 'Doe',
-            'contact_email' => 'john@example.com',
-        ]);
+        $order = $this->createMockDomainOrder(['domain' => 'taken.com']);
 
         $result = $this->registrar->register($order);
 
@@ -124,7 +130,7 @@ class NamecomRegistrarTest extends TestCase
             ], 200),
         ]);
 
-        $domain = new Domain(['name' => 'example.com']);
+        $domain = $this->createMockDomain('example.com');
 
         $result = $this->registrar->renew($domain, 1);
 
@@ -140,7 +146,7 @@ class NamecomRegistrarTest extends TestCase
             '*/domains/*/setNameservers' => Http::response([], 200),
         ]);
 
-        $domain = new Domain(['name' => 'example.com']);
+        $domain = $this->createMockDomain('example.com');
         $nameservers = ['ns1.example.com', 'ns2.example.com'];
 
         $result = $this->registrar->setNameservers($domain, $nameservers);
@@ -158,7 +164,7 @@ class NamecomRegistrarTest extends TestCase
             ], 200),
         ]);
 
-        $domain = new Domain(['name' => 'example.com']);
+        $domain = $this->createMockDomain('example.com');
 
         $result = $this->registrar->getAuthCode($domain);
 
@@ -173,7 +179,7 @@ class NamecomRegistrarTest extends TestCase
             '*/domains/*/setLocked' => Http::response([], 200),
         ]);
 
-        $domain = new Domain(['name' => 'example.com']);
+        $domain = $this->createMockDomain('example.com');
 
         $lockResult = $this->registrar->setLock($domain, true);
         $this->assertTrue($lockResult['success']);
@@ -191,7 +197,7 @@ class NamecomRegistrarTest extends TestCase
             '*/domains/*/setPrivacy' => Http::response([], 200),
         ]);
 
-        $domain = new Domain(['name' => 'example.com']);
+        $domain = $this->createMockDomain('example.com');
 
         $enableResult = $this->registrar->setPrivacy($domain, true);
         $this->assertTrue($enableResult['success']);
@@ -219,7 +225,7 @@ class NamecomRegistrarTest extends TestCase
             ], 200),
         ]);
 
-        $domain = new Domain(['name' => 'example.com']);
+        $domain = $this->createMockDomain('example.com');
 
         $result = $this->registrar->getWhois($domain);
 
@@ -244,7 +250,7 @@ class NamecomRegistrarTest extends TestCase
             ], 200),
         ]);
 
-        $domain = new Domain(['name' => 'example.com']);
+        $domain = $this->createMockDomain('example.com');
 
         $result = $this->registrar->sync($domain);
 

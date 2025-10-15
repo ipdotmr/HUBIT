@@ -6,21 +6,19 @@ use App\Models\Domain;
 use App\Models\DomainOrder;
 use App\Services\Registrars\CoccaepRegistrar;
 use App\Services\SettingsService;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
 
 class CoccaepRegistrarTest extends TestCase
 {
-    use RefreshDatabase;
-
     private CoccaepRegistrar $registrar;
+
     private SettingsService $settings;
 
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         $this->settings = $this->createMock(SettingsService::class);
         $this->settings->method('get')->willReturnMap([
             ['coccaep.api_base_url', 'https://registry.coccaep.mr/api', 'https://registry.coccaep.mr/api'],
@@ -30,7 +28,7 @@ class CoccaepRegistrarTest extends TestCase
             ['coccaep.enabled_tlds', '[".mr"]', '[".mr",".gov.mr",".edu.mr",".xn--mgbah1a"]'],
             ['coccaep.whois_languages', '["en","ar"]', '["en","ar","fr"]'],
         ]);
-        
+
         $this->registrar = new CoccaepRegistrar($this->settings);
     }
 
@@ -94,7 +92,7 @@ class CoccaepRegistrarTest extends TestCase
             ], 200),
         ]);
 
-        $order = new DomainOrder([
+        $order = $this->createMockDomainOrder([
             'domain' => 'example.mr',
             'years' => 1,
             'contact_first_name' => 'Ahmed',
@@ -119,7 +117,7 @@ class CoccaepRegistrarTest extends TestCase
             ], 200),
         ]);
 
-        $order = new DomainOrder([
+        $order = $this->createMockDomainOrder([
             'domain' => 'موريتانيا.mr',
             'years' => 1,
             'contact_first_name' => 'Ahmed',
@@ -391,6 +389,7 @@ class CoccaepRegistrarTest extends TestCase
             if ($attempts < 3) {
                 throw new \Illuminate\Http\Client\ConnectionException('Connection timeout');
             }
+
             return Http::response(['available' => true], 200);
         });
 
@@ -399,4 +398,28 @@ class CoccaepRegistrarTest extends TestCase
         $this->assertEquals(3, $attempts);
         $this->assertTrue($result['available']);
     }
+
+    private function createMockDomain(string $name, string $punycode = null): Domain
+    {
+        return new Domain([
+            'name' => $name,
+            'fqdn' => $name,
+            'punycode' => $punycode ?? $name,
+        ]);
+    }
+
+    private function createMockDomainOrder(array $data): DomainOrder
+    {
+        $defaults = [
+            'domain' => 'example.mr',
+            'years' => 1,
+            'contact_first_name' => 'Ahmed',
+            'contact_last_name' => 'Hassan',
+            'contact_email' => 'ahmed@example.mr',
+            'contact_country' => 'MR',
+        ];
+
+        return new DomainOrder(array_merge($defaults, $data));
+    }
+
 }
