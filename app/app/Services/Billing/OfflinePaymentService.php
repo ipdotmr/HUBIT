@@ -4,9 +4,8 @@ namespace App\Services\Billing;
 
 use App\Models\Invoice;
 use App\Models\Payment;
-use App\Models\PaymentTransaction;
 use App\Models\PaymentAccount;
-use App\Services\Billing\CurrencyService;
+use App\Models\PaymentTransaction;
 use Illuminate\Support\Facades\DB;
 
 class OfflinePaymentService

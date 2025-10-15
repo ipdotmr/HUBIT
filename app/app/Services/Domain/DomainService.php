@@ -2,12 +2,12 @@
 
 namespace App\Services\Domain;
 
+use App\Contracts\RegistrarInterface;
 use App\Models\Domain;
 use App\Models\DomainOrder;
-use App\Contracts\RegistrarInterface;
+use App\Services\Registrars\CoccaepRegistrar;
 use App\Services\Registrars\NamecheapRegistrar;
 use App\Services\Registrars\NamecomRegistrar;
-use App\Services\Registrars\CoccaepRegistrar;
 use Illuminate\Support\Facades\Log;
 
 class DomainService
@@ -34,11 +34,11 @@ class DomainService
 
     public function search(string $fqdn, ?string $registrarName = null): array
     {
-        $registrar = $registrarName 
+        $registrar = $registrarName
             ? $this->getRegistrar($registrarName)
             : $this->registrars[array_key_first($this->registrars)] ?? null;
 
-        if (!$registrar) {
+        if (! $registrar) {
             return [
                 'available' => false,
                 'price' => null,
@@ -48,7 +48,7 @@ class DomainService
 
         try {
             $result = $registrar->checkAvailability($fqdn);
-            
+
             return [
                 'available' => $result['available'] ?? false,
                 'price' => $result['price'] ?? null,
@@ -74,7 +74,7 @@ class DomainService
     {
         $registrar = $this->getRegistrar($order->registrar);
 
-        if (!$registrar) {
+        if (! $registrar) {
             throw new \Exception("Registrar {$order->registrar} not configured");
         }
 
@@ -126,7 +126,7 @@ class DomainService
     {
         $registrar = $this->getRegistrar($domain->registrar);
 
-        if (!$registrar) {
+        if (! $registrar) {
             throw new \Exception("Registrar {$domain->registrar} not configured");
         }
 
@@ -160,7 +160,7 @@ class DomainService
     {
         $registrar = $this->getRegistrar($registrarName);
 
-        if (!$registrar) {
+        if (! $registrar) {
             throw new \Exception("Registrar {$registrarName} not configured");
         }
 
@@ -188,7 +188,7 @@ class DomainService
     {
         $registrar = $this->getRegistrar($domain->registrar);
 
-        if (!$registrar) {
+        if (! $registrar) {
             throw new \Exception("Registrar {$domain->registrar} not configured");
         }
 
@@ -219,7 +219,7 @@ class DomainService
     {
         $registrar = $this->getRegistrar($domain->registrar);
 
-        if (!$registrar) {
+        if (! $registrar) {
             throw new \Exception("Registrar {$domain->registrar} not configured");
         }
 
@@ -250,7 +250,7 @@ class DomainService
     {
         $registrar = $this->getRegistrar($domain->registrar);
 
-        if (!$registrar) {
+        if (! $registrar) {
             throw new \Exception("Registrar {$domain->registrar} not configured");
         }
 
@@ -282,13 +282,13 @@ class DomainService
         // Extract domain name without TLD
         $parts = explode('.', $fqdn);
         $name = $parts[0];
-        
+
         // Common TLD suggestions
         $tlds = ['.com', '.net', '.org', '.io', '.co'];
         $suggestions = [];
 
         foreach ($tlds as $tld) {
-            $suggested = $name . $tld;
+            $suggested = $name.$tld;
             if ($suggested !== $fqdn) {
                 try {
                     $result = $registrar->checkAvailability($suggested);

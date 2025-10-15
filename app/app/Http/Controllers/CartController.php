@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\Cart\CartService;
 use App\Models\Cart;
 use App\Models\CartItem;
+use App\Services\Cart\CartService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -20,7 +20,7 @@ class CartController extends Controller
         $client = $request->user()->client;
         $cart = $this->cartService->getOrCreateCart($client);
         $cart->load('items');
-        
+
         $totals = $this->cartService->totals($cart);
 
         return Inertia::render('Cart/Index', [
@@ -92,7 +92,7 @@ class CartController extends Controller
     {
         $client = $request->user()->client;
         $cart = $this->cartService->getOrCreateCart($client);
-        
+
         $this->cartService->clearCart($cart);
 
         return redirect()->back()->with('success', __('Cart cleared'));

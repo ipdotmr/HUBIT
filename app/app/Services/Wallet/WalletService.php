@@ -20,7 +20,7 @@ class WalletService
         );
     }
 
-    public function credit(Client $client, float $amount, string $currency, string $reference = null, array $meta = []): WalletTransaction
+    public function credit(Client $client, float $amount, string $currency, ?string $reference = null, array $meta = []): WalletTransaction
     {
         return DB::transaction(function () use ($client, $amount, $currency, $reference, $meta) {
             $wallet = $this->getOrCreateWallet($client, $currency);
@@ -40,7 +40,7 @@ class WalletService
         });
     }
 
-    public function debit(Client $client, float $amount, string $currency, string $reference = null, array $meta = []): WalletTransaction
+    public function debit(Client $client, float $amount, string $currency, ?string $reference = null, array $meta = []): WalletTransaction
     {
         return DB::transaction(function () use ($client, $amount, $currency, $reference, $meta) {
             $wallet = $this->getOrCreateWallet($client, $currency);
@@ -64,7 +64,7 @@ class WalletService
         });
     }
 
-    public function adjust(Client $client, float $amount, string $currency, string $reference = null, array $meta = []): WalletTransaction
+    public function adjust(Client $client, float $amount, string $currency, ?string $reference = null, array $meta = []): WalletTransaction
     {
         return DB::transaction(function () use ($client, $amount, $currency, $reference, $meta) {
             $wallet = $this->getOrCreateWallet($client, $currency);
@@ -88,7 +88,7 @@ class WalletService
         });
     }
 
-    public function refund(Client $client, float $amount, string $currency, string $reference = null, array $meta = []): WalletTransaction
+    public function refund(Client $client, float $amount, string $currency, ?string $reference = null, array $meta = []): WalletTransaction
     {
         return DB::transaction(function () use ($client, $amount, $currency, $reference, $meta) {
             $wallet = $this->getOrCreateWallet($client, $currency);
@@ -117,7 +117,7 @@ class WalletService
         return $wallet ? (float) $wallet->balance : 0;
     }
 
-    public function getTransactions(Client $client, string $currency = null, int $limit = 50): \Illuminate\Support\Collection
+    public function getTransactions(Client $client, ?string $currency = null, int $limit = 50): \Illuminate\Support\Collection
     {
         $query = WalletTransaction::where('client_id', $client->id);
 

@@ -28,7 +28,7 @@ class PaymentAccountService
         return $query->orderBy('created_at', 'desc')->get();
     }
 
-    public function getForClient(string $currency = null, string $lang = 'en'): array
+    public function getForClient(?string $currency = null, string $lang = 'en'): array
     {
         $query = PaymentAccount::where('active', true);
 

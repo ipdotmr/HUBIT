@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\ExchangeRate;
 use Carbon\Carbon;
+use Illuminate\Database\Seeder;
 
 class ExchangeRatesSeeder extends Seeder
 {
@@ -21,7 +21,7 @@ class ExchangeRatesSeeder extends Seeder
                 ['base' => $rate['base'], 'quote' => $rate['quote']],
                 array_merge($rate, [
                     'fetched_at' => Carbon::now(),
-                    'meta' => ['source' => 'manual', 'seeded' => true]
+                    'meta' => ['source' => 'manual', 'seeded' => true],
                 ])
             );
         }

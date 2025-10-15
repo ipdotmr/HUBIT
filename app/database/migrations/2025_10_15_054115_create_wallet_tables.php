@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('currency', 3);
             $table->decimal('balance', 18, 2)->default(0);
             $table->timestamps();
-            
+
             $table->unique(['client_id', 'currency']);
             $table->index('client_id');
         });
@@ -31,7 +31,7 @@ return new class extends Migration
             $table->string('reference')->nullable();
             $table->json('meta')->nullable();
             $table->timestamps();
-            
+
             $table->index('client_id');
             $table->index('type');
         });

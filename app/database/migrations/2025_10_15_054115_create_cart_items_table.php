@@ -22,7 +22,7 @@ return new class extends Migration
             $table->decimal('price', 18, 2);
             $table->string('currency', 3)->default('MRU');
             $table->timestamps();
-            
+
             $table->index('cart_id');
         });
     }

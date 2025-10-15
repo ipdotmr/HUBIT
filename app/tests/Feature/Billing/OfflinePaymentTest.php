@@ -2,23 +2,26 @@
 
 namespace Tests\Feature\Billing;
 
-use Tests\TestCase;
-use App\Models\User;
 use App\Models\Client;
 use App\Models\Invoice;
 use App\Models\PaymentAccount;
-use App\Models\Currency;
+use App\Models\User;
 use App\Services\Billing\OfflinePaymentService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class OfflinePaymentTest extends TestCase
 {
     use RefreshDatabase;
 
     protected User $user;
+
     protected Client $client;
+
     protected Invoice $invoice;
+
     protected PaymentAccount $account;
+
     protected OfflinePaymentService $service;
 
     protected function setUp(): void
@@ -29,7 +32,7 @@ class OfflinePaymentTest extends TestCase
 
         $this->user = User::factory()->create();
         $this->client = Client::factory()->create();
-        
+
         $this->invoice = Invoice::factory()->create([
             'client_id' => $this->client->id,
             'total' => 1000,

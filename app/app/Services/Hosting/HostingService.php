@@ -2,10 +2,10 @@
 
 namespace App\Services\Hosting;
 
-use App\Models\Service;
-use App\Models\Product;
-use App\Models\Order;
 use App\Contracts\ProvisionerInterface;
+use App\Models\Order;
+use App\Models\Product;
+use App\Models\Service;
 use App\Services\Provisioners\CpanelProvisioner;
 use App\Services\Provisioners\PleskProvisioner;
 use Illuminate\Support\Facades\Log;
@@ -34,14 +34,14 @@ class HostingService
     public function provision(Order $order): array
     {
         $product = Product::find($order->product_id);
-        
-        if (!$product || !$product->provisioner) {
+
+        if (! $product || ! $product->provisioner) {
             throw new \Exception("Product {$order->product_id} has no provisioner configured");
         }
 
         $provisioner = $this->getProvisioner($product->provisioner);
 
-        if (!$provisioner) {
+        if (! $provisioner) {
             throw new \Exception("Provisioner {$product->provisioner} not configured");
         }
 
@@ -96,7 +96,7 @@ class HostingService
     {
         $provisioner = $this->getProvisioner($service->provisioner);
 
-        if (!$provisioner) {
+        if (! $provisioner) {
             throw new \Exception("Provisioner {$service->provisioner} not configured");
         }
 
@@ -134,7 +134,7 @@ class HostingService
     {
         $provisioner = $this->getProvisioner($service->provisioner);
 
-        if (!$provisioner) {
+        if (! $provisioner) {
             throw new \Exception("Provisioner {$service->provisioner} not configured");
         }
 
@@ -165,7 +165,7 @@ class HostingService
     {
         $provisioner = $this->getProvisioner($service->provisioner);
 
-        if (!$provisioner) {
+        if (! $provisioner) {
             throw new \Exception("Provisioner {$service->provisioner} not configured");
         }
 
@@ -196,7 +196,7 @@ class HostingService
     {
         $provisioner = $this->getProvisioner($service->provisioner);
 
-        if (!$provisioner) {
+        if (! $provisioner) {
             throw new \Exception("Provisioner {$service->provisioner} not configured");
         }
 
@@ -227,7 +227,7 @@ class HostingService
     {
         $provisioner = $this->getProvisioner($service->provisioner);
 
-        if (!$provisioner) {
+        if (! $provisioner) {
             throw new \Exception("Provisioner {$service->provisioner} not configured");
         }
 

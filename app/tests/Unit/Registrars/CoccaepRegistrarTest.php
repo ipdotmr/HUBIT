@@ -399,7 +399,7 @@ class CoccaepRegistrarTest extends TestCase
         $this->assertTrue($result['available']);
     }
 
-    private function createMockDomain(string $name, string $punycode = null): Domain
+    private function createMockDomain(string $name, ?string $punycode = null): Domain
     {
         return new Domain([
             'name' => $name,
@@ -421,5 +421,4 @@ class CoccaepRegistrarTest extends TestCase
 
         return new DomainOrder(array_merge($defaults, $data));
     }
-
 }

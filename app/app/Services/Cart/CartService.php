@@ -57,6 +57,7 @@ class CartService
     public function clearCart(Cart $cart): bool
     {
         $cart->items()->delete();
+
         return true;
     }
 
@@ -64,9 +65,9 @@ class CartService
     {
         $cart->load('items');
         $totals = $cart->calculateTotals();
-        
+
         $cart->update(['totals' => $totals]);
-        
+
         return $totals;
     }
 
@@ -103,14 +104,14 @@ class CartService
     {
         $latest = Invoice::latest('id')->first();
         $number = $latest ? $latest->id + 1 : 1;
-        
-        return 'INV-' . date('Ymd') . '-' . str_pad($number, 4, '0', STR_PAD_LEFT);
+
+        return 'INV-'.date('Ymd').'-'.str_pad($number, 4, '0', STR_PAD_LEFT);
     }
 
     protected function getItemDescription(CartItem $item): string
     {
         return match ($item->type) {
-            'domain' => "Domain Registration: {$item->fqdn} ({$item->years} year" . ($item->years > 1 ? 's' : '') . ')',
+            'domain' => "Domain Registration: {$item->fqdn} ({$item->years} year".($item->years > 1 ? 's' : '').')',
             'hosting' => "Hosting: {$item->config['plan']} - {$item->config['cycle']}",
             'addon' => "Addon: {$item->sku}",
             default => 'Unknown item',

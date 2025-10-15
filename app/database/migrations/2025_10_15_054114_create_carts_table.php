@@ -18,7 +18,7 @@ return new class extends Migration
             $table->json('totals')->nullable();
             $table->json('meta')->nullable();
             $table->timestamps();
-            
+
             $table->index('client_id');
         });
     }

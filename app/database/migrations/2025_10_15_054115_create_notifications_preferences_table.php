@@ -18,7 +18,7 @@ return new class extends Migration
             $table->json('locales')->default('["en"]');
             $table->json('quiet_hours')->nullable();
             $table->timestamps();
-            
+
             $table->index('client_id');
         });
     }

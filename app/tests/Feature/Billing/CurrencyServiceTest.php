@@ -2,11 +2,9 @@
 
 namespace Tests\Feature\Billing;
 
-use Tests\TestCase;
-use App\Models\Currency;
-use App\Models\ExchangeRate;
 use App\Services\Billing\CurrencyService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class CurrencyServiceTest extends TestCase
 {
@@ -28,7 +26,7 @@ class CurrencyServiceTest extends TestCase
 
         $this->assertIsArray($currencies);
         $this->assertGreaterThan(0, count($currencies));
-        
+
         foreach ($currencies as $currency) {
             $this->assertArrayHasKey('code', $currency);
             $this->assertArrayHasKey('name', $currency);
