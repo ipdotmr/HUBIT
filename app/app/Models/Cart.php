@@ -37,10 +37,10 @@ class Cart extends Model
     public function calculateTotals(): array
     {
         $subtotal = $this->items->sum('price');
-        
+
         $settings = app(SettingsService::class);
         $taxRate = (float) $settings->get('company.tax_rate', '16') / 100;
-        
+
         $tax = $subtotal * $taxRate;
         $total = $subtotal + $tax;
 
