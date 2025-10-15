@@ -175,7 +175,7 @@ class CoccaepRegistrarTest extends TestCase
     public function it_gets_auth_code()
     {
         Http::fake([
-            '*/domains/*/auth-code' => Http::response([
+            '*domains/example.mr/auth-code*' => Http::response([
                 'auth_code' => 'COCCAEP-AUTH-123',
             ], 200),
         ]);
@@ -352,7 +352,7 @@ class CoccaepRegistrarTest extends TestCase
     public function it_tests_connection_successfully()
     {
         Http::fake([
-            '*/status' => Http::response([
+            '*status*' => Http::response([
                 'version' => 'EPP/XML 1.0',
                 'status' => 'operational',
             ], 200),

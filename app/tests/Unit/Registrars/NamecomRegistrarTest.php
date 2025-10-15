@@ -125,7 +125,7 @@ class NamecomRegistrarTest extends TestCase
     public function it_renews_domain_successfully()
     {
         Http::fake([
-            '*/domains/*/renew' => Http::response([
+            '*domains/example.com:renew*' => Http::response([
                 'expireDate' => '2026-10-15T00:00:00Z',
             ], 200),
         ]);
@@ -143,7 +143,7 @@ class NamecomRegistrarTest extends TestCase
     public function it_sets_nameservers_successfully()
     {
         Http::fake([
-            '*/domains/*/setNameservers' => Http::response([], 200),
+            '*domains/example.com:setNameservers*' => Http::response([], 200),
         ]);
 
         $domain = $this->createMockDomain('example.com');
@@ -159,7 +159,7 @@ class NamecomRegistrarTest extends TestCase
     public function it_gets_auth_code_successfully()
     {
         Http::fake([
-            '*/domains/*/getAuthCode' => Http::response([
+            '*domains/example.com:getAuthCode*' => Http::response([
                 'authCode' => 'ABC123XYZ',
             ], 200),
         ]);
@@ -176,7 +176,7 @@ class NamecomRegistrarTest extends TestCase
     public function it_toggles_domain_lock()
     {
         Http::fake([
-            '*/domains/*/setLocked' => Http::response([], 200),
+            '*domains/example.com:setLocked*' => Http::response([], 200),
         ]);
 
         $domain = $this->createMockDomain('example.com');
@@ -194,7 +194,7 @@ class NamecomRegistrarTest extends TestCase
     public function it_toggles_privacy_protection()
     {
         Http::fake([
-            '*/domains/*/setPrivacy' => Http::response([], 200),
+            '*domains/example.com:setPrivacy*' => Http::response([], 200),
         ]);
 
         $domain = $this->createMockDomain('example.com');
