@@ -27,3 +27,15 @@ Route::middleware('auth')->group(function () {
 require __DIR__.'/auth.php';
 
 Route::post('/webhooks/stripe', [App\Http\Controllers\WebhookController::class, 'stripe'])->name('webhooks.stripe');
+
+Route::middleware(['auth', 'verified'])->prefix('managit')->group(function () {
+    Route::prefix('settings')->name('managit.settings.')->group(function () {
+        Route::get('/', [App\Http\Controllers\Admin\SettingsController::class, 'index'])->name('index');
+        Route::post('/', [App\Http\Controllers\Admin\SettingsController::class, 'update'])->name('update');
+        Route::post('/test/{service}', [App\Http\Controllers\Admin\SettingsController::class, 'testConnection'])->name('test');
+    });
+});
+
+Route::any('/admin/{any?}', function () {
+    abort(404);
+})->where('any', '.*');
