@@ -7,12 +7,12 @@ class MockPayPalClient
     public function createOrder(array $params): array
     {
         usleep(120000); // 120ms latency
-        
+
         return [
-            'id' => 'PAYPAL-MOCK-' . strtoupper(uniqid()),
+            'id' => 'PAYPAL-MOCK-'.strtoupper(uniqid()),
             'status' => 'CREATED',
             'links' => [
-                ['rel' => 'approve', 'href' => '/mock/paypal/approve?token=' . uniqid()],
+                ['rel' => 'approve', 'href' => '/mock/paypal/approve?token='.uniqid()],
                 ['rel' => 'capture', 'href' => '/mock/paypal/capture'],
             ],
         ];
@@ -21,7 +21,7 @@ class MockPayPalClient
     public function captureOrder(string $orderId): array
     {
         usleep(150000);
-        
+
         return [
             'id' => $orderId,
             'status' => 'COMPLETED',
@@ -30,7 +30,7 @@ class MockPayPalClient
                     'payments' => [
                         'captures' => [
                             [
-                                'id' => 'CAPTURE-MOCK-' . uniqid(),
+                                'id' => 'CAPTURE-MOCK-'.uniqid(),
                                 'status' => 'COMPLETED',
                                 'amount' => ['value' => '50.00', 'currency_code' => 'USD'],
                             ],

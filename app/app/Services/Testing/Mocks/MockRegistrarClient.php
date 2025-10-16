@@ -14,9 +14,9 @@ class MockRegistrarClient
     public function checkAvailability(string $domain): array
     {
         usleep(200000); // 200ms realistic DNS lookup
-        
+
         $available = ! in_array($domain, ['google.com', 'facebook.com', 'apple.com']);
-        
+
         return [
             'domain' => $domain,
             'available' => $available,
@@ -29,11 +29,11 @@ class MockRegistrarClient
     public function register(string $domain, array $contact, int $years = 1): array
     {
         usleep(500000); // 500ms realistic registration time
-        
+
         return [
             'success' => true,
             'domain' => $domain,
-            'order_id' => 'REG-MOCK-' . strtoupper(uniqid()),
+            'order_id' => 'REG-MOCK-'.strtoupper(uniqid()),
             'status' => 'active',
             'expires_at' => now()->addYears($years)->toDateTimeString(),
             'nameservers' => ['ns1.mock-registrar.com', 'ns2.mock-registrar.com'],
@@ -44,24 +44,24 @@ class MockRegistrarClient
     public function renew(string $domain, int $years = 1): array
     {
         usleep(300000);
-        
+
         return [
             'success' => true,
             'domain' => $domain,
             'expires_at' => now()->addYears($years)->toDateTimeString(),
-            'order_id' => 'RENEW-MOCK-' . uniqid(),
+            'order_id' => 'RENEW-MOCK-'.uniqid(),
         ];
     }
 
     public function transfer(string $domain, string $authCode): array
     {
         usleep(600000);
-        
+
         return [
             'success' => true,
             'domain' => $domain,
             'status' => 'pending',
-            'transfer_id' => 'TRANSFER-MOCK-' . uniqid(),
+            'transfer_id' => 'TRANSFER-MOCK-'.uniqid(),
         ];
     }
 
@@ -70,14 +70,14 @@ class MockRegistrarClient
         return [
             'success' => true,
             'domain' => $domain,
-            'epp_code' => 'EPP-MOCK-' . strtoupper(substr(md5($domain), 0, 16)),
+            'epp_code' => 'EPP-MOCK-'.strtoupper(substr(md5($domain), 0, 16)),
         ];
     }
 
     public function updateNameservers(string $domain, array $nameservers): array
     {
         usleep(250000);
-        
+
         return [
             'success' => true,
             'domain' => $domain,

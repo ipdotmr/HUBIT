@@ -2,10 +2,10 @@
 
 namespace App\Services\Testing;
 
-use App\Services\Testing\Mocks\MockStripeClient;
 use App\Services\Testing\Mocks\MockPayPalClient;
-use App\Services\Testing\Mocks\MockRegistrarClient;
 use App\Services\Testing\Mocks\MockProvisionerClient;
+use App\Services\Testing\Mocks\MockRegistrarClient;
+use App\Services\Testing\Mocks\MockStripeClient;
 
 class MockFactory
 {
@@ -16,11 +16,11 @@ class MockFactory
     {
         $settings = app(\App\Services\SettingsService::class);
         $settingValue = $settings->get('testing.use_mocks');
-        
+
         if ($settingValue !== null) {
             return filter_var($settingValue, FILTER_VALIDATE_BOOLEAN);
         }
-        
+
         return env('E2E_USE_MOCKS', false);
     }
 
@@ -30,11 +30,11 @@ class MockFactory
     public static function stripe()
     {
         if (self::shouldUseMocks()) {
-            return new MockStripeClient();
+            return new MockStripeClient;
         }
-        
+
         \Stripe\Stripe::setApiKey(config('services.stripe.secret'));
-        
+
         return new \Stripe\StripeClient(config('services.stripe.secret'));
     }
 
@@ -44,9 +44,9 @@ class MockFactory
     public static function paypal()
     {
         if (self::shouldUseMocks()) {
-            return new MockPayPalClient();
+            return new MockPayPalClient;
         }
-        
+
         throw new \Exception('Real PayPal client not yet implemented');
     }
 
@@ -58,7 +58,7 @@ class MockFactory
         if (self::shouldUseMocks()) {
             return new MockRegistrarClient($registrar);
         }
-        
+
         return app("App\\Services\\Registrars\\{$registrar}Registrar");
     }
 
@@ -70,7 +70,7 @@ class MockFactory
         if (self::shouldUseMocks()) {
             return new MockProvisionerClient($provider);
         }
-        
+
         return app("App\\Services\\Provisioning\\{$provider}Provisioner");
     }
 }

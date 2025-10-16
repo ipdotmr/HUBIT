@@ -14,16 +14,16 @@ class MockProvisionerClient
     public function createAccount(array $params): array
     {
         usleep(800000); // 800ms realistic provision time
-        
-        $username = $params['username'] ?? 'mockuser' . rand(1000, 9999);
-        $domain = $params['domain'] ?? 'mock' . rand(1000, 9999) . '.example.com';
-        
+
+        $username = $params['username'] ?? 'mockuser'.rand(1000, 9999);
+        $domain = $params['domain'] ?? 'mock'.rand(1000, 9999).'.example.com';
+
         return [
             'success' => true,
             'username' => $username,
             'domain' => $domain,
-            'password' => 'MockPass!' . rand(10000, 99999),
-            'ip_address' => '192.0.2.' . rand(1, 254),
+            'password' => 'MockPass!'.rand(10000, 99999),
+            'ip_address' => '192.0.2.'.rand(1, 254),
             'nameservers' => [
                 'ns1.mock-hosting.com',
                 'ns2.mock-hosting.com',
@@ -37,7 +37,7 @@ class MockProvisionerClient
     public function suspendAccount(string $username): array
     {
         usleep(300000);
-        
+
         return [
             'success' => true,
             'username' => $username,
@@ -49,7 +49,7 @@ class MockProvisionerClient
     public function unsuspendAccount(string $username): array
     {
         usleep(300000);
-        
+
         return [
             'success' => true,
             'username' => $username,
@@ -60,7 +60,7 @@ class MockProvisionerClient
     public function terminateAccount(string $username): array
     {
         usleep(500000);
-        
+
         return [
             'success' => true,
             'username' => $username,
@@ -71,7 +71,7 @@ class MockProvisionerClient
     public function changePackage(string $username, string $package): array
     {
         usleep(400000);
-        
+
         return [
             'success' => true,
             'username' => $username,
@@ -83,7 +83,7 @@ class MockProvisionerClient
     public function resetPassword(string $username, string $password): array
     {
         usleep(200000);
-        
+
         return [
             'success' => true,
             'username' => $username,

@@ -50,34 +50,28 @@ class Stage4DomainFlowTest extends DuskTestCase
             $user = User::factory()->create(['email' => 'test@example.com']);
             $client = Client::factory()->create(['user_id' => $user->id]);
 
-            $testDomain = 'test-domain-' . time() . '.com';
+            $testDomain = 'test-domain-'.time().'.com';
 
             $browser->loginAs($user)
-                    ->visit('/domains/search')
-                    ->assertSee('Domain Search')
-                    
-                    ->type('domain', $testDomain)
-                    ->press('Search')
-                    ->waitForText('Available', 10)
-                    ->assertSee('$15.00')
-                    
-                    ->press('Add to Cart')
-                    ->waitForText('Added', 5)
-                    
-                    ->visit('/cart')
-                    ->assertSee('Shopping Cart')
-                    ->assertSee($testDomain)
-                    ->assertSee('15.00')
-                    
-                    ->press('Checkout')
-                    ->waitFor('[data-test="payment-form"]', 10)
-                    
-                    ->press('Complete Payment')
-                    ->waitForLocation('/dashboard/domains', 30)
-                    
-                    ->assertSee('My Domains')
-                    ->assertSee($testDomain)
-                    ->assertSee('Active');
+                ->visit('/domains/search')
+                ->assertSee('Domain Search')
+                ->type('domain', $testDomain)
+                ->press('Search')
+                ->waitForText('Available', 10)
+                ->assertSee('$15.00')
+                ->press('Add to Cart')
+                ->waitForText('Added', 5)
+                ->visit('/cart')
+                ->assertSee('Shopping Cart')
+                ->assertSee($testDomain)
+                ->assertSee('15.00')
+                ->press('Checkout')
+                ->waitFor('[data-test="payment-form"]', 10)
+                ->press('Complete Payment')
+                ->waitForLocation('/dashboard/domains', 30)
+                ->assertSee('My Domains')
+                ->assertSee($testDomain)
+                ->assertSee('Active');
 
             $this->assertDatabaseHas('domain_orders', [
                 'client_id' => $client->id,
@@ -104,10 +98,10 @@ class Stage4DomainFlowTest extends DuskTestCase
             Client::factory()->create(['user_id' => $user->id]);
 
             $browser->loginAs($user)
-                    ->visit('/domains/search')
-                    ->assertAttribute('html', 'lang', 'en')
-                    ->assertSee('Domain Search')
-                    ->assertMissing('[data-error="console"]');
+                ->visit('/domains/search')
+                ->assertAttribute('html', 'lang', 'en')
+                ->assertSee('Domain Search')
+                ->assertMissing('[data-error="console"]');
         });
     }
 
@@ -124,11 +118,11 @@ class Stage4DomainFlowTest extends DuskTestCase
             Client::factory()->create(['user_id' => $user->id]);
 
             $browser->loginAs($user)
-                    ->visit('/language/ar')
-                    ->visit('/domains/search')
-                    ->assertAttribute('html', 'dir', 'rtl')
-                    ->assertAttribute('html', 'lang', 'ar')
-                    ->assertMissing('[data-error="console"]');
+                ->visit('/language/ar')
+                ->visit('/domains/search')
+                ->assertAttribute('html', 'dir', 'rtl')
+                ->assertAttribute('html', 'lang', 'ar')
+                ->assertMissing('[data-error="console"]');
         });
     }
 
@@ -145,10 +139,10 @@ class Stage4DomainFlowTest extends DuskTestCase
             Client::factory()->create(['user_id' => $user->id]);
 
             $browser->loginAs($user)
-                    ->visit('/language/fr')
-                    ->visit('/domains/search')
-                    ->assertAttribute('html', 'lang', 'fr')
-                    ->assertMissing('[data-error="console"]');
+                ->visit('/language/fr')
+                ->visit('/domains/search')
+                ->assertAttribute('html', 'lang', 'fr')
+                ->assertMissing('[data-error="console"]');
         });
     }
 }

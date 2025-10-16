@@ -51,18 +51,18 @@ class Stage4HostingFlowTest extends DuskTestCase
             $client = Client::factory()->create(['user_id' => $user->id]);
 
             $browser->loginAs($user)
-                    ->visit('/products')
-                    ->assertSee('Shared Hosting Basic')
-                    ->press('Add to Cart')
-                    ->waitForText('Added', 5)
-                    ->visit('/cart')
-                    ->press('Checkout')
-                    ->waitFor('[data-test="payment-form"]', 10)
-                    ->press('Complete Payment')
-                    ->waitForLocation('/dashboard/services', 30)
-                    ->assertSee('My Services')
-                    ->assertSee('Shared Hosting Basic')
-                    ->assertSee('Active');
+                ->visit('/products')
+                ->assertSee('Shared Hosting Basic')
+                ->press('Add to Cart')
+                ->waitForText('Added', 5)
+                ->visit('/cart')
+                ->press('Checkout')
+                ->waitFor('[data-test="payment-form"]', 10)
+                ->press('Complete Payment')
+                ->waitForLocation('/dashboard/services', 30)
+                ->assertSee('My Services')
+                ->assertSee('Shared Hosting Basic')
+                ->assertSee('Active');
 
             $this->assertDatabaseHas('services', [
                 'client_id' => $client->id,

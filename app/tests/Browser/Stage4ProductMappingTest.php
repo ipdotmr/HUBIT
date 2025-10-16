@@ -47,19 +47,19 @@ class Stage4ProductMappingTest extends DuskTestCase
             ]);
 
             $browser->loginAs($admin)
-                    ->visit('/managit/products/mapping')
-                    ->assertSee('Product Mapping')
-                    ->select('product_id', $product->id)
-                    ->select('provisioner', 'cpanel')
-                    ->type('package', 'VPS_PRO_PACKAGE')
-                    ->press('Save Mapping')
-                    ->waitForText('Mapping saved', 5)
-                    ->press('Test Provisioning')
-                    ->waitForText('Test successful', 10);
+                ->visit('/managit/products/mapping')
+                ->assertSee('Product Mapping')
+                ->select('product_id', $product->id)
+                ->select('provisioner', 'cpanel')
+                ->type('package', 'VPS_PRO_PACKAGE')
+                ->press('Save Mapping')
+                ->waitForText('Mapping saved', 5)
+                ->press('Test Provisioning')
+                ->waitForText('Test successful', 10);
 
             $product->refresh();
             $this->assertEquals('cpanel', $product->provisioner);
-            
+
             $config = json_decode($product->provision_config, true);
             $this->assertEquals('VPS_PRO_PACKAGE', $config['package']);
         });
@@ -75,7 +75,7 @@ class Stage4ProductMappingTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->visit('/robots.txt')
-                    ->assertSee('Disallow: /managit/');
+                ->assertSee('Disallow: /managit/');
         });
     }
 
@@ -89,7 +89,7 @@ class Stage4ProductMappingTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->visit('/admin')
-                    ->assertSee('404');
+                ->assertSee('404');
         });
     }
 }
