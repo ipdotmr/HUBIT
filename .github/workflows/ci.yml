@@ -175,7 +175,8 @@ jobs:
           APP_URL: http://127.0.0.1:8000
           E2E_USE_MOCKS: true
           SETTINGS_TESTING_USE_MOCKS: true
-        run: php artisan dusk --colors=always --debug --retry-tries=2 --retry-delay=2000
+        run: |
+          php artisan dusk --without-tty --colors=always || (sleep 3 && php artisan dusk --without-tty --colors=always)
 
   sast:
     runs-on: ubuntu-latest
