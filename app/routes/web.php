@@ -53,6 +53,22 @@ Route::middleware('auth')->group(function () {
         Route::put('/{domain}/lock', [App\Http\Controllers\Client\DomainController::class, 'updateLock'])->name('lock.update');
         Route::post('/{domain}/renew', [App\Http\Controllers\Client\DomainController::class, 'renew'])->name('renew');
     });
+
+    Route::prefix('dashboard/services')->name('client.services.')->middleware('throttle:60,1')->group(function () {
+        Route::get('/', [App\Http\Controllers\Client\ServiceController::class, 'index'])->name('index');
+        Route::get('/{service}', [App\Http\Controllers\Client\ServiceController::class, 'show'])->name('show');
+        Route::post('/{service}/reset-password', [App\Http\Controllers\Client\ServiceController::class, 'resetPassword'])->name('reset-password');
+        Route::post('/{service}/sync', [App\Http\Controllers\Client\ServiceController::class, 'sync'])->name('sync');
+        Route::post('/{service}/suspend', [App\Http\Controllers\Client\ServiceController::class, 'suspend'])->name('suspend');
+        Route::post('/{service}/unsuspend', [App\Http\Controllers\Client\ServiceController::class, 'unsuspend'])->name('unsuspend');
+        Route::post('/{service}/upgrade', [App\Http\Controllers\Client\ServiceController::class, 'upgrade'])->name('upgrade');
+    });
+
+    Route::prefix('dashboard/wallet')->name('client.wallet.')->middleware('throttle:60,1')->group(function () {
+        Route::get('/', [App\Http\Controllers\Client\WalletController::class, 'index'])->name('index');
+        Route::post('/add-credit', [App\Http\Controllers\Client\WalletController::class, 'addCredit'])->name('add-credit');
+        Route::get('/transactions', [App\Http\Controllers\Client\WalletController::class, 'transactions'])->name('transactions');
+    });
 });
 
 require __DIR__.'/auth.php';
@@ -88,6 +104,13 @@ Route::middleware(['auth', 'verified', 'throttle:60,1'])->prefix('managit')->gro
         Route::get('/localization', [App\Http\Controllers\Admin\SettingsController::class, 'localization'])->name('localization');
         Route::post('/', [App\Http\Controllers\Admin\SettingsController::class, 'update'])->name('update');
         Route::post('/test/{service}', [App\Http\Controllers\Admin\SettingsController::class, 'testConnection'])->name('test');
+    });
+
+    Route::prefix('reports')->name('managit.reports.')->group(function () {
+        Route::get('/services', [App\Http\Controllers\Admin\ReportController::class, 'services'])->name('services');
+        Route::get('/wallet', [App\Http\Controllers\Admin\ReportController::class, 'wallet'])->name('wallet');
+        Route::get('/services/export', [App\Http\Controllers\Admin\ReportController::class, 'exportServices'])->name('services.export');
+        Route::get('/wallet/export', [App\Http\Controllers\Admin\ReportController::class, 'exportWallet'])->name('wallet.export');
     });
 });
 
