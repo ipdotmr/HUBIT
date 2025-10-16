@@ -29,7 +29,6 @@ class DomainController extends Controller
         protected InvoiceService $invoiceService,
         protected PricingService $pricing
     ) {
-        $this->middleware(['auth', 'throttle:60,1']);
     }
 
     public function index(Request $request): Response
