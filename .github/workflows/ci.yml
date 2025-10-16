@@ -126,6 +126,7 @@ jobs:
       - name: Prepare Dusk env & DB
         working-directory: ./app
         run: |
+          cp .env.example .env || true
           php artisan key:generate
           printf "%s\n" \
             "APP_ENV=testing" \
