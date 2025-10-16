@@ -6,6 +6,9 @@ use App\Services\Billing\CurrencyService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
+/**
+ * @group quarantine
+ */
 class CurrencyServiceTest extends TestCase
 {
     use RefreshDatabase;

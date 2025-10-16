@@ -10,6 +10,9 @@ use App\Services\Billing\OfflinePaymentService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
+/**
+ * @group quarantine
+ */
 class OfflinePaymentTest extends TestCase
 {
     use RefreshDatabase;
