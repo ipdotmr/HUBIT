@@ -166,6 +166,7 @@ jobs:
       - name: Run Dusk
         working-directory: ./app
         env:
+          APP_ENV: local
           APP_URL: http://127.0.0.1:8000
           E2E_USE_MOCKS: true
           SETTINGS_TESTING_USE_MOCKS: true
