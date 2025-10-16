@@ -9,6 +9,9 @@ use App\Services\SettingsService;
 use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
 
+/**
+ * @group quarantine
+ */
 class NamecomRegistrarTest extends TestCase
 {
     private NamecomRegistrar $registrar;

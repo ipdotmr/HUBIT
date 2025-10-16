@@ -1,0 +1,9 @@
+# Trivy Ignore File - PR B3a CI Stabilization
+# These CVEs are temporarily ignored while we stabilize CI
+# Will be reviewed in follow-up PRs
+
+# Development dependencies - not in production
+# (Add specific CVE IDs here as they come up)
+
+# Low severity issues that don't affect runtime
+# (Add specific CVE IDs here as they come up)
