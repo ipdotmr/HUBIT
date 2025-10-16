@@ -41,6 +41,18 @@ Route::middleware('auth')->group(function () {
         Route::post('/search', [App\Http\Controllers\DomainSearchController::class, 'search'])->name('search.query');
         Route::get('/pricing', [App\Http\Controllers\DomainSearchController::class, 'pricing'])->name('pricing');
     });
+
+    Route::prefix('dashboard/domains')->name('client.domains.')->middleware('throttle:60,1')->group(function () {
+        Route::get('/', [App\Http\Controllers\Client\DomainController::class, 'index'])->name('index');
+        Route::get('/{domain}', [App\Http\Controllers\Client\DomainController::class, 'show'])->name('show');
+        Route::put('/{domain}/nameservers', [App\Http\Controllers\Client\DomainController::class, 'updateNameservers'])->name('nameservers.update');
+        Route::post('/{domain}/dns', [App\Http\Controllers\Client\DomainController::class, 'storeDnsRecord'])->name('dns.store');
+        Route::put('/{domain}/dns/{record}', [App\Http\Controllers\Client\DomainController::class, 'updateDnsRecord'])->name('dns.update');
+        Route::delete('/{domain}/dns/{record}', [App\Http\Controllers\Client\DomainController::class, 'destroyDnsRecord'])->name('dns.destroy');
+        Route::put('/{domain}/privacy', [App\Http\Controllers\Client\DomainController::class, 'updatePrivacy'])->name('privacy.update');
+        Route::put('/{domain}/lock', [App\Http\Controllers\Client\DomainController::class, 'updateLock'])->name('lock.update');
+        Route::post('/{domain}/renew', [App\Http\Controllers\Client\DomainController::class, 'renew'])->name('renew');
+    });
 });
 
 require __DIR__.'/auth.php';
