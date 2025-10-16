@@ -168,6 +168,16 @@ jobs:
         run: |
           for i in {1..30}; do curl -fsS http://127.0.0.1:8000 && break; sleep 1; done
 
+      - name: Install matching ChromeDriver & start it
+        working-directory: ./app
+        run: |
+          php artisan dusk:chrome-driver --detect
+          chmod +x vendor/laravel/dusk/bin/chromedriver-linux
+          echo "CHROMEWEBDRIVER=$(pwd)/vendor/laravel/dusk/bin" >> $GITHUB_ENV
+          echo "DUSK_DRIVER_PATH=$(pwd)/vendor/laravel/dusk/bin/chromedriver-linux" >> $GITHUB_ENV
+          echo "$(pwd)/vendor/laravel/dusk/bin" >> $GITHUB_PATH
+          nohup vendor/laravel/dusk/bin/chromedriver-linux --port=9515 > /dev/null 2>&1 &
+
       - name: Run Dusk
         working-directory: ./app
         env:
