@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        if (!Schema::hasTable('domains')) {
+        if (! Schema::hasTable('domains')) {
             Schema::create('domains', function (Blueprint $table) {
                 $table->id();
                 $table->foreignId('client_id')->constrained()->cascadeOnDelete();
@@ -30,7 +30,7 @@ return new class extends Migration
                 $table->json('registrar_meta')->nullable();
                 $table->timestamps();
                 $table->softDeletes();
-                
+
                 $table->index(['client_id', 'status']);
                 $table->unique('domain');
                 $table->index('expires_at');
@@ -47,7 +47,7 @@ return new class extends Migration
             $table->integer('ttl')->default(3600);
             $table->json('meta')->nullable();
             $table->timestamps();
-            
+
             $table->index(['domain_id', 'type', 'host']);
         });
 
@@ -71,7 +71,7 @@ return new class extends Migration
             $table->string('status')->default('pending'); // pending, paid, completed, failed
             $table->json('meta')->nullable();
             $table->timestamps();
-            
+
             $table->index(['service_id', 'status']);
         });
     }

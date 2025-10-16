@@ -12,23 +12,23 @@ return [
     'expires_at' => 'Expire le',
     'no_domains' => 'Vous n\'avez pas encore de domaines.',
     'search_domains' => 'Rechercher des Domaines',
-    
+
     'filter_registrar' => 'Filtrer par Registraire',
     'filter_status' => 'Filtrer par Statut',
     'filter_expiring' => 'Expire dans',
-    
+
     'status_active' => 'Actif',
     'status_pending' => 'En Attente',
     'status_expired' => 'Expiré',
     'status_suspended' => 'Suspendu',
-    
+
     'tab_overview' => 'Aperçu',
     'tab_nameservers' => 'Serveurs de Noms',
     'tab_dns' => 'Enregistrements DNS',
     'tab_privacy_lock' => 'Confidentialité et Verrouillage',
     'tab_whois' => 'WHOIS',
     'tab_billing' => 'Facturation',
-    
+
     'nameservers' => 'Serveurs de Noms',
     'no_nameservers' => 'Aucun serveur de noms configuré',
     'nameserver' => 'Serveur de Noms',
@@ -37,7 +37,7 @@ return [
     'invalid_nameserver_format' => 'Format de serveur de noms invalide. Utilisez le format comme ns1.example.com',
     'nameservers_must_be_unique' => 'Tous les serveurs de noms doivent être uniques',
     'nameservers_update_queued' => 'La mise à jour des serveurs de noms a été mise en file d\'attente et sera traitée sous peu.',
-    
+
     'dns_records' => 'Enregistrements DNS',
     'add_dns_record' => 'Ajouter un Enregistrement DNS',
     'edit_dns_record' => 'Modifier l\'Enregistrement DNS',
@@ -52,21 +52,21 @@ return [
     'dns_record_created' => 'Enregistrement DNS créé avec succès',
     'dns_record_updated' => 'Enregistrement DNS mis à jour avec succès',
     'dns_record_deleted' => 'Enregistrement DNS supprimé avec succès',
-    
+
     'privacy_protection' => 'Protection de la Confidentialité',
     'privacy_description' => 'Masquez vos informations personnelles de la recherche WHOIS publique pour réduire le spam et protéger votre vie privée.',
     'privacy_update_queued' => 'La mise à jour des paramètres de confidentialité a été mise en file d\'attente.',
-    
+
     'domain_lock' => 'Verrouillage du Domaine',
     'lock_description' => 'Empêchez les transferts de domaine non autorisés en verrouillant votre domaine. Vous devez le déverrouiller avant d\'initier un transfert.',
     'lock_update_queued' => 'La mise à jour des paramètres de verrouillage a été mise en file d\'attente.',
-    
+
     'security_warning' => 'Les modifications des paramètres de confidentialité et de verrouillage peuvent prendre quelques minutes à traiter.',
-    
+
     'whois_information' => 'Informations WHOIS',
     'no_whois_data' => 'Aucune donnée WHOIS disponible pour ce domaine.',
     'whois_note' => 'Les données WHOIS sont actualisées périodiquement. Certains registraires peuvent masquer certaines informations.',
-    
+
     'renewal' => 'Renouvellement du Domaine',
     'renewal_description' => 'Renouvelez votre domaine pour prolonger sa période d\'enregistrement et empêcher l\'expiration.',
     'renewal_history' => 'Historique de Renouvellement',
@@ -77,7 +77,7 @@ return [
     'renewal_status_paid' => 'Payé',
     'renewal_status_completed' => 'Terminé',
     'renewal_status_failed' => 'Échoué',
-    
+
     'subtotal' => 'Sous-total',
     'tax' => 'Taxe',
     'total' => 'Total',

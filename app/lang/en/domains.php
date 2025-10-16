@@ -12,23 +12,23 @@ return [
     'expires_at' => 'Expires On',
     'no_domains' => 'You don\'t have any domains yet.',
     'search_domains' => 'Search for Domains',
-    
+
     'filter_registrar' => 'Filter by Registrar',
     'filter_status' => 'Filter by Status',
     'filter_expiring' => 'Expiring Within',
-    
+
     'status_active' => 'Active',
     'status_pending' => 'Pending',
     'status_expired' => 'Expired',
     'status_suspended' => 'Suspended',
-    
+
     'tab_overview' => 'Overview',
     'tab_nameservers' => 'Nameservers',
     'tab_dns' => 'DNS Records',
     'tab_privacy_lock' => 'Privacy & Lock',
     'tab_whois' => 'WHOIS',
     'tab_billing' => 'Billing',
-    
+
     'nameservers' => 'Nameservers',
     'no_nameservers' => 'No nameservers configured',
     'nameserver' => 'Nameserver',
@@ -37,7 +37,7 @@ return [
     'invalid_nameserver_format' => 'Invalid nameserver format. Use format like ns1.example.com',
     'nameservers_must_be_unique' => 'All nameservers must be unique',
     'nameservers_update_queued' => 'Nameserver update has been queued and will be processed shortly.',
-    
+
     'dns_records' => 'DNS Records',
     'add_dns_record' => 'Add DNS Record',
     'edit_dns_record' => 'Edit DNS Record',
@@ -59,21 +59,21 @@ return [
     'dns_aaaa_invalid_ipv6' => 'AAAA record must contain a valid IPv6 address',
     'dns_priority_required' => 'Priority is required for MX and SRV records',
     'dns_caa_invalid_format' => 'CAA record format must be: flag tag "value"',
-    
+
     'privacy_protection' => 'Privacy Protection',
     'privacy_description' => 'Hide your personal information from public WHOIS lookup to reduce spam and protect your privacy.',
     'privacy_update_queued' => 'Privacy setting update has been queued.',
-    
+
     'domain_lock' => 'Domain Lock',
     'lock_description' => 'Prevent unauthorized domain transfers by locking your domain. You must unlock it before initiating a transfer.',
     'lock_update_queued' => 'Lock setting update has been queued.',
-    
+
     'security_warning' => 'Changes to privacy and lock settings may take a few minutes to process.',
-    
+
     'whois_information' => 'WHOIS Information',
     'no_whois_data' => 'No WHOIS data available for this domain.',
     'whois_note' => 'WHOIS data is refreshed periodically. Some registrars may redact certain information.',
-    
+
     'renewal' => 'Domain Renewal',
     'renewal_description' => 'Renew your domain to extend its registration period and prevent expiration.',
     'renewal_history' => 'Renewal History',
@@ -84,7 +84,7 @@ return [
     'renewal_status_paid' => 'Paid',
     'renewal_status_completed' => 'Completed',
     'renewal_status_failed' => 'Failed',
-    
+
     'subtotal' => 'Subtotal',
     'tax' => 'Tax',
     'total' => 'Total',

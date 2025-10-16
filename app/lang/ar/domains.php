@@ -12,23 +12,23 @@ return [
     'expires_at' => 'تاريخ الانتهاء',
     'no_domains' => 'ليس لديك أي نطاقات بعد.',
     'search_domains' => 'البحث عن النطاقات',
-    
+
     'filter_registrar' => 'تصفية حسب المسجل',
     'filter_status' => 'تصفية حسب الحالة',
     'filter_expiring' => 'تنتهي خلال',
-    
+
     'status_active' => 'نشط',
     'status_pending' => 'قيد الانتظار',
     'status_expired' => 'منتهي',
     'status_suspended' => 'معلق',
-    
+
     'tab_overview' => 'نظرة عامة',
     'tab_nameservers' => 'خوادم الأسماء',
     'tab_dns' => 'سجلات DNS',
     'tab_privacy_lock' => 'الخصوصية والقفل',
     'tab_whois' => 'معلومات WHOIS',
     'tab_billing' => 'الفواتير',
-    
+
     'nameservers' => 'خوادم الأسماء',
     'no_nameservers' => 'لم يتم تكوين خوادم أسماء',
     'nameserver' => 'خادم الأسماء',
@@ -37,7 +37,7 @@ return [
     'invalid_nameserver_format' => 'تنسيق خادم الأسماء غير صالح. استخدم التنسيق مثل ns1.example.com',
     'nameservers_must_be_unique' => 'يجب أن تكون جميع خوادم الأسماء فريدة',
     'nameservers_update_queued' => 'تم إضافة تحديث خوادم الأسماء إلى قائمة الانتظار وسيتم معالجته قريبًا.',
-    
+
     'dns_records' => 'سجلات DNS',
     'add_dns_record' => 'إضافة سجل DNS',
     'edit_dns_record' => 'تعديل سجل DNS',
@@ -52,21 +52,21 @@ return [
     'dns_record_created' => 'تم إنشاء سجل DNS بنجاح',
     'dns_record_updated' => 'تم تحديث سجل DNS بنجاح',
     'dns_record_deleted' => 'تم حذف سجل DNS بنجاح',
-    
+
     'privacy_protection' => 'حماية الخصوصية',
     'privacy_description' => 'إخفاء معلوماتك الشخصية من بحث WHOIS العام لتقليل البريد العشوائي وحماية خصوصيتك.',
     'privacy_update_queued' => 'تم إضافة تحديث إعداد الخصوصية إلى قائمة الانتظار.',
-    
+
     'domain_lock' => 'قفل النطاق',
     'lock_description' => 'منع نقل النطاق غير المصرح به عن طريق قفل نطاقك. يجب فتح القفل قبل بدء عملية النقل.',
     'lock_update_queued' => 'تم إضافة تحديث إعداد القفل إلى قائمة الانتظار.',
-    
+
     'security_warning' => 'قد تستغرق التغييرات على إعدادات الخصوصية والقفل بضع دقائق للمعالجة.',
-    
+
     'whois_information' => 'معلومات WHOIS',
     'no_whois_data' => 'لا تتوفر بيانات WHOIS لهذا النطاق.',
     'whois_note' => 'يتم تحديث بيانات WHOIS بشكل دوري. قد يحجب بعض المسجلين معلومات معينة.',
-    
+
     'renewal' => 'تجديد النطاق',
     'renewal_description' => 'جدد نطاقك لتمديد فترة تسجيله ومنع انتهاء الصلاحية.',
     'renewal_history' => 'سجل التجديد',
@@ -77,7 +77,7 @@ return [
     'renewal_status_paid' => 'مدفوع',
     'renewal_status_completed' => 'مكتمل',
     'renewal_status_failed' => 'فشل',
-    
+
     'subtotal' => 'المجموع الفرعي',
     'tax' => 'الضريبة',
     'total' => 'الإجمali',
