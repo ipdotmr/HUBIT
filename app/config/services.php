@@ -35,4 +35,19 @@ return [
         ],
     ],
 
+    'cpanel' => [
+        'host' => env('CPANEL_HOST'),
+        'api_token' => env('CPANEL_API_TOKEN'),
+        'use_ssl' => env('CPANEL_USE_SSL', true),
+        'default_package' => env('CPANEL_DEFAULT_PACKAGE', 'HUBIT_BASIC'),
+        'ns1' => env('CPANEL_NS1', 'ns1.example.com'),
+        'ns2' => env('CPANEL_NS2', 'ns2.example.com'),
+    ],
+
+    'stripe' => [
+        'key' => env('STRIPE_KEY'),
+        'secret' => env('STRIPE_SECRET'),
+        'webhook_secret' => env('STRIPE_WEBHOOK_SECRET'),
+    ],
+
 ];

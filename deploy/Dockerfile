@@ -20,8 +20,14 @@ RUN apk add --no-cache \
 # Install PHP extensions
 RUN docker-php-ext-install pdo pdo_pgsql pgsql mbstring exif pcntl bcmath gd intl zip opcache
 
-# Install Redis extension
-RUN pecl install redis && docker-php-ext-enable redis
+# Install Redis extension (requires build dependencies)
+RUN apk add --no-cache --virtual .build-deps \
+        autoconf \
+        g++ \
+        make \
+    && pecl install redis \
+    && docker-php-ext-enable redis \
+    && apk del .build-deps
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -60,8 +66,6 @@ RUN apk add --no-cache \
     redis \
     nodejs \
     npm \
-    nginx \
-    supervisor \
     oniguruma-dev \
     icu-dev \
     libzip-dev
@@ -69,11 +73,21 @@ RUN apk add --no-cache \
 # Install PHP extensions
 RUN docker-php-ext-install pdo pdo_pgsql pgsql mbstring exif pcntl bcmath gd intl zip opcache
 
-# Install Redis extension
-RUN pecl install redis && docker-php-ext-enable redis
+# Install Redis extension (requires build dependencies)
+RUN apk add --no-cache --virtual .build-deps \
+        autoconf \
+        g++ \
+        make \
+    && pecl install redis \
+    && docker-php-ext-enable redis \
+    && apk del .build-deps
 
 # Configure PHP for production
-RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
+RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini" && \
+    echo "opcache.enable=1" >> "$PHP_INI_DIR/php.ini" && \
+    echo "opcache.memory_consumption=256" >> "$PHP_INI_DIR/php.ini" && \
+    echo "opcache.max_accelerated_files=20000" >> "$PHP_INI_DIR/php.ini" && \
+    echo "opcache.validate_timestamps=0" >> "$PHP_INI_DIR/php.ini"
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -93,10 +107,6 @@ RUN chown -R www-data:www-data /var/www \
     && chmod -R 755 /var/www/storage \
     && chmod -R 755 /var/www/bootstrap/cache
 
-# Copy nginx and supervisor config
-COPY ../deploy/nginx.conf /etc/nginx/nginx.conf
-COPY ../deploy/supervisord.conf /etc/supervisord.conf
+EXPOSE 9000
 
-EXPOSE 80
-
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
+CMD ["php-fpm"]
