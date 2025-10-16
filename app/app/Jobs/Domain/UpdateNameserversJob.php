@@ -23,8 +23,7 @@ class UpdateNameserversJob implements ShouldQueue
     public function __construct(
         public Domain $domain,
         public array $nameservers
-    ) {
-    }
+    ) {}
 
     public function handle(ProvisioningLogService $logger): void
     {

@@ -23,8 +23,7 @@ class ToggleLockJob implements ShouldQueue
     public function __construct(
         public Domain $domain,
         public bool $enabled
-    ) {
-    }
+    ) {}
 
     public function handle(ProvisioningLogService $logger): void
     {

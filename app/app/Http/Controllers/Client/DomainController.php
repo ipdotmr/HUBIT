@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
-use App\Jobs\Domain\RenewDomainJob;
 use App\Jobs\Domain\ToggleLockJob;
 use App\Jobs\Domain\TogglePrivacyJob;
 use App\Jobs\Domain\UpdateDnsRecordJob;

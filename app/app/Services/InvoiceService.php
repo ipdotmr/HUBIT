@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Models\Client;
 use App\Models\DomainRenewal;
 use App\Models\Invoice;
 use App\Models\InvoiceItem;
@@ -26,10 +25,12 @@ class InvoiceService
             'currency' => $pricing['currency'],
         ]);
 
+        $yearLabel = $renewal->years === 1 ? 'year' : 'years';
+
         InvoiceItem::create([
             'invoice_id' => $invoice->id,
             'type' => 'product',
-            'description' => "Domain Renewal: {$domain->domain} ({$renewal->years} " . str_plural('year', $renewal->years) . ")",
+            'description' => "Domain Renewal: {$domain->domain} ({$renewal->years} {$yearLabel})",
             'qty' => 1,
             'unit_amount' => $pricing['subtotal'],
         ]);
@@ -54,6 +55,6 @@ class InvoiceService
         $lastInvoice = Invoice::latest('id')->first();
         $nextNumber = $lastInvoice ? ((int) substr($lastInvoice->number, 4)) + 1 : 1;
 
-        return 'INV-' . str_pad($nextNumber, 6, '0', STR_PAD_LEFT);
+        return 'INV-'.str_pad($nextNumber, 6, '0', STR_PAD_LEFT);
     }
 }

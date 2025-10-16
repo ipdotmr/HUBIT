@@ -25,8 +25,7 @@ class UpdateDnsRecordJob implements ShouldQueue
         public Domain $domain,
         public DomainDnsRecord $record,
         public string $operation
-    ) {
-    }
+    ) {}
 
     public function handle(ProvisioningLogService $logger): void
     {

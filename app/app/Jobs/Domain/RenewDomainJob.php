@@ -23,8 +23,7 @@ class RenewDomainJob implements ShouldQueue
 
     public function __construct(
         public DomainRenewal $renewal
-    ) {
-    }
+    ) {}
 
     public function handle(ProvisioningLogService $logger): void
     {
