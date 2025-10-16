@@ -90,98 +90,75 @@ jobs:
   dusk:
     runs-on: ubuntu-latest
     services:
-      postgres:
-        image: postgres:16
-        env:
-          POSTGRES_DB: hubit_test
-          POSTGRES_USER: hubit
-          POSTGRES_PASSWORD: hubit_test_password
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          - 5432:5432
-      
       redis:
-        image: redis:7-alpine
-        options: >-
-          --health-cmd "redis-cli ping"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          - 6379:6379
-    
+        image: redis:7
+        ports: ['6379:6379']
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.3'
-          extensions: pgsql, redis, bcmath, gd, intl, zip, sqlite3, pdo_sqlite
-      
-      - name: Install Composer dependencies
-        working-directory: ./app
-        run: composer install --no-interaction --prefer-dist
-      
-      - name: Setup Node.js
+          extensions: mbstring, bcmath, intl, sqlite3, pdo_sqlite
+          coverage: none
+
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-      
-      - name: Install npm dependencies
+
+      - name: Setup Chrome
+        uses: browser-actions/setup-chrome@v1
+        with:
+          chrome-version: stable
+
+      - name: Install Composer deps
         working-directory: ./app
-        run: npm ci --legacy-peer-deps
-      
-      - name: Build assets
+        run: composer install --no-interaction --no-progress
+
+      - name: Build frontend
         working-directory: ./app
-        run: npm run build
-      
-      - name: Copy .env
+        run: |
+          npm ci --legacy-peer-deps
+          npm run build
+
+      - name: Prepare Dusk env & DB
         working-directory: ./app
-        run: cp .env.example .env
-      
-      - name: Generate application key
+        run: |
+          php artisan key:generate
+          printf "%s\n" \
+            "APP_ENV=testing" \
+            "APP_DEBUG=true" \
+            "APP_URL=http://127.0.0.1:8000" \
+            "CACHE_STORE=array" \
+            "SESSION_DRIVER=array" \
+            "QUEUE_CONNECTION=sync" \
+            "DB_CONNECTION=sqlite" \
+            "DB_DATABASE=database/database.sqlite" \
+            "E2E_USE_MOCKS=true" \
+            "SETTINGS_TESTING_USE_MOCKS=true" \
+            > .env.dusk.local
+          mkdir -p database
+          touch database/database.sqlite
+          php artisan migrate --force
+          php artisan db:seed --class=CurrenciesSeeder || true
+          php artisan db:seed --class=DemoSeeder || true
+          php artisan config:clear
+          php artisan route:clear
+          php artisan view:clear
+
+      - name: Start PHP server
         working-directory: ./app
-        run: php artisan key:generate
-      
-      - name: Run migrations
+        run: php -S 127.0.0.1:8000 -t public >/dev/null 2>&1 &
+
+      - name: Run Dusk
         working-directory: ./app
         env:
-          DB_CONNECTION: pgsql
-          DB_HOST: localhost
-          DB_PORT: 5432
-          DB_DATABASE: hubit_test
-          DB_USERNAME: hubit
-          DB_PASSWORD: hubit_test_password
-        run: php artisan migrate --force
-      
-      - name: Upgrade Chrome Driver
-        working-directory: ./app
-        run: php artisan dusk:chrome-driver --detect || echo "Dusk not configured yet"
-      
-      - name: Start Chrome Driver
-        working-directory: ./app
-        run: ./vendor/laravel/dusk/bin/chromedriver-linux &
-      
-      - name: Run Laravel Server
-        working-directory: ./app
-        run: php artisan serve --no-reload &
-      
-      - name: Run Dusk Tests
-        working-directory: ./app
-        env:
-          APP_URL: http://localhost:8000
-          DB_CONNECTION: pgsql
-          DB_HOST: localhost
-          DB_PORT: 5432
-          DB_DATABASE: hubit_test
-          DB_USERNAME: hubit
-          DB_PASSWORD: hubit_test_password
-        run: php artisan dusk
+          APP_URL: http://127.0.0.1:8000
+          E2E_USE_MOCKS: true
+          SETTINGS_TESTING_USE_MOCKS: true
+        run: php artisan dusk --colors=always --debug
 
   sast:
     runs-on: ubuntu-latest
