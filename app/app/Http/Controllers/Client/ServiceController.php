@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Client;
 use App\Http\Controllers\Controller;
 use App\Jobs\Service\ResetPasswordJob;
 use App\Jobs\Service\SyncServiceJob;
-use App\Jobs\Service\UpgradeServiceJob;
 use App\Models\Product;
 use App\Models\Service;
 use App\Services\AuditLogService;
@@ -24,8 +23,7 @@ class ServiceController extends Controller
         protected AuditLogService $auditLog,
         protected InvoiceService $invoiceService,
         protected PricingService $pricing
-    ) {
-    }
+    ) {}
 
     public function index(Request $request): Response
     {

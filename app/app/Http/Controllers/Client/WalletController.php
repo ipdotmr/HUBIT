@@ -19,8 +19,7 @@ class WalletController extends Controller
     public function __construct(
         protected WalletService $walletService,
         protected AuditLogService $auditLog
-    ) {
-    }
+    ) {}
 
     public function index(Request $request): Response
     {

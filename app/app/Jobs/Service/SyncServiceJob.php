@@ -22,8 +22,7 @@ class SyncServiceJob implements ShouldQueue
     public function __construct(
         public Service $service,
         public ?string $action = null
-    ) {
-    }
+    ) {}
 
     public function handle(ProvisioningLogService $logger): void
     {

@@ -43,7 +43,7 @@ class MilestoneB3ServicesTest extends DuskTestCase
             'billing_cycle' => 'monthly',
         ]);
 
-        $this->browse(function (Browser $browser) use ($user, $service, $upgradeProduct) {
+        $this->browse(function (Browser $browser) use ($user) {
             $browser->loginAs($user)
                 ->visit(route('client.services.index'))
                 ->assertSee('My Services')

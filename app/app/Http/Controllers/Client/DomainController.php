@@ -28,8 +28,7 @@ class DomainController extends Controller
         protected AuditLogService $auditLog,
         protected InvoiceService $invoiceService,
         protected PricingService $pricing
-    ) {
-    }
+    ) {}
 
     public function index(Request $request): Response
     {

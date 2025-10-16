@@ -23,8 +23,7 @@ class UpgradeServiceJob implements ShouldQueue
     public function __construct(
         public Service $service,
         public Product $newProduct
-    ) {
-    }
+    ) {}
 
     public function handle(ProvisioningLogService $logger): void
     {
