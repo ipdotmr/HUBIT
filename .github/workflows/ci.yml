@@ -163,14 +163,19 @@ jobs:
         working-directory: ./app
         run: php -S 127.0.0.1:8000 -t public >/dev/null 2>&1 &
 
+      - name: Health check
+        working-directory: ./app
+        run: |
+          for i in {1..30}; do curl -fsS http://127.0.0.1:8000 && break; sleep 1; done
+
       - name: Run Dusk
         working-directory: ./app
         env:
-          APP_ENV: local
+          APP_ENV: dusk
           APP_URL: http://127.0.0.1:8000
           E2E_USE_MOCKS: true
           SETTINGS_TESTING_USE_MOCKS: true
-        run: php artisan dusk --colors=always --debug
+        run: php artisan dusk --colors=always --debug --retry-tries=2 --retry-delay=2000
 
   sast:
     runs-on: ubuntu-latest
