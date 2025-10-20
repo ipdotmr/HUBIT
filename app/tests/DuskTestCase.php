@@ -7,8 +7,8 @@ use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
+use Laravel\Dusk\Browser;
 use Laravel\Dusk\TestCase as BaseTestCase;
-use PHPUnit\Framework\Attributes\BeforeClass;
 
 abstract class DuskTestCase extends BaseTestCase
 {
@@ -17,7 +17,6 @@ abstract class DuskTestCase extends BaseTestCase
     /**
      * Prepare for Dusk test execution.
      */
-    #[BeforeClass]
     public static function prepare(): void
     {
         if (! static::runningInSail()) {
@@ -25,6 +24,19 @@ abstract class DuskTestCase extends BaseTestCase
         }
 
         static::configureArtifacts();
+    }
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        config(['app.env' => 'testing']);
+        config(['database.default' => 'sqlite']);
+        config(['database.connections.sqlite.database' => base_path('database/database.sqlite')]);
+
+        Browser::$storeScreenshotsAt = base_path('tests/Browser/screenshots');
+        Browser::$storeConsoleLogAt = base_path('tests/Browser/console');
+        Browser::$storeSourceAt = base_path('tests/Browser/source');
     }
 
     /**
@@ -50,7 +62,8 @@ abstract class DuskTestCase extends BaseTestCase
         return RemoteWebDriver::create(
             $_ENV['DUSK_DRIVER_URL'] ?? env('DUSK_DRIVER_URL') ?? 'http://localhost:9515',
             DesiredCapabilities::chrome()->setCapability(
-                ChromeOptions::CAPABILITY, $options
+                ChromeOptions::CAPABILITY,
+                $options
             )
         );
     }

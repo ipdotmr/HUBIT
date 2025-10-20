@@ -17,6 +17,7 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
 
         $middleware->alias([
+            'ensure.not.installed' => \App\Http\Middleware\EnsureNotInstalled::class,
             'not.installed' => \App\Http\Middleware\EnsureNotInstalled::class,
         ]);
     })
