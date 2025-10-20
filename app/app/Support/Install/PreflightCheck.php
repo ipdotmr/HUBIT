@@ -35,20 +35,18 @@ class PreflightCheck
             message: 'Detected PHP ' . PHP_VERSION,
         ));
 
-        $extensions = [
-            'bcmath' => ['label' => 'BCMath'],
-            'ctype' => ['label' => 'Ctype'],
-            'curl' => ['label' => 'cURL'],
-            'dom' => ['label' => 'DOM'],
-            'fileinfo' => ['label' => 'Fileinfo'],
-            'json' => ['label' => 'JSON'],
-            'mbstring' => ['label' => 'Mbstring'],
-            'openssl' => ['label' => 'OpenSSL'],
-            'pcntl' => ['label' => 'PCNTL', 'severity' => 'optional'],
-            'pdo' => ['label' => 'PDO'],
-            'tokenizer' => ['label' => 'Tokenizer'],
-            'xml' => ['label' => 'XML'],
-        ];
+        $extensions = collect(config('install.extensions.required', []))
+            ->map(fn (string $label) => [
+                'label' => $label,
+                'severity' => 'required',
+            ])
+            ->merge(
+                collect(config('install.extensions.optional', []))
+                    ->map(fn (string $label) => [
+                        'label' => $label,
+                        'severity' => 'optional',
+                    ])
+            );
 
         foreach ($extensions as $extension => $options) {
             $loaded = extension_loaded($extension);
@@ -66,17 +64,28 @@ class PreflightCheck
             ));
         }
 
-        $paths = [
-            'storage' => storage_path(),
-            'bootstrap_cache' => base_path('bootstrap/cache'),
-        ];
+        $paths = collect(config('install.paths', []))->map(function ($definition) {
+            if (is_string($definition)) {
+                return [
+                    'label' => "Writable path: {$definition}",
+                    'path' => $definition,
+                ];
+            }
 
-        foreach ($paths as $name => $path) {
+            return [
+                'label' => $definition['label'] ?? "Writable path: {$definition['path']}",
+                'path' => $definition['path'],
+            ];
+        });
+
+        foreach ($paths as $name => $definition) {
+            $path = $definition['path'];
+            $label = $definition['label'];
             $isWritable = is_writable($path);
 
             $checks->push(static::makeCheck(
                 key: "filesystem.{$name}",
-                label: "Writable path: {$path}",
+                label: $label,
                 status: $isWritable,
                 message: $isWritable
                     ? 'Directory is writable.'
