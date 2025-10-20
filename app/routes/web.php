@@ -1,9 +1,26 @@
 <?php
 
+use App\Http\Controllers\InstallerController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+
+if (! file_exists(config('installer.marker_path'))) {
+    Route::middleware(['web', 'not.installed', 'throttle:30,1'])
+        ->prefix('install')
+        ->name('install.')
+        ->group(function () {
+            Route::get('/', [InstallerController::class, 'welcome'])->name('welcome');
+            Route::get('/checks', [InstallerController::class, 'checks'])->name('checks');
+            Route::get('/env', [InstallerController::class, 'envForm'])->name('env');
+            Route::post('/env', [InstallerController::class, 'envSave'])->name('env.save');
+            Route::get('/admin', [InstallerController::class, 'adminForm'])->name('admin');
+            Route::post('/admin', [InstallerController::class, 'adminSave'])->name('admin.save');
+            Route::post('/run', [InstallerController::class, 'runInstall'])->name('run');
+            Route::get('/done', [InstallerController::class, 'done'])->name('done');
+        });
+}
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
