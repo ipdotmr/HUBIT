@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="./app/vendor/phpunit/phpunit/phpunit.xsd"
+         bootstrap="./app/vendor/autoload.php"
+         colors="true"
+         stopOnFailure="false">
+    <testsuites>
+        <testsuite name="Browser Test Suite">
+            <directory suffix="Test.php">./app/tests/Browser</directory>
+        </testsuite>
+    </testsuites>
+
+    <php>
+        <server name="APP_ENV" value="testing"/>
+        <server name="DB_CONNECTION" value="sqlite"/>
+        <server name="DB_DATABASE" value="database/database.sqlite"/>
+        <server name="DATABASE_URL" value=""/>
+    </php>
+</phpunit>

@@ -1,9 +1,17 @@
 <?php
 
+use App\Http\Controllers\Install\InstallerController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+
+Route::middleware(['ensure.not.installed', 'throttle:20,1'])->group(function () {
+    Route::get('/install', [InstallerController::class, 'index'])->name('install.index');
+    Route::post('/install/check-db', [InstallerController::class, 'checkDb'])->name('install.check-db');
+    Route::post('/install/write-env', [InstallerController::class, 'writeEnv'])->name('install.write-env');
+    Route::post('/install/run', [InstallerController::class, 'run'])->name('install.run');
+});
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
