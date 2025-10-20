@@ -23,7 +23,7 @@ class EnsureNotInstalled
             throw new NotFoundHttpException();
         }
 
-        $token = env('INSTALL_TOKEN');
+        $token = config('installer.token');
         if ($token) {
             $session = $request->session();
             if (! $session->get('installer.token.valid')) {

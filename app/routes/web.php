@@ -1,17 +1,34 @@
 <?php
 
-use App\Http\Controllers\Install\InstallerController;
+use App\Http\Controllers\Install\InstallerController as InstallWizardController;
+use App\Http\Controllers\InstallerController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::middleware(['ensure.not.installed', 'throttle:20,1'])->group(function () {
-    Route::get('/install', [InstallerController::class, 'index'])->name('install.index');
-    Route::post('/install/check-db', [InstallerController::class, 'checkDb'])->name('install.check-db');
-    Route::post('/install/write-env', [InstallerController::class, 'writeEnv'])->name('install.write-env');
-    Route::post('/install/run', [InstallerController::class, 'run'])->name('install.run');
+    Route::get('/install', [InstallWizardController::class, 'index'])->name('install.index');
+    Route::post('/install/check-db', [InstallWizardController::class, 'checkDb'])->name('install.check-db');
+    Route::post('/install/write-env', [InstallWizardController::class, 'writeEnv'])->name('install.write-env');
+    Route::post('/install/run', [InstallWizardController::class, 'run'])->name('install.run');
 });
+
+if (! file_exists(config('installer.marker_path'))) {
+    Route::middleware(['web', 'not.installed', 'throttle:30,1'])
+        ->prefix('install-simple')
+        ->name('install.simple.')
+        ->group(function () {
+            Route::get('/', [InstallerController::class, 'welcome'])->name('welcome');
+            Route::get('/checks', [InstallerController::class, 'checks'])->name('checks');
+            Route::get('/env', [InstallerController::class, 'envForm'])->name('env');
+            Route::post('/env', [InstallerController::class, 'envSave'])->name('env.save');
+            Route::get('/admin', [InstallerController::class, 'adminForm'])->name('admin');
+            Route::post('/admin', [InstallerController::class, 'adminSave'])->name('admin.save');
+            Route::post('/run', [InstallerController::class, 'runInstall'])->name('run');
+            Route::get('/done', [InstallerController::class, 'done'])->name('done');
+        });
+}
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [

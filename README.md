@@ -6,6 +6,13 @@
 📚 **Documentation**: [docs.ip.mr](https://docs.ip.mr)  
 🎯 **Status**: Phase 1 MVP - In Development
 
+## Branching Model
+
+The actively maintained source of truth lives on the `main` branch. All feature and
+stabilization work is merged into `main` once reviewed, so if you cannot find a
+feature branch in the remote repository, make sure you are checking out `main` to
+access the complete, production-ready project history.
+
 ## Features
 
 ### Phase 1 - MVP (Current)
@@ -149,7 +156,7 @@
    php artisan serve
    ```
 
-   Visit: `http://localhost:8000`
+Visit: `http://localhost:8000`
 
 ### Using Docker
 
@@ -158,6 +165,28 @@ docker-compose up -d
 ```
 
 The application will be available at `http://localhost:8000`
+
+## Web Installer
+
+The production installer offers a secure, guided setup without requiring manual file edits.
+
+1. **Deploy the codebase** – Upload the repository contents to your hosting environment (the Laravel application lives in the `app/` directory).
+2. **Launch the wizard** – Visit `/install` in your browser. The installer is only available while it is unlocked.
+3. **Complete the steps** – Run preflight checks, enter your `.env` values, create the first administrator, and execute the installation.
+4. **Lock-in** – On success the installer writes `storage/framework/.installed`. Subsequent visits to `/install` respond with `404` to prevent reuse.
+
+> To re-run the installer (not recommended), delete the marker file at `storage/framework/.installed` and reload `/install`.
+
+## Deployment runbook (manual)
+
+Execute the following commands from the application root on every deployment:
+
+```bash
+php artisan migrate --force
+php artisan optimize
+php artisan queue:restart || true
+php artisan horizon:terminate || true
+```
 
 ## Configuration
 
