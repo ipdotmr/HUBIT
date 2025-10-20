@@ -245,8 +245,8 @@ class InstallerController extends Controller
                     return $key.'=';
                 }
 
-                if (preg_match('/\s|#|=|"|\'/u', $stringValue)) {
-                    $escaped = addcslashes($stringValue, "\\\"\n\r");
+                if (preg_match('/\s|#|=|"|\'|\$/u', $stringValue)) {
+                    $escaped = addcslashes($stringValue, "\\\"\n\r$");
                     return sprintf('%s="%s"', $key, $escaped);
                 }
 
