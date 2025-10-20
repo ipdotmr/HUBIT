@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="app/vendor/phpunit/phpunit/phpunit.xsd"
+         bootstrap="app/vendor/autoload.php"
+         colors="true"
+         stopOnFailure="false">
+    <testsuites>
+        <testsuite name="Browser">
+            <directory suffix="Test.php">app/tests/Browser</directory>
+        </testsuite>
+    </testsuites>
+    <php>
+        <env name="APP_ENV" value="testing"/>
+        <env name="APP_BASE_PATH" value="app"/>
+        <env name="APP_URL" value="http://127.0.0.1:8000"/>
+        <env name="CACHE_STORE" value="array"/>
+        <env name="SESSION_DRIVER" value="array"/>
+        <env name="QUEUE_CONNECTION" value="sync"/>
+        <env name="DB_CONNECTION" value="sqlite"/>
+        <env name="DB_DATABASE" value="app/database/database.sqlite"/>
+        <env name="DATABASE_URL" value=""/>
+        <env name="MAIL_MAILER" value="log"/>
+        <env name="DUSK_HEADLESS" value="true"/>
+    </php>
+</phpunit>

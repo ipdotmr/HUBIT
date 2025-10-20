@@ -6,11 +6,14 @@ use Facebook\WebDriver\Chrome\ChromeOptions;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\File;
 use Laravel\Dusk\TestCase as BaseTestCase;
 use PHPUnit\Framework\Attributes\BeforeClass;
 
 abstract class DuskTestCase extends BaseTestCase
 {
+    use CreatesApplication;
+
     /**
      * Prepare for Dusk test execution.
      */
@@ -20,6 +23,8 @@ abstract class DuskTestCase extends BaseTestCase
         if (! static::runningInSail()) {
             static::startChromeDriver(['--port=9515']);
         }
+
+        static::configureArtifacts();
     }
 
     /**
@@ -48,5 +53,18 @@ abstract class DuskTestCase extends BaseTestCase
                 ChromeOptions::CAPABILITY, $options
             )
         );
+    }
+
+    protected static function configureArtifacts(): void
+    {
+        $root = storage_path('framework/dusk');
+
+        File::ensureDirectoryExists($root.'/screenshots');
+        File::ensureDirectoryExists($root.'/console');
+        File::ensureDirectoryExists($root.'/source');
+
+        static::$storeScreenshotsAt = $root.'/screenshots';
+        static::$storeConsoleLogAt = $root.'/console';
+        static::$storeSourceAt = $root.'/source';
     }
 }
