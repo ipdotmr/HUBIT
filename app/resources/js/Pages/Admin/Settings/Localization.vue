@@ -1,49 +1,68 @@
-<template>
-    <Head title="Localization - Settings" />
-    <AuthenticatedLayout>
-        <div class="space-y-6">
-            <div>
-                <h2 class="text-2xl font-semibold text-gray-900">Localization & Currencies</h2>
-                <p class="mt-1 text-sm text-gray-600">Configure supported currencies, default language, and regional settings.</p>
-            </div>
-
-            <div class="bg-white shadow rounded-lg p-6">
-                <h3 class="text-lg font-medium mb-4">Currencies</h3>
-                <table class="min-w-full divide-y divide-gray-200">
-                    <thead class="bg-gray-50">
-                        <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Code</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Name</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Decimals</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-                        </tr>
-                    </thead>
-                    <tbody class="bg-white divide-y divide-gray-200">
-                        <tr v-for="currency in currencies" :key="currency.code">
-                            <td class="px-6 py-4 text-sm font-medium text-gray-900">{{ currency.code }}</td>
-                            <td class="px-6 py-4 text-sm text-gray-900">{{ currency.name }}</td>
-                            <td class="px-6 py-4 text-sm text-gray-600">{{ currency.decimals }}</td>
-                            <td class="px-6 py-4">
-                                <span :class="currency.enabled ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'" 
-                                      class="px-2 py-1 text-xs rounded-full">
-                                    {{ currency.enabled ? 'Enabled' : 'Disabled' }}
-                                </span>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </AuthenticatedLayout>
-</template>
-
 <script setup>
 import { Head } from '@inertiajs/vue3';
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import WhmcsAdminLayout from '@/Layouts/WhmcsAdminLayout.vue';
 
 const props = defineProps({
-    currencies: Array,
     settings: Object,
     auditLogs: Array
 });
 </script>
+
+<template>
+    <Head title="Localization - Settings" />
+    
+    <WhmcsAdminLayout>
+        <div class="container-fluid">
+            <div class="mb-4">
+                <h3 class="mb-0">Localization</h3>
+                <p class="text-muted">Configure language, timezone, and regional settings</p>
+            </div>
+
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Regional Settings</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Default Language</label>
+                            <select class="form-select">
+                                <option value="en">English</option>
+                                <option value="ar">Arabic (العربية)</option>
+                                <option value="fr">French (Français)</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Timezone</label>
+                            <select class="form-select">
+                                <option value="UTC">UTC</option>
+                                <option value="Africa/Nouakchott">Africa/Nouakchott</option>
+                                <option value="Europe/Paris">Europe/Paris</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Date Format</label>
+                            <select class="form-select">
+                                <option value="Y-m-d">YYYY-MM-DD</option>
+                                <option value="d/m/Y">DD/MM/YYYY</option>
+                                <option value="m/d/Y">MM/DD/YYYY</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Time Format</label>
+                            <select class="form-select">
+                                <option value="24">24-hour</option>
+                                <option value="12">12-hour (AM/PM)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <button class="btn btn-primary">
+                            <i class="fas fa-save me-2"></i>Save Settings
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </WhmcsAdminLayout>
+</template>
