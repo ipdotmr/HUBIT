@@ -24,9 +24,35 @@ const props = defineProps({
                     <Link :href="route('managit.clients.edit', client.id)" class="btn btn-primary me-2">
                         <i class="fas fa-edit me-2"></i>Edit Client
                     </Link>
+                    <button class="btn btn-danger me-2" @click="showDeleteModal = true">
+                        <i class="fas fa-trash me-2"></i>Delete Client
+                    </button>
                     <Link :href="route('managit.clients.index')" class="btn btn-secondary">
                         <i class="fas fa-arrow-left me-2"></i>Back to Clients
                     </Link>
+
+                    <!-- Delete Confirmation Modal -->
+                    <div v-if="showDeleteModal" class="modal fade show" tabindex="-1" style="display:block; background:rgba(0,0,0,0.4);">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Delete Client</h5>
+                                    <button type="button" class="btn-close" @click="showDeleteModal = false"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Are you sure you want to delete this client? This action cannot be undone.</p>
+                                    <p class="text-danger">All related data will be deleted. If the client has active services, deletion will be blocked.</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-secondary" @click="showDeleteModal = false">Cancel</button>
+                                    <form :action="route('managit.clients.destroy', client.id)" method="post" style="display:inline">
+                                        <input type="hidden" name="_method" value="delete" />
+                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
