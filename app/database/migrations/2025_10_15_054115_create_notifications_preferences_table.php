@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('notification_preferences', function (Blueprint $table) {
             $table->id();
             $table->foreignId('client_id')->constrained()->cascadeOnDelete();
-            $table->json('channels')->default('["email","inapp"]');
-            $table->json('locales')->default('["en"]');
+            $table->json('channels')->nullable();
+            $table->json('locales')->nullable();
             $table->json('quiet_hours')->nullable();
             $table->timestamps();
 
