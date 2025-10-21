@@ -280,6 +280,15 @@ Route::middleware(['auth', 'verified', 'throttle:60,1'])->prefix('managit')->gro
         'destroy' => 'managit.announcements.destroy',
     ]);
 
+    Route::resource('network-status', App\Http\Controllers\Admin\NetworkStatusController::class)->names([
+        'index' => 'managit.network-status.index',
+        'create' => 'managit.network-status.create',
+        'store' => 'managit.network-status.store',
+        'edit' => 'managit.network-status.edit',
+        'update' => 'managit.network-status.update',
+        'destroy' => 'managit.network-status.destroy',
+    ]);
+
     Route::prefix('settings')->name('managit.settings.')->group(function () {
         Route::get('/', [App\Http\Controllers\Admin\SettingsController::class, 'index'])->name('index');
         Route::get('/company', [App\Http\Controllers\Admin\SettingsController::class, 'company'])->name('company');
