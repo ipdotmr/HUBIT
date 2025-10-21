@@ -119,6 +119,9 @@ Route::post('/language', function (Illuminate\Http\Request $request) {
 })->name('language.switch');
 
 Route::middleware(['auth', 'verified', 'throttle:60,1'])->prefix('managit')->group(function () {
+    Route::get('/', function () {
+        return redirect()->route('managit.dashboard');
+    });
     Route::get('/dashboard', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('managit.dashboard');
     
     Route::resource('clients', App\Http\Controllers\Admin\ClientController::class)->names([
