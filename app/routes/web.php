@@ -118,7 +118,13 @@ Route::post('/language', function (Illuminate\Http\Request $request) {
     return back();
 })->name('language.switch');
 
+Route::get('/auth/microsoft', [App\Http\Controllers\Auth\SocialAuthController::class, 'redirectToMicrosoft'])->name('auth.microsoft');
+Route::get('/auth/microsoft/callback', [App\Http\Controllers\Auth\SocialAuthController::class, 'handleMicrosoftCallback'])->name('auth.microsoft.callback');
+
 Route::middleware('guest')->prefix('managit')->group(function () {
+    Route::get('/', function () {
+        return redirect()->route('managit.login');
+    });
     Route::get('/login', [App\Http\Controllers\Auth\AdminLoginController::class, 'create'])->name('managit.login');
     Route::post('/login', [App\Http\Controllers\Auth\AdminLoginController::class, 'store']);
 });
