@@ -1,5 +1,6 @@
 <template>
-  <SettingPageLayout
+  <WhmcsAdminLayout>
+    <SettingPageLayout
     title="cPanel/WHM Provisioning"
     description="Configure cPanel/WHM server integration for hosting account provisioning"
     :hasChanges="hasChanges"
@@ -137,12 +138,14 @@
         </div>
       </div>
     </div>
-  </SettingPageLayout>
+    </SettingPageLayout>
+  </WhmcsAdminLayout>
 </template>
 
 <script setup>
 import { ref, computed } from 'vue';
 import { router } from '@inertiajs/vue3';
+import WhmcsAdminLayout from '@/Layouts/WhmcsAdminLayout.vue';
 import SettingPageLayout from '../../../Components/Settings/SettingPageLayout.vue';
 import FormField from '../../../Components/Settings/FormField.vue';
 import SecretField from '../../../Components/Settings/SecretField.vue';

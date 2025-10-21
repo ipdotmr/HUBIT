@@ -1,13 +1,14 @@
 <template>
-  <SettingPageLayout
-    title="Company & Branding"
-    description="Manage your company information, branding, and invoice settings"
-    :hasChanges="hasChanges"
-    :isSaving="isSaving"
-    :auditLogs="auditLogs"
-    @save="handleSave"
-    @revert="handleRevert"
-  >
+  <WhmcsAdminLayout>
+    <SettingPageLayout
+      title="Company & Branding"
+      description="Manage your company information, branding, and invoice settings"
+      :hasChanges="hasChanges"
+      :isSaving="isSaving"
+      :auditLogs="auditLogs"
+      @save="handleSave"
+      @revert="handleRevert"
+    >
     <div class="settings-grid">
       <!-- Company Information Section -->
       <div class="settings-section">
@@ -144,12 +145,14 @@
         </div>
       </div>
     </div>
-  </SettingPageLayout>
+    </SettingPageLayout>
+  </WhmcsAdminLayout>
 </template>
 
 <script setup>
 import { ref, computed, watch } from 'vue';
 import { router } from '@inertiajs/vue3';
+import WhmcsAdminLayout from '@/Layouts/WhmcsAdminLayout.vue';
 import SettingPageLayout from '../../../Components/Settings/SettingPageLayout.vue';
 import FormField from '../../../Components/Settings/FormField.vue';
 

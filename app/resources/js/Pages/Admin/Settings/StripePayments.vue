@@ -1,16 +1,17 @@
 <template>
-  <SettingPageLayout
-    title="Stripe Payments"
-    description="Configure Stripe payment gateway integration"
-    :hasChanges="hasChanges"
-    :isSaving="isSaving"
-    :hasTest="true"
-    :isTesting="isTesting"
-    :auditLogs="auditLogs"
-    @save="handleSave"
-    @revert="handleRevert"
-    @test="handleTest"
-  >
+  <WhmcsAdminLayout>
+    <SettingPageLayout
+      title="Stripe Payments"
+      description="Configure Stripe payment gateway integration"
+      :hasChanges="hasChanges"
+      :isSaving="isSaving"
+      :hasTest="true"
+      :isTesting="isTesting"
+      :auditLogs="auditLogs"
+      @save="handleSave"
+      @revert="handleRevert"
+      @test="handleTest"
+    >
     <div class="settings-grid">
       <!-- Mode Selection -->
       <div class="settings-section">
@@ -115,12 +116,14 @@
         <TestConnectionButton service="stripe" />
       </div>
     </div>
-  </SettingPageLayout>
+    </SettingPageLayout>
+  </WhmcsAdminLayout>
 </template>
 
 <script setup>
 import { ref, computed } from 'vue';
 import { router } from '@inertiajs/vue3';
+import WhmcsAdminLayout from '@/Layouts/WhmcsAdminLayout.vue';
 import SettingPageLayout from '../../../Components/Settings/SettingPageLayout.vue';
 import FormField from '../../../Components/Settings/FormField.vue';
 import SecretField from '../../../Components/Settings/SecretField.vue';

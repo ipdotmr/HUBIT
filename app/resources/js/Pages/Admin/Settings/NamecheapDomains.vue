@@ -1,5 +1,6 @@
 <template>
-  <SettingPageLayout
+  <WhmcsAdminLayout>
+    <SettingPageLayout
     title="Namecheap Domains"
     description="Configure Namecheap domain registrar integration"
     :hasChanges="hasChanges"
@@ -123,12 +124,14 @@
         <TestConnectionButton service="namecheap" />
       </div>
     </div>
-  </SettingPageLayout>
+    </SettingPageLayout>
+  </WhmcsAdminLayout>
 </template>
 
 <script setup>
 import { ref, computed } from 'vue';
 import { router } from '@inertiajs/vue3';
+import WhmcsAdminLayout from '@/Layouts/WhmcsAdminLayout.vue';
 import SettingPageLayout from '../../../Components/Settings/SettingPageLayout.vue';
 import FormField from '../../../Components/Settings/FormField.vue';
 import SecretField from '../../../Components/Settings/SecretField.vue';

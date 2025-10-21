@@ -1,5 +1,6 @@
 <template>
-  <SettingPageLayout
+  <WhmcsAdminLayout>
+    <SettingPageLayout
     title="Name.com Domains"
     description="Configure Name.com domain registrar integration"
     :hasChanges="hasChanges"
@@ -128,12 +129,14 @@
         <TestConnectionButton service="namecom" />
       </div>
     </div>
-  </SettingPageLayout>
+    </SettingPageLayout>
+  </WhmcsAdminLayout>
 </template>
 
 <script setup>
 import { ref, computed } from 'vue';
 import { router } from '@inertiajs/vue3';
+import WhmcsAdminLayout from '@/Layouts/WhmcsAdminLayout.vue';
 import SettingPageLayout from '../../../Components/Settings/SettingPageLayout.vue';
 import FormField from '../../../Components/Settings/FormField.vue';
 import SecretField from '../../../Components/Settings/SecretField.vue';

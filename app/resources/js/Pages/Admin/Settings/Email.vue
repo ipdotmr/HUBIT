@@ -1,16 +1,17 @@
 <template>
-  <SettingPageLayout
-    title="Email & SMTP"
-    description="Configure email server and delivery settings"
-    :hasChanges="hasChanges"
-    :isSaving="isSaving"
-    :hasTest="true"
-    :isTesting="isTesting"
-    :auditLogs="auditLogs"
-    @save="handleSave"
-    @revert="handleRevert"
-    @test="handleTestEmail"
-  >
+  <WhmcsAdminLayout>
+    <SettingPageLayout
+      title="Email & SMTP"
+      description="Configure email server and delivery settings"
+      :hasChanges="hasChanges"
+      :isSaving="isSaving"
+      :hasTest="true"
+      :isTesting="isTesting"
+      :auditLogs="auditLogs"
+      @save="handleSave"
+      @revert="handleRevert"
+      @test="handleTestEmail"
+    >
     <div class="settings-grid">
       <!-- Server Configuration -->
       <div class="settings-section">
@@ -144,13 +145,15 @@
         </div>
       </div>
     </div>
-  </SettingPageLayout>
+    </SettingPageLayout>
+  </WhmcsAdminLayout>
 </template>
 
 <script setup>
 import { ref, computed } from 'vue';
 import { router } from '@inertiajs/vue3';
 import axios from 'axios';
+import WhmcsAdminLayout from '@/Layouts/WhmcsAdminLayout.vue';
 import SettingPageLayout from '../../../Components/Settings/SettingPageLayout.vue';
 import FormField from '../../../Components/Settings/FormField.vue';
 import SecretField from '../../../Components/Settings/SecretField.vue';

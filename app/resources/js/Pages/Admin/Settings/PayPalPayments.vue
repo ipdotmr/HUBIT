@@ -1,5 +1,6 @@
 <template>
-  <SettingPageLayout
+  <WhmcsAdminLayout>
+    <SettingPageLayout
     title="PayPal Payments"
     description="Configure PayPal payment gateway integration"
     :hasChanges="hasChanges"
@@ -115,12 +116,14 @@
         <TestConnectionButton service="paypal" />
       </div>
     </div>
-  </SettingPageLayout>
+    </SettingPageLayout>
+  </WhmcsAdminLayout>
 </template>
 
 <script setup>
 import { ref, computed } from 'vue';
 import { router } from '@inertiajs/vue3';
+import WhmcsAdminLayout from '@/Layouts/WhmcsAdminLayout.vue';
 import SettingPageLayout from '../../../Components/Settings/SettingPageLayout.vue';
 import FormField from '../../../Components/Settings/FormField.vue';
 import SecretField from '../../../Components/Settings/SecretField.vue';

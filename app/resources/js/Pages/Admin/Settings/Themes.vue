@@ -1,5 +1,6 @@
 <template>
-  <SettingPageLayout
+  <WhmcsAdminLayout>
+    <SettingPageLayout
     title="Themes & UI"
     description="Customize the visual appearance and user interface"
     :hasChanges="hasChanges"
@@ -100,12 +101,14 @@
         />
       </div>
     </div>
-  </SettingPageLayout>
+    </SettingPageLayout>
+  </WhmcsAdminLayout>
 </template>
 
 <script setup>
 import { ref, computed } from 'vue';
 import { router } from '@inertiajs/vue3';
+import WhmcsAdminLayout from '@/Layouts/WhmcsAdminLayout.vue';
 import SettingPageLayout from '../../../Components/Settings/SettingPageLayout.vue';
 import FormField from '../../../Components/Settings/FormField.vue';
 import { themes } from '../../../config/themes';

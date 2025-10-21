@@ -173,6 +173,13 @@ Route::middleware(['auth', 'verified', 'throttle:60,1'])->prefix('managit')->gro
         Route::get('/services/export', [App\Http\Controllers\Admin\ReportController::class, 'exportServices'])->name('services.export');
         Route::get('/wallet/export', [App\Http\Controllers\Admin\ReportController::class, 'exportWallet'])->name('wallet.export');
     });
+
+    Route::prefix('support')->name('managit.support.')->group(function () {
+        Route::get('/', [App\Http\Controllers\Admin\SupportController::class, 'index'])->name('index');
+        Route::get('/{ticket}', [App\Http\Controllers\Admin\SupportController::class, 'show'])->name('show');
+        Route::post('/{ticket}/reply', [App\Http\Controllers\Admin\SupportController::class, 'reply'])->name('reply');
+        Route::post('/{ticket}/status', [App\Http\Controllers\Admin\SupportController::class, 'updateStatus'])->name('updateStatus');
+    });
 });
 
 Route::any('/admin/{any?}', function () {
