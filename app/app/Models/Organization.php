@@ -9,7 +9,7 @@ class Organization extends Model
     protected $fillable = [
         'name',
         'slug',
-        'status',
+        'is_active',
         'settings',
     ];
 
