@@ -164,11 +164,6 @@ const switchLanguage = () => {
                 </div>
             </article>
         </main>
-
-        <!-- Footer -->
-        <footer class="login-footer">
-            Powered by <a href="https://www.whmcs.com/" target="_blank">WHMCompleteSolution</a>
-        </footer>
     </div>
 </template>
 
@@ -470,27 +465,6 @@ const switchLanguage = () => {
 .language-selector:hover .language-select {
     opacity: 1;
     pointer-events: all;
-}
-
-/* Footer */
-.login-footer {
-    position: relative;
-    z-index: 10;
-    background: #000;
-    color: #9ca3af;
-    text-align: center;
-    padding: 1.5rem;
-    font-size: 0.875rem;
-}
-
-.login-footer a {
-    color: #9ca3af;
-    text-decoration: none;
-}
-
-.login-footer a:hover {
-    color: white;
-    text-decoration: underline;
 }
 
 /* Responsive */

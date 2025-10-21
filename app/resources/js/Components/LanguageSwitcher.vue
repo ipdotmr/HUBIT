@@ -1,8 +1,10 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { router } from '@inertiajs/vue3';
+import { useI18n } from 'vue-i18n';
 
-const currentLocale = ref(document.documentElement.lang || 'en');
+const { locale } = useI18n();
+const currentLocale = ref(locale.value || document.documentElement.lang || 'en');
 
 const languages = [
     { code: 'en', name: 'English', flag: '🇬🇧' },
@@ -10,23 +12,36 @@ const languages = [
     { code: 'fr', name: 'Français', flag: '🇫🇷' },
 ];
 
-const switchLanguage = (locale) => {
-    router.post('/language', { locale }, {
+const switchLanguage = (newLocale) => {
+    // Update vue-i18n locale
+    locale.value = newLocale;
+    
+    // Save to localStorage
+    localStorage.setItem('locale', newLocale);
+    
+    // Update HTML attributes
+    currentLocale.value = newLocale;
+    document.documentElement.lang = newLocale;
+    document.documentElement.dir = newLocale === 'ar' ? 'rtl' : 'ltr';
+    
+    // Also update backend session
+    router.post('/language', { locale: newLocale }, {
         preserveState: true,
         preserveScroll: true,
         onSuccess: () => {
-            currentLocale.value = locale;
-            document.documentElement.lang = locale;
-            document.documentElement.dir = locale === 'ar' ? 'rtl' : 'ltr';
             window.location.reload();
         },
     });
 };
 
 onMounted(() => {
+    // Set initial direction
     if (currentLocale.value === 'ar') {
         document.documentElement.dir = 'rtl';
     }
+    
+    // Sync with vue-i18n
+    locale.value = currentLocale.value;
 });
 </script>
 

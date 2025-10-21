@@ -1,8 +1,10 @@
 <script setup>
 import { ref } from 'vue';
 import { Link, usePage } from '@inertiajs/vue3';
+import { useI18n } from 'vue-i18n';
 import LanguageSwitcher from '@/Components/LanguageSwitcher.vue';
 
+const { t } = useI18n();
 const page = usePage();
 const sidebarCollapsed = ref(false);
 </script>
@@ -22,27 +24,27 @@ const sidebarCollapsed = ref(false);
             <nav class="sidebar-nav">
                 <Link :href="route('dashboard')" class="nav-item" :class="{ 'active': route().current('dashboard') }">
                     <i class="fas fa-home"></i>
-                    <span class="nav-text">Home</span>
+                    <span class="nav-text">{{ t('common.home') }}</span>
                 </Link>
 
                 <Link :href="route('products.index')" class="nav-item" :class="{ 'active': route().current('products.*') }">
                     <i class="fas fa-store"></i>
-                    <span class="nav-text">Store</span>
+                    <span class="nav-text">{{ t('nav.products') }}</span>
                 </Link>
 
                 <a href="#" class="nav-item">
                     <i class="fas fa-newspaper"></i>
-                    <span class="nav-text">News</span>
+                    <span class="nav-text">{{ t('support.announcements') }}</span>
                 </a>
 
                 <a href="#" class="nav-item">
                     <i class="fas fa-book"></i>
-                    <span class="nav-text">Knowledgebase</span>
+                    <span class="nav-text">{{ t('support.knowledgebase') }}</span>
                 </a>
 
                 <a href="#" class="nav-item">
                     <i class="fas fa-network-wired"></i>
-                    <span class="nav-text">Network Status</span>
+                    <span class="nav-text">{{ t('support.network_status') }}</span>
                 </a>
 
                 <a href="#" class="nav-item">
@@ -59,12 +61,12 @@ const sidebarCollapsed = ref(false);
 
                 <Link :href="route('profile.edit')" class="nav-item" :class="{ 'active': route().current('profile.*') }">
                     <i class="fas fa-user-circle"></i>
-                    <span class="nav-text">Account</span>
+                    <span class="nav-text">{{ t('nav.account') }}</span>
                 </Link>
 
                 <Link :href="route('cart.index')" class="nav-item" :class="{ 'active': route().current('cart.*') }">
                     <i class="fas fa-shopping-cart"></i>
-                    <span class="nav-text">Cart</span>
+                    <span class="nav-text">{{ t('cart.title') }}</span>
                 </Link>
             </nav>
 
@@ -73,7 +75,7 @@ const sidebarCollapsed = ref(false);
                 <LanguageSwitcher />
                 <Link :href="route('logout')" method="post" as="button" class="logout-btn">
                     <i class="fas fa-sign-out-alt"></i>
-                    <span class="nav-text">Logout</span>
+                    <span class="nav-text">{{ t('common.logout') }}</span>
                 </Link>
             </div>
         </aside>
@@ -116,10 +118,10 @@ const sidebarCollapsed = ref(false);
     background-color: #f5f7fa;
 }
 
-/* Purple Gradient Sidebar */
+/* Purple Gradient Sidebar - Phoxca Theme */
 .phox-sidebar {
     width: 260px;
-    background: linear-gradient(180deg, #6b46c1 0%, #553c9a 100%);
+    background: linear-gradient(180deg, #6c63ff 0%, #5449cc 100%);
     color: white;
     display: flex;
     flex-direction: column;
@@ -256,7 +258,7 @@ const sidebarCollapsed = ref(false);
     background: none;
     border: none;
     font-size: 1.25rem;
-    color: #6b46c1;
+    color: #6c63ff;
     cursor: pointer;
     padding: 0.5rem;
     border-radius: 6px;
@@ -295,7 +297,7 @@ const sidebarCollapsed = ref(false);
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    border: 2px solid #6b46c1;
+    border: 2px solid #6c63ff;
 }
 
 /* Content Area */
