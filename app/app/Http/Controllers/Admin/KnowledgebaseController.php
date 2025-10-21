@@ -3,63 +3,85 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\KnowledgebaseArticle;
+use App\Models\KnowledgebaseCategory;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class KnowledgebaseController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $categories = KnowledgebaseCategory::withCount('articles')
+            ->orderBy('display_order')
+            ->orderBy('name')
+            ->get();
+
+        return Inertia::render('Admin/Knowledgebase/Index', [
+            'categories' => $categories,
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        $categories = KnowledgebaseCategory::orderBy('name')->get();
+
+        return Inertia::render('Admin/Knowledgebase/Create', [
+            'categories' => $categories,
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'category_id' => 'required|exists:knowledgebase_categories,id',
+            'title' => 'required|string|max:255',
+            'content' => 'required|string',
+            'is_published' => 'boolean',
+            'display_order' => 'required|integer|min:0',
+        ]);
+
+        KnowledgebaseArticle::create($validated);
+
+        return redirect()->route('managit.knowledgebase.index')
+            ->with('success', 'Article created successfully');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function edit($id)
     {
-        //
+        $article = KnowledgebaseArticle::with('category')->findOrFail($id);
+        $categories = KnowledgebaseCategory::orderBy('name')->get();
+
+        return Inertia::render('Admin/Knowledgebase/Edit', [
+            'article' => $article,
+            'categories' => $categories,
+        ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function update(Request $request, $id)
     {
-        //
+        $article = KnowledgebaseArticle::findOrFail($id);
+
+        $validated = $request->validate([
+            'category_id' => 'required|exists:knowledgebase_categories,id',
+            'title' => 'required|string|max:255',
+            'content' => 'required|string',
+            'is_published' => 'boolean',
+            'display_order' => 'required|integer|min:0',
+        ]);
+
+        $article->update($validated);
+
+        return redirect()->route('managit.knowledgebase.index')
+            ->with('success', 'Article updated successfully');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function destroy($id)
     {
-        //
-    }
+        $article = KnowledgebaseArticle::findOrFail($id);
+        $article->delete();
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return redirect()->route('managit.knowledgebase.index')
+            ->with('success', 'Article deleted successfully');
     }
 }
