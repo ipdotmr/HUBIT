@@ -4,7 +4,8 @@ import { Head, Link, useForm } from '@inertiajs/vue3';
 import WhmcsAdminLayout from '@/Layouts/WhmcsAdminLayout.vue';
 
 const props = defineProps({
-    clients: Array
+    clients: Array,
+    registrars: Array
 });
 
 const form = useForm({
@@ -112,14 +113,12 @@ const submit = () => {
                                     required
                                 >
                                     <option value="">Select Registrar</option>
-                                    <option value="hubit">Hubit Registrar (Offline)</option>
-                                    <option value="coccaep">CoccaEP</option>
-                                    <option value="namecom">Name.com</option>
-                                    <option value="namecheap">Namecheap</option>
-                                    <option value="resellerclub">ResellerClub</option>
+                                    <option v-for="registrar in registrars" :key="registrar.value" :value="registrar.value">
+                                        {{ registrar.label }}
+                                    </option>
                                 </select>
                                 <div v-if="form.errors.registrar" class="invalid-feedback">{{ form.errors.registrar }}</div>
-                                <div class="form-text">Select "Hubit Registrar" for offline/manual domain registration</div>
+                                <div class="form-text">Select "Hubit Registrar" for offline/manual domain registration. Only configured registrars are shown.</div>
                             </div>
 
                             <div class="col-md-12 mb-3">

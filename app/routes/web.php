@@ -191,6 +191,15 @@ Route::middleware(['auth', 'verified', 'throttle:60,1'])->prefix('managit')->gro
         Route::post('/mapping/{product}/test', [App\Http\Controllers\Admin\ProductMappingController::class, 'testProvision'])->name('mapping.test');
     });
 
+    Route::resource('email-templates', App\Http\Controllers\Admin\EmailTemplateController::class)->names([
+        'index' => 'managit.email-templates.index',
+        'create' => 'managit.email-templates.create',
+        'store' => 'managit.email-templates.store',
+        'edit' => 'managit.email-templates.edit',
+        'update' => 'managit.email-templates.update',
+        'destroy' => 'managit.email-templates.destroy',
+    ]);
+
     Route::prefix('settings')->name('managit.settings.')->group(function () {
         Route::get('/', [App\Http\Controllers\Admin\SettingsController::class, 'index'])->name('index');
         Route::get('/company', [App\Http\Controllers\Admin\SettingsController::class, 'company'])->name('company');

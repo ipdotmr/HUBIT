@@ -5,11 +5,38 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Domain;
 use App\Models\Client;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class DomainController extends Controller
 {
+    private function getAvailableRegistrars()
+    {
+        $registrars = [
+            ['value' => 'hubit', 'label' => 'Hubit Registrar (Offline)'],
+        ];
+
+        $registrarConfigs = [
+            'coccaep' => 'CoccaEP',
+            'namecom' => 'Name.com',
+            'namecheap' => 'Namecheap',
+            'resellerclub' => 'ResellerClub',
+        ];
+
+        foreach ($registrarConfigs as $key => $label) {
+            $apiKey = Setting::where('key', "{$key}.api_key")
+                ->orWhere('key', "{$key}.api_token")
+                ->orWhere('key', "{$key}.password")
+                ->first();
+            
+            if ($apiKey && $apiKey->value) {
+                $registrars[] = ['value' => $key, 'label' => $label];
+            }
+        }
+
+        return $registrars;
+    }
     public function index(Request $request)
     {
         $query = Domain::with('client');
@@ -64,6 +91,7 @@ class DomainController extends Controller
 
         return Inertia::render('Admin/Domains/Create', [
             'clients' => $clients,
+            'registrars' => $this->getAvailableRegistrars(),
         ]);
     }
 
@@ -136,6 +164,7 @@ class DomainController extends Controller
                 'status' => $domain->status ?? 'active',
             ],
             'clients' => $clients,
+            'registrars' => $this->getAvailableRegistrars(),
         ]);
     }
 
