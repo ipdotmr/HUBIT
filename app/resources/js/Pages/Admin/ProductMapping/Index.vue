@@ -1,98 +1,99 @@
 <template>
-  <AuthenticatedLayout>
+  <WhmcsAdminLayout>
     <Head title="Product Mapping" />
 
-    <div class="py-12">
-      <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-          <div class="p-6 text-gray-900 dark:text-gray-100">
-            <h2 class="text-2xl font-semibold mb-6">Product → Package Mapping</h2>
-            <p class="text-sm text-gray-600 dark:text-gray-400 mb-6">
-              Map HUBIT products to provisioner packages (cPanel/Plesk) for automated provisioning.
-            </p>
+    <div class="container-fluid">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+          <h3 class="mb-0">Product → Package Mapping</h3>
+          <p class="text-muted">Map HUBIT products to provisioner packages (cPanel/Plesk) for automated provisioning</p>
+        </div>
+      </div>
 
-            <!-- Products Table -->
-            <div class="overflow-x-auto">
-              <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                <thead class="bg-gray-50 dark:bg-gray-900">
-                  <tr>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Product</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Provisioner</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Package Name</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Server</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Actions</th>
-                  </tr>
-                </thead>
-                <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                  <tr v-for="product in products" :key="product.id">
-                    <td class="px-6 py-4">
-                      <div>
-                        <p class="font-medium">{{ product.name }}</p>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">{{ product.product_group?.name || 'Hosting' }}</p>
-                      </div>
-                    </td>
-                    <td class="px-6 py-4">
-                      <select
-                        v-model="mappings[product.id].provisioner"
-                        @change="updateMapping(product.id)"
-                        class="rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 text-sm"
-                      >
-                        <option value="">None</option>
-                        <option v-for="(label, key) in provisioners" :key="key" :value="key">{{ label }}</option>
-                      </select>
-                    </td>
-                    <td class="px-6 py-4">
-                      <input
-                        v-model="mappings[product.id].package_name"
-                        @blur="updateMapping(product.id)"
-                        type="text"
-                        :placeholder="getMappingPlaceholder(mappings[product.id].provisioner)"
-                        class="w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 text-sm"
-                      />
-                    </td>
-                    <td class="px-6 py-4">
-                      <input
-                        v-model="mappings[product.id].server_id"
-                        @blur="updateMapping(product.id)"
-                        type="number"
-                        placeholder="Server ID (optional)"
-                        class="w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 text-sm"
-                      />
-                    </td>
-                    <td class="px-6 py-4">
-                      <button
-                        @click="testProvision(product.id)"
-                        class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300 text-sm"
-                      >
-                        Test
-                      </button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-0">
+          <div class="table-responsive">
 
-            <!-- Help Text -->
-            <div class="mt-6 bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
-              <h3 class="text-sm font-semibold text-blue-800 dark:text-blue-300 mb-2">Configuration Guide</h3>
-              <ul class="text-sm text-blue-700 dark:text-blue-400 space-y-1">
-                <li><strong>cPanel:</strong> Enter the package name exactly as defined in WHM (e.g., "HUBIT_BASIC", "HUBIT_PRO")</li>
-                <li><strong>Plesk:</strong> Enter the service plan name (e.g., "Web Hosting Basic", "Reseller Plan")</li>
-                <li><strong>Server ID:</strong> Optional. Use when you have multiple servers and want to specify which one to provision on.</li>
-                <li><strong>Test:</strong> Click "Test" to verify the provisioning works without creating a real service.</li>
-              </ul>
-            </div>
+            <table class="table table-hover mb-0">
+              <thead class="table-light">
+                <tr>
+                  <th>Product</th>
+                  <th>Provisioner</th>
+                  <th>Package Name</th>
+                  <th>Server</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="product in products" :key="product.id">
+                  <td>
+                    <div>
+                      <strong>{{ product.name }}</strong>
+                      <br><small class="text-muted">{{ product.product_group?.name || 'Hosting' }}</small>
+                    </div>
+                  </td>
+                  <td>
+                    <select
+                      v-model="mappings[product.id].provisioner"
+                      @change="updateMapping(product.id)"
+                      class="form-select form-select-sm"
+                    >
+                      <option value="">None</option>
+                      <option v-for="(label, key) in provisioners" :key="key" :value="key">{{ label }}</option>
+                    </select>
+                  </td>
+                  <td>
+                    <input
+                      v-model="mappings[product.id].package_name"
+                      @blur="updateMapping(product.id)"
+                      type="text"
+                      :placeholder="getMappingPlaceholder(mappings[product.id].provisioner)"
+                      class="form-control form-control-sm"
+                    />
+                  </td>
+                  <td>
+                    <input
+                      v-model="mappings[product.id].server_id"
+                      @blur="updateMapping(product.id)"
+                      type="number"
+                      placeholder="Server ID (optional)"
+                      class="form-control form-control-sm"
+                    />
+                  </td>
+                  <td>
+                    <button
+                      @click="testProvision(product.id)"
+                      class="btn btn-sm btn-primary"
+                    >
+                      <i class="fas fa-vial me-1"></i>Test
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
+
+
+      <!-- Help Text -->
+      <div class="alert alert-info mt-4">
+        <h5 class="alert-heading"><i class="fas fa-info-circle me-2"></i>Configuration Guide</h5>
+        <ul class="mb-0">
+          <li><strong>cPanel:</strong> Enter the package name exactly as defined in WHM (e.g., "HUBIT_BASIC", "HUBIT_PRO")</li>
+          <li><strong>Plesk:</strong> Enter the service plan name (e.g., "Web Hosting Basic", "Reseller Plan")</li>
+          <li><strong>Server ID:</strong> Optional. Use when you have multiple servers and want to specify which one to provision on.</li>
+          <li><strong>Test:</strong> Click "Test" to verify the provisioning works without creating a real service.</li>
+        </ul>
+      </div>
     </div>
-  </AuthenticatedLayout>
+  </WhmcsAdminLayout>
 </template>
 
 <script setup>
 import { ref, reactive, onMounted } from 'vue'
 import { Head, router } from '@inertiajs/vue3'
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
+import WhmcsAdminLayout from '@/Layouts/WhmcsAdminLayout.vue'
 
 const props = defineProps({
   products: Array,

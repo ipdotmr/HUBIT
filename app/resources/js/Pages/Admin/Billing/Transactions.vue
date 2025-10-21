@@ -1,91 +1,110 @@
 <template>
     <Head title="Payment Transactions - Admin" />
-    <AuthenticatedLayout>
-        <div class="space-y-6">
-            <div class="flex items-center justify-between">
+    <WhmcsAdminLayout>
+        <div class="container-fluid">
+            <!-- Page Title -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
                 <div>
-                    <h2 class="text-2xl font-semibold text-gray-900">Payment Transactions</h2>
-                    <p class="mt-1 text-sm text-gray-600">Review and approve offline payment submissions.</p>
+                    <h3 class="mb-0">Payment Transactions</h3>
+                    <p class="text-muted">Review and approve offline payment submissions</p>
                 </div>
             </div>
 
-            <div class="bg-white shadow rounded-lg p-4 mb-4">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Status</label>
-                        <select v-model="filters.status" class="mt-1 block w-full rounded-md border-gray-300">
-                            <option value="">All</option>
-                            <option value="pending">Pending</option>
-                            <option value="under_review">Under Review</option>
-                            <option value="approved">Approved</option>
-                            <option value="rejected">Rejected</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Method</label>
-                        <select v-model="filters.method" class="mt-1 block w-full rounded-md border-gray-300">
-                            <option value="">All</option>
-                            <option value="bank_transfer">Bank Transfer</option>
-                            <option value="cash">Cash</option>
-                        </select>
+            <!-- Filters -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label class="form-label">Status</label>
+                            <select v-model="filters.status" class="form-select">
+                                <option value="">All Statuses</option>
+                                <option value="pending">Pending</option>
+                                <option value="under_review">Under Review</option>
+                                <option value="approved">Approved</option>
+                                <option value="rejected">Rejected</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Method</label>
+                            <select v-model="filters.method" class="form-select">
+                                <option value="">All Methods</option>
+                                <option value="bank_transfer">Bank Transfer</option>
+                                <option value="cash">Cash</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="bg-white shadow rounded-lg overflow-hidden">
-                <table class="min-w-full divide-y divide-gray-200">
-                    <thead class="bg-gray-50">
-                        <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Reference</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Client</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Invoice</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Amount</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Method</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody class="bg-white divide-y divide-gray-200">
-                        <tr v-for="txn in transactions.data" :key="txn.id">
-                            <td class="px-6 py-4 text-sm font-mono text-gray-900">{{ txn.meta?.reference }}</td>
-                            <td class="px-6 py-4 text-sm text-gray-900">{{ txn.client?.company_name }}</td>
-                            <td class="px-6 py-4 text-sm text-gray-900">{{ txn.invoice?.number }}</td>
-                            <td class="px-6 py-4 text-sm text-gray-900">{{ txn.amount }} {{ txn.currency }}</td>
-                            <td class="px-6 py-4 text-sm text-gray-600">{{ txn.method }}</td>
-                            <td class="px-6 py-4">
-                                <span :class="{
-                                    'bg-yellow-100 text-yellow-800': txn.status === 'pending',
-                                    'bg-blue-100 text-blue-800': txn.status === 'under_review',
-                                    'bg-green-100 text-green-800': txn.status === 'approved',
-                                    'bg-red-100 text-red-800': txn.status === 'rejected'
-                                }" class="px-2 py-1 text-xs rounded-full">
-                                    {{ txn.status }}
-                                </span>
-                            </td>
-                            <td class="px-6 py-4 text-sm">
-                                <button v-if="txn.status === 'pending' || txn.status === 'under_review'" 
-                                        @click="reviewTransaction(txn, true)" 
-                                        class="text-green-600 hover:text-green-800 mr-3">
-                                    Approve
-                                </button>
-                                <button v-if="txn.status === 'pending' || txn.status === 'under_review'" 
-                                        @click="reviewTransaction(txn, false)" 
-                                        class="text-red-600 hover:text-red-800">
-                                    Reject
-                                </button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+            <!-- Transactions Table -->
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Transactions</h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Reference</th>
+                                    <th>Client</th>
+                                    <th>Invoice</th>
+                                    <th>Amount</th>
+                                    <th>Method</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="txn in transactions.data" :key="txn.id">
+                                    <td><code>{{ txn.meta?.reference }}</code></td>
+                                    <td>{{ txn.client?.company_name }}</td>
+                                    <td>{{ txn.invoice?.number }}</td>
+                                    <td><strong>{{ txn.amount }} {{ txn.currency }}</strong></td>
+                                    <td>{{ txn.method }}</td>
+                                    <td>
+                                        <span class="badge" :class="{
+                                            'bg-warning': txn.status === 'pending',
+                                            'bg-info': txn.status === 'under_review',
+                                            'bg-success': txn.status === 'approved',
+                                            'bg-danger': txn.status === 'rejected'
+                                        }">
+                                            {{ txn.status }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <button 
+                                            v-if="txn.status === 'pending' || txn.status === 'under_review'" 
+                                            @click="reviewTransaction(txn, true)" 
+                                            class="btn btn-sm btn-success me-2">
+                                            <i class="fas fa-check me-1"></i>Approve
+                                        </button>
+                                        <button 
+                                            v-if="txn.status === 'pending' || txn.status === 'under_review'" 
+                                            @click="reviewTransaction(txn, false)" 
+                                            class="btn btn-sm btn-danger">
+                                            <i class="fas fa-times me-1"></i>Reject
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr v-if="!transactions.data || transactions.data.length === 0">
+                                    <td colspan="7" class="text-center text-muted py-4">
+                                        No transactions found
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
-    </AuthenticatedLayout>
+    </WhmcsAdminLayout>
 </template>
 
 <script setup>
 import { ref } from 'vue';
 import { Head, router } from '@inertiajs/vue3';
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import WhmcsAdminLayout from '@/Layouts/WhmcsAdminLayout.vue';
 
 const props = defineProps({
     transactions: Object,
