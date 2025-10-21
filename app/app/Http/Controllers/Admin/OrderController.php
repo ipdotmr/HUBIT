@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\Client;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -43,6 +44,62 @@ class OrderController extends Controller
             'orders' => $orders,
             'filters' => $request->only(['search', 'status']),
         ]);
+    }
+
+    public function create()
+    {
+        $clients = Client::select('id', 'name', 'email')->orderBy('name')->get();
+        $products = Product::select('id', 'name', 'price', 'billing_cycle')->where('status', 'active')->get();
+
+        return Inertia::render('Admin/Orders/Create', [
+            'clients' => $clients,
+            'products' => $products
+        ]);
+    }
+
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'client_id' => 'required|exists:clients,id',
+            'items' => 'required|array|min:1',
+            'items.*.product_id' => 'required|exists:products,id',
+            'items.*.quantity' => 'required|integer|min:1',
+            'notes' => 'nullable|string'
+        ]);
+
+        $subtotal = 0;
+        $items = [];
+
+        foreach ($validated['items'] as $item) {
+            $product = Product::find($item['product_id']);
+            $itemTotal = $product->price * $item['quantity'];
+            $subtotal += $itemTotal;
+
+            $items[] = [
+                'type' => 'product',
+                'description' => $product->name,
+                'quantity' => $item['quantity'],
+                'price' => $product->price,
+            ];
+        }
+
+        $tax = $subtotal * 0.15;
+        $total = $subtotal + $tax;
+
+        $order = Order::create([
+            'client_id' => $validated['client_id'],
+            'status' => 'pending',
+            'subtotal' => $subtotal,
+            'tax' => $tax,
+            'total' => $total,
+            'notes' => $validated['notes'] ?? null
+        ]);
+
+        foreach ($items as $item) {
+            $order->items()->create($item);
+        }
+
+        return redirect()->route('managit.orders.show', $order)->with('success', 'Order created successfully.');
     }
 
     public function show(Order $order)

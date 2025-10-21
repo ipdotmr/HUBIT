@@ -133,6 +133,8 @@ Route::middleware(['auth', 'verified', 'throttle:60,1'])->prefix('managit')->gro
     
     Route::prefix('orders')->name('managit.orders.')->group(function () {
         Route::get('/', [App\Http\Controllers\Admin\OrderController::class, 'index'])->name('index');
+        Route::get('/create', [App\Http\Controllers\Admin\OrderController::class, 'create'])->name('create');
+        Route::post('/', [App\Http\Controllers\Admin\OrderController::class, 'store'])->name('store');
         Route::get('/{order}', [App\Http\Controllers\Admin\OrderController::class, 'show'])->name('show');
         Route::post('/{order}/status', [App\Http\Controllers\Admin\OrderController::class, 'updateStatus'])->name('update-status');
     });
@@ -211,6 +213,14 @@ Route::middleware(['auth', 'verified', 'throttle:60,1'])->prefix('managit')->gro
         Route::get('/{ticket}', [App\Http\Controllers\Admin\SupportController::class, 'show'])->name('show');
         Route::post('/{ticket}/reply', [App\Http\Controllers\Admin\SupportController::class, 'reply'])->name('reply');
         Route::post('/{ticket}/status', [App\Http\Controllers\Admin\SupportController::class, 'updateStatus'])->name('updateStatus');
+    });
+
+    Route::prefix('utilities')->name('managit.utilities.')->group(function () {
+        Route::get('/system-cleanup', [App\Http\Controllers\Admin\UtilitiesController::class, 'systemCleanup'])->name('system-cleanup');
+        Route::post('/system-cleanup', [App\Http\Controllers\Admin\UtilitiesController::class, 'performCleanup'])->name('perform-cleanup');
+        Route::get('/logs', [App\Http\Controllers\Admin\UtilitiesController::class, 'activityLogs'])->name('logs');
+        Route::get('/database', [App\Http\Controllers\Admin\UtilitiesController::class, 'databaseStatus'])->name('database');
+        Route::post('/database/optimize', [App\Http\Controllers\Admin\UtilitiesController::class, 'optimizeDatabase'])->name('database.optimize');
     });
 });
 

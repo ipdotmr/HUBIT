@@ -5,6 +5,17 @@ import LanguageSwitcher from '@/Components/LanguageSwitcher.vue';
 
 const page = usePage();
 const showQuickCreate = ref(false);
+
+// Submenu states
+const showClientsMenu = ref(false);
+const showOrdersMenu = ref(false);
+const showBillingMenu = ref(false);
+const showSupportMenu = ref(false);
+const showDomainsMenu = ref(false);
+const showProductsMenu = ref(false);
+const showReportsMenu = ref(false);
+const showUtilitiesMenu = ref(false);
+const showSettingsMenu = ref(false);
 </script>
 
 <template>
@@ -31,9 +42,12 @@ const showQuickCreate = ref(false);
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li><Link :href="route('managit.clients.create')" class="dropdown-item"><i class="fas fa-user me-2"></i>New Client</Link></li>
-                            <li><Link :href="route('managit.orders.index')" class="dropdown-item"><i class="fas fa-shopping-cart me-2"></i>New Order</Link></li>
-                            <li><a class="dropdown-item" href="#"><i class="fas fa-file-invoice me-2"></i>New Invoice</a></li>
-                            <li><a class="dropdown-item" href="#"><i class="fas fa-ticket-alt me-2"></i>New Ticket</a></li>
+                            <li><Link :href="route('managit.orders.create')" class="dropdown-item"><i class="fas fa-shopping-cart me-2"></i>New Order</Link></li>
+                            <li><Link :href="route('managit.invoices.create')" class="dropdown-item"><i class="fas fa-file-invoice me-2"></i>New Invoice</Link></li>
+                            <li><Link :href="route('managit.support.create')" class="dropdown-item"><i class="fas fa-ticket-alt me-2"></i>New Ticket</Link></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><Link :href="route('managit.domains.create')" class="dropdown-item"><i class="fas fa-globe me-2"></i>Register Domain</Link></li>
+                            <li><Link :href="route('managit.products.create')" class="dropdown-item"><i class="fas fa-box me-2"></i>Add Product</Link></li>
                         </ul>
                     </div>
 
@@ -79,55 +93,114 @@ const showQuickCreate = ref(false);
                         </Link>
                     </li>
 
-                    <!-- Clients -->
+                    <!-- Clients with Submenu -->
                     <li class="nav-item mb-2">
-                        <Link :href="route('managit.clients.index')" class="nav-link" :class="{ 'active': route().current('managit.clients.*') }">
-                            <i class="fas fa-users me-2"></i> Clients
-                        </Link>
+                        <a @click="showClientsMenu = !showClientsMenu" class="nav-link d-flex justify-content-between align-items-center" style="cursor: pointer;">
+                            <span><i class="fas fa-users me-2"></i> Clients</span>
+                            <i class="fas" :class="showClientsMenu ? 'fa-chevron-down' : 'fa-chevron-right'"></i>
+                        </a>
+                        <ul v-show="showClientsMenu" class="submenu">
+                            <li><Link :href="route('managit.clients.index')" class="submenu-link">View/Search Clients</Link></li>
+                            <li><Link :href="route('managit.clients.create')" class="submenu-link">Add New Client</Link></li>
+                        </ul>
                     </li>
 
-                    <!-- Orders -->
+                    <!-- Orders with Submenu -->
                     <li class="nav-item mb-2">
-                        <Link :href="route('managit.orders.index')" class="nav-link" :class="{ 'active': route().current('managit.orders.*') }">
-                            <i class="fas fa-shopping-cart me-2"></i> Orders
-                            <span class="badge bg-primary float-end">1</span>
-                        </Link>
+                        <a @click="showOrdersMenu = !showOrdersMenu" class="nav-link d-flex justify-content-between align-items-center" style="cursor: pointer;">
+                            <span><i class="fas fa-shopping-cart me-2"></i> Orders</span>
+                            <i class="fas" :class="showOrdersMenu ? 'fa-chevron-down' : 'fa-chevron-right'"></i>
+                        </a>
+                        <ul v-show="showOrdersMenu" class="submenu">
+                            <li><Link :href="route('managit.orders.index')" class="submenu-link">List All Orders</Link></li>
+                            <li><Link :href="route('managit.orders.create')" class="submenu-link">Add New Order</Link></li>
+                        </ul>
                     </li>
 
-                    <!-- Billing -->
+                    <!-- Billing with Submenu -->
                     <li class="nav-item mb-2">
-                        <Link :href="route('managit.transactions.index')" class="nav-link" :class="{ 'active': route().current('managit.transactions.*') }">
-                            <i class="fas fa-file-invoice-dollar me-2"></i> Billing
-                            <span class="badge bg-danger float-end">74</span>
-                        </Link>
+                        <a @click="showBillingMenu = !showBillingMenu" class="nav-link d-flex justify-content-between align-items-center" style="cursor: pointer;">
+                            <span><i class="fas fa-file-invoice-dollar me-2"></i> Billing</span>
+                            <i class="fas" :class="showBillingMenu ? 'fa-chevron-down' : 'fa-chevron-right'"></i>
+                        </a>
+                        <ul v-show="showBillingMenu" class="submenu">
+                            <li><Link :href="route('managit.invoices.index')" class="submenu-link">Invoices</Link></li>
+                            <li><Link :href="route('managit.transactions.index')" class="submenu-link">Transactions</Link></li>
+                        </ul>
                     </li>
 
-                    <!-- Support -->
+                    <!-- Support with Submenu -->
                     <li class="nav-item mb-2">
-                        <Link :href="route('managit.support.index')" class="nav-link" :class="{ 'active': route().current('managit.support.*') }">
-                            <i class="fas fa-life-ring me-2"></i> Support
-                        </Link>
+                        <a @click="showSupportMenu = !showSupportMenu" class="nav-link d-flex justify-content-between align-items-center" style="cursor: pointer;">
+                            <span><i class="fas fa-life-ring me-2"></i> Support</span>
+                            <i class="fas" :class="showSupportMenu ? 'fa-chevron-down' : 'fa-chevron-right'"></i>
+                        </a>
+                        <ul v-show="showSupportMenu" class="submenu">
+                            <li><Link :href="route('managit.support.index')" class="submenu-link">Tickets</Link></li>
+                            <li><Link :href="route('managit.support.create')" class="submenu-link">Open New Ticket</Link></li>
+                        </ul>
                     </li>
 
-                    <!-- Reports -->
+                    <!-- Domains with Submenu -->
                     <li class="nav-item mb-2">
-                        <Link :href="route('managit.reports.services')" class="nav-link" :class="{ 'active': route().current('managit.reports.*') }">
-                            <i class="fas fa-chart-bar me-2"></i> Reports
-                        </Link>
+                        <a @click="showDomainsMenu = !showDomainsMenu" class="nav-link d-flex justify-content-between align-items-center" style="cursor: pointer;">
+                            <span><i class="fas fa-globe me-2"></i> Domains</span>
+                            <i class="fas" :class="showDomainsMenu ? 'fa-chevron-down' : 'fa-chevron-right'"></i>
+                        </a>
+                        <ul v-show="showDomainsMenu" class="submenu">
+                            <li><Link :href="route('managit.domains.index')" class="submenu-link">Manage Domains</Link></li>
+                            <li><Link :href="route('managit.domains.create')" class="submenu-link">Register Domain</Link></li>
+                        </ul>
                     </li>
 
-                    <!-- Utilities -->
+                    <!-- Products with Submenu -->
                     <li class="nav-item mb-2">
-                        <Link :href="route('managit.dashboard')" class="nav-link">
-                            <i class="fas fa-tools me-2"></i> Utilities
-                        </Link>
+                        <a @click="showProductsMenu = !showProductsMenu" class="nav-link d-flex justify-content-between align-items-center" style="cursor: pointer;">
+                            <span><i class="fas fa-box me-2"></i> Products</span>
+                            <i class="fas" :class="showProductsMenu ? 'fa-chevron-down' : 'fa-chevron-right'"></i>
+                        </a>
+                        <ul v-show="showProductsMenu" class="submenu">
+                            <li><Link :href="route('managit.products.index')" class="submenu-link">Products/Services</Link></li>
+                            <li><Link :href="route('managit.products.create')" class="submenu-link">Add Product</Link></li>
+                        </ul>
                     </li>
 
-                    <!-- Addons -->
+                    <!-- Reports with Submenu -->
                     <li class="nav-item mb-2">
-                        <Link :href="route('managit.settings.index')" class="nav-link" :class="{ 'active': route().current('managit.settings.*') }">
-                            <i class="fas fa-puzzle-piece me-2"></i> Settings
-                        </Link>
+                        <a @click="showReportsMenu = !showReportsMenu" class="nav-link d-flex justify-content-between align-items-center" style="cursor: pointer;">
+                            <span><i class="fas fa-chart-bar me-2"></i> Reports</span>
+                            <i class="fas" :class="showReportsMenu ? 'fa-chevron-down' : 'fa-chevron-right'"></i>
+                        </a>
+                        <ul v-show="showReportsMenu" class="submenu">
+                            <li><Link :href="route('managit.reports.services')" class="submenu-link">Services Report</Link></li>
+                            <li><Link :href="route('managit.reports.wallet')" class="submenu-link">Wallet Report</Link></li>
+                        </ul>
+                    </li>
+
+                    <!-- Utilities with Submenu -->
+                    <li class="nav-item mb-2">
+                        <a @click="showUtilitiesMenu = !showUtilitiesMenu" class="nav-link d-flex justify-content-between align-items-center" style="cursor: pointer;">
+                            <span><i class="fas fa-tools me-2"></i> Utilities</span>
+                            <i class="fas" :class="showUtilitiesMenu ? 'fa-chevron-down' : 'fa-chevron-right'"></i>
+                        </a>
+                        <ul v-show="showUtilitiesMenu" class="submenu">
+                            <li><Link href="/managit/utilities/system-cleanup" class="submenu-link">System Cleanup</Link></li>
+                            <li><Link href="/managit/utilities/logs" class="submenu-link">Activity Logs</Link></li>
+                        </ul>
+                    </li>
+
+                    <!-- Settings with Submenu -->
+                    <li class="nav-item mb-2">
+                        <a @click="showSettingsMenu = !showSettingsMenu" class="nav-link d-flex justify-content-between align-items-center" style="cursor: pointer;">
+                            <span><i class="fas fa-cog me-2"></i> Settings</span>
+                            <i class="fas" :class="showSettingsMenu ? 'fa-chevron-down' : 'fa-chevron-right'"></i>
+                        </a>
+                        <ul v-show="showSettingsMenu" class="submenu">
+                            <li><Link :href="route('managit.settings.index')" class="submenu-link">General Settings</Link></li>
+                            <li><Link :href="route('managit.settings.company')" class="submenu-link">Company Info</Link></li>
+                            <li><Link :href="route('managit.settings.email')" class="submenu-link">Email Settings</Link></li>
+                            <li><Link :href="route('managit.settings.themes')" class="submenu-link">Client Theme</Link></li>
+                        </ul>
                     </li>
                 </ul>
             </div>
@@ -182,5 +255,26 @@ const showQuickCreate = ref(false);
 .badge {
     font-size: 0.75rem;
     padding: 0.25rem 0.5rem;
+}
+
+.submenu {
+    list-style: none;
+    padding-left: 2.5rem;
+    margin: 0.5rem 0;
+}
+
+.submenu-link {
+    display: block;
+    padding: 0.5rem 1rem;
+    color: #666;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+}
+
+.submenu-link:hover {
+    background-color: #e9ecef;
+    color: #0066cc;
 }
 </style>

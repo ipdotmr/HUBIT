@@ -4,172 +4,331 @@ import { Link, usePage } from '@inertiajs/vue3';
 import LanguageSwitcher from '@/Components/LanguageSwitcher.vue';
 
 const page = usePage();
-const showMagasinDropdown = ref(false);
+const sidebarCollapsed = ref(false);
 </script>
 
 <template>
-    <div class="client-layout">
-        <!-- Top Navigation Bar -->
-        <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">
-            <div class="container-fluid">
-                <!-- Logo -->
-                <Link href="/" class="navbar-brand">
+    <div class="phox-client-layout">
+        <!-- Left Sidebar with Purple Gradient -->
+        <aside class="phox-sidebar" :class="{ 'collapsed': sidebarCollapsed }">
+            <!-- Logo -->
+            <div class="sidebar-logo">
+                <Link href="/" class="logo-link">
                     <strong>HUBIT</strong>
                 </Link>
-
-                <!-- Navbar Toggle for Mobile -->
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <!-- Main Navigation -->
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav me-auto">
-                        <!-- Espace client (Client Area) -->
-                        <li class="nav-item">
-                            <Link :href="route('dashboard')" class="nav-link">
-                                Espace client
-                            </Link>
-                        </li>
-
-                        <!-- Magasin (Store) Dropdown -->
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                                Magasin
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><Link :href="route('products.index')" class="dropdown-item">Tout parcourir</Link></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="#">Hébergement cPanel</a></li>
-                                <li><a class="dropdown-item" href="#">Solutions</a></li>
-                                <li><a class="dropdown-item" href="#">Développement d'applications</a></li>
-                                <li><a class="dropdown-item" href="#">Marketing</a></li>
-                                <li><a class="dropdown-item" href="#">Serveurs</a></li>
-                                <li><a class="dropdown-item" href="#">iEntreprises</a></li>
-                                <li><a class="dropdown-item" href="#">Business Pack</a></li>
-                                <li><a class="dropdown-item" href="#">eMail</a></li>
-                                <li><a class="dropdown-item" href="#">Certificats SSL</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="#">Enregistrer un nom de domaine</a></li>
-                                <li><a class="dropdown-item" href="#">Transférer un nom de domaine</a></li>
-                            </ul>
-                        </li>
-
-                        <!-- Actualités (News) -->
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Actualités</a>
-                        </li>
-
-                        <!-- Base de connaissances (Knowledge Base) -->
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Base de connaissances</a>
-                        </li>
-
-                        <!-- État du réseau (Network Status) -->
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">État du réseau</a>
-                        </li>
-
-                        <!-- Contactez-nous (Contact Us) -->
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Contactez-nous</a>
-                        </li>
-                    </ul>
-
-                    <!-- Right Side Icons -->
-                    <ul class="navbar-nav ms-auto">
-                        <!-- Language Switcher -->
-                        <li class="nav-item">
-                            <LanguageSwitcher />
-                        </li>
-
-                        <!-- User Icon -->
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                                <i class="fas fa-user"></i>
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-end">
-                                <li><Link :href="route('profile.edit')" class="dropdown-item">Mon compte</Link></li>
-                                <li><Link :href="route('client.services.index')" class="dropdown-item">Mes services</Link></li>
-                                <li><Link :href="route('client.domains.index')" class="dropdown-item">Mes domaines</Link></li>
-                                <li><Link :href="route('client.invoices.index')" class="dropdown-item">Mes factures</Link></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><Link :href="route('logout')" method="post" as="button" class="dropdown-item">Déconnexion</Link></li>
-                            </ul>
-                        </li>
-
-                        <!-- Cart Icon -->
-                        <li class="nav-item">
-                            <Link :href="route('cart.index')" class="nav-link">
-                                <i class="fas fa-shopping-cart"></i>
-                            </Link>
-                        </li>
-                    </ul>
-                </div>
             </div>
-        </nav>
 
-        <!-- Main Content -->
-        <div class="container-fluid mt-4">
-            <div class="row">
-                <!-- Left Sidebar (if slot provided) -->
-                <div v-if="$slots.sidebar" class="col-lg-3 col-md-4 mb-4">
-                    <slot name="sidebar" />
-                </div>
+            <!-- Navigation Menu -->
+            <nav class="sidebar-nav">
+                <Link :href="route('dashboard')" class="nav-item" :class="{ 'active': route().current('dashboard') }">
+                    <i class="fas fa-home"></i>
+                    <span class="nav-text">Home</span>
+                </Link>
 
-                <!-- Main Content Area -->
-                <div :class="$slots.sidebar ? 'col-lg-9 col-md-8' : 'col-12'">
-                    <slot />
-                </div>
+                <Link :href="route('products.index')" class="nav-item" :class="{ 'active': route().current('products.*') }">
+                    <i class="fas fa-store"></i>
+                    <span class="nav-text">Store</span>
+                </Link>
+
+                <a href="#" class="nav-item">
+                    <i class="fas fa-newspaper"></i>
+                    <span class="nav-text">News</span>
+                </a>
+
+                <a href="#" class="nav-item">
+                    <i class="fas fa-book"></i>
+                    <span class="nav-text">Knowledgebase</span>
+                </a>
+
+                <a href="#" class="nav-item">
+                    <i class="fas fa-network-wired"></i>
+                    <span class="nav-text">Network Status</span>
+                </a>
+
+                <a href="#" class="nav-item">
+                    <i class="fas fa-handshake"></i>
+                    <span class="nav-text">Affiliates</span>
+                </a>
+
+                <a href="#" class="nav-item">
+                    <i class="fas fa-envelope"></i>
+                    <span class="nav-text">Contact</span>
+                </a>
+
+                <div class="nav-divider"></div>
+
+                <Link :href="route('profile.edit')" class="nav-item" :class="{ 'active': route().current('profile.*') }">
+                    <i class="fas fa-user-circle"></i>
+                    <span class="nav-text">Account</span>
+                </Link>
+
+                <Link :href="route('cart.index')" class="nav-item" :class="{ 'active': route().current('cart.*') }">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="nav-text">Cart</span>
+                </Link>
+            </nav>
+
+            <!-- Sidebar Footer -->
+            <div class="sidebar-footer">
+                <LanguageSwitcher />
+                <Link :href="route('logout')" method="post" as="button" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span class="nav-text">Logout</span>
+                </Link>
             </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <div class="phox-main-content">
+            <!-- Top Bar -->
+            <header class="phox-topbar">
+                <div class="topbar-left">
+                    <button @click="sidebarCollapsed = !sidebarCollapsed" class="sidebar-toggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h1 class="page-title">{{ page.props.title || 'Dashboard' }}</h1>
+                </div>
+                <div class="topbar-right">
+                    <div class="user-info">
+                        <span class="user-name">{{ page.props.auth.user.name }}</span>
+                        <img src="https://via.placeholder.com/40" alt="User" class="user-avatar" />
+                    </div>
+                </div>
+            </header>
+
+            <!-- Page Content -->
+            <main class="phox-content">
+                <slot />
+            </main>
+
+            <!-- Footer -->
+            <footer class="phox-footer">
+                <p>© {{ new Date().getFullYear() }} HUBIT. All rights reserved.</p>
+            </footer>
         </div>
-
-        <!-- Footer -->
-        <footer class="bg-light text-center text-muted py-4 mt-5">
-            <div class="container">
-                <p class="mb-0">© {{ new Date().getFullYear() }} HUBIT. Tous droits réservés.</p>
-            </div>
-        </footer>
     </div>
 </template>
 
 <style scoped>
-.client-layout {
+.phox-client-layout {
+    display: flex;
     min-height: 100vh;
+    background-color: #f5f7fa;
+}
+
+/* Purple Gradient Sidebar */
+.phox-sidebar {
+    width: 260px;
+    background: linear-gradient(180deg, #6b46c1 0%, #553c9a 100%);
+    color: white;
     display: flex;
     flex-direction: column;
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 1000;
+    transition: all 0.3s ease;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.1);
 }
 
-.navbar {
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+.phox-sidebar.collapsed {
+    width: 70px;
 }
 
-.navbar-brand {
+.phox-sidebar.collapsed .nav-text {
+    display: none;
+}
+
+.sidebar-logo {
+    padding: 2rem 1.5rem;
+    text-align: center;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.logo-link {
+    color: white !important;
+    text-decoration: none;
     font-size: 1.5rem;
-    color: #0066cc !important;
+    font-weight: 700;
 }
 
-.nav-link {
-    color: #333 !important;
-    padding: 0.5rem 1rem !important;
+.sidebar-nav {
+    flex: 1;
+    padding: 1rem 0;
+    overflow-y: auto;
 }
 
-.nav-link:hover {
-    color: #0066cc !important;
+.nav-item {
+    display: flex;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    color: rgba(255,255,255,0.8);
+    text-decoration: none;
+    transition: all 0.2s;
+    border-left: 3px solid transparent;
 }
 
-.dropdown-menu {
-    border: 1px solid #ddd;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+.nav-item:hover {
+    background-color: rgba(255,255,255,0.1);
+    color: white;
+    border-left-color: white;
 }
 
-.dropdown-item:hover {
-    background-color: #f8f9fa;
-    color: #0066cc;
+.nav-item.active {
+    background-color: rgba(255,255,255,0.15);
+    color: white;
+    border-left-color: white;
 }
 
-footer {
-    margin-top: auto;
-    border-top: 1px solid #dee2e6;
+.nav-item i {
+    width: 24px;
+    font-size: 1.2rem;
+    margin-right: 1rem;
+}
+
+.nav-divider {
+    height: 1px;
+    background: rgba(255,255,255,0.1);
+    margin: 1rem 0;
+}
+
+.sidebar-footer {
+    padding: 1rem;
+    border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+.logout-btn {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background: rgba(255,255,255,0.1);
+    border: none;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+}
+
+.logout-btn:hover {
+    background: rgba(255,255,255,0.2);
+}
+
+.logout-btn i {
+    margin-right: 0.75rem;
+}
+
+/* Main Content Area */
+.phox-main-content {
+    flex: 1;
+    margin-left: 260px;
+    display: flex;
+    flex-direction: column;
+    transition: margin-left 0.3s ease;
+}
+
+.phox-sidebar.collapsed + .phox-main-content {
+    margin-left: 70px;
+}
+
+/* Top Bar */
+.phox-topbar {
+    background: white;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.topbar-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.sidebar-toggle {
+    background: none;
+    border: none;
+    font-size: 1.25rem;
+    color: #6b46c1;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 6px;
+    transition: all 0.2s;
+}
+
+.sidebar-toggle:hover {
+    background: #f5f7fa;
+}
+
+.page-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #2d3748;
+    margin: 0;
+}
+
+.topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.user-name {
+    font-weight: 500;
+    color: #2d3748;
+}
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid #6b46c1;
+}
+
+/* Content Area */
+.phox-content {
+    flex: 1;
+    padding: 2rem;
+}
+
+/* Footer */
+.phox-footer {
+    background: white;
+    padding: 1.5rem 2rem;
+    text-align: center;
+    color: #718096;
+    border-top: 1px solid #e2e8f0;
+}
+
+.phox-footer p {
+    margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .phox-sidebar {
+        transform: translateX(-100%);
+    }
+
+    .phox-sidebar.collapsed {
+        transform: translateX(0);
+    }
+
+    .phox-main-content {
+        margin-left: 0;
+    }
 }
 </style>
