@@ -225,6 +225,24 @@ Route::middleware(['auth', 'verified', 'throttle:60,1'])->prefix('managit')->gro
     ]);
     Route::post('servers/{id}/test', [App\Http\Controllers\Admin\ServerController::class, 'testConnection'])->name('managit.servers.test');
 
+    Route::resource('support-departments', App\Http\Controllers\Admin\SupportDepartmentController::class)->names([
+        'index' => 'managit.support-departments.index',
+        'create' => 'managit.support-departments.create',
+        'store' => 'managit.support-departments.store',
+        'edit' => 'managit.support-departments.edit',
+        'update' => 'managit.support-departments.update',
+        'destroy' => 'managit.support-departments.destroy',
+    ]);
+
+    Route::resource('support-statuses', App\Http\Controllers\Admin\SupportStatusController::class)->names([
+        'index' => 'managit.support-statuses.index',
+        'create' => 'managit.support-statuses.create',
+        'store' => 'managit.support-statuses.store',
+        'edit' => 'managit.support-statuses.edit',
+        'update' => 'managit.support-statuses.update',
+        'destroy' => 'managit.support-statuses.destroy',
+    ]);
+
     Route::prefix('settings')->name('managit.settings.')->group(function () {
         Route::get('/', [App\Http\Controllers\Admin\SettingsController::class, 'index'])->name('index');
         Route::get('/company', [App\Http\Controllers\Admin\SettingsController::class, 'company'])->name('company');
