@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Ticket;
 use App\Models\TicketMessage;
+use App\Models\Client;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -51,6 +52,67 @@ class SupportController extends Controller
             'tickets' => $tickets,
             'filters' => $request->only(['search', 'status', 'priority']),
         ]);
+    }
+
+    /**
+     * Show the form for creating a new ticket.
+     */
+    public function create()
+    {
+        $clients = Client::select('id', 'first_name', 'last_name', 'company_name', 'email')
+            ->orderBy('first_name')
+            ->get()
+            ->map(function ($client) {
+                $name = trim($client->first_name . ' ' . $client->last_name);
+                if ($client->company_name) {
+                    $name = $client->company_name . ' (' . $name . ')';
+                }
+                return [
+                    'id' => $client->id,
+                    'name' => $name,
+                    'email' => $client->email,
+                ];
+            });
+
+        return Inertia::render('Admin/Support/Create', [
+            'clients' => $clients,
+        ]);
+    }
+
+    /**
+     * Store a newly created ticket.
+     */
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'client_id' => 'required|exists:clients,id',
+            'subject' => 'required|string|max:255',
+            'priority' => 'required|in:low,medium,high,urgent',
+            'department' => 'nullable|string',
+            'message' => 'required|string',
+        ]);
+
+        $lastTicket = Ticket::orderBy('id', 'desc')->first();
+        $ticketNumber = 'TKT-' . str_pad(($lastTicket ? $lastTicket->id + 1 : 1), 6, '0', STR_PAD_LEFT);
+
+        $ticket = Ticket::create([
+            'client_id' => $validated['client_id'],
+            'ticket_number' => $ticketNumber,
+            'subject' => $validated['subject'],
+            'status' => 'open',
+            'priority' => $validated['priority'],
+            'department' => $validated['department'] ?? 'General',
+        ]);
+
+        TicketMessage::create([
+            'ticket_id' => $ticket->id,
+            'user_id' => auth()->id(),
+            'message' => $validated['message'],
+            'is_admin' => true,
+        ]);
+
+        return redirect()->route('managit.support.show', $ticket->id)
+            ->with('success', 'Ticket created successfully.');
     }
 
     /**

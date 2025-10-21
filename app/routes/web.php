@@ -176,6 +176,8 @@ Route::middleware(['auth', 'verified', 'throttle:60,1'])->prefix('managit')->gro
 
     Route::prefix('support')->name('managit.support.')->group(function () {
         Route::get('/', [App\Http\Controllers\Admin\SupportController::class, 'index'])->name('index');
+        Route::get('/create', [App\Http\Controllers\Admin\SupportController::class, 'create'])->name('create');
+        Route::post('/', [App\Http\Controllers\Admin\SupportController::class, 'store'])->name('store');
         Route::get('/{ticket}', [App\Http\Controllers\Admin\SupportController::class, 'show'])->name('show');
         Route::post('/{ticket}/reply', [App\Http\Controllers\Admin\SupportController::class, 'reply'])->name('reply');
         Route::post('/{ticket}/status', [App\Http\Controllers\Admin\SupportController::class, 'updateStatus'])->name('updateStatus');
