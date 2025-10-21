@@ -157,6 +157,16 @@ Route::middleware(['auth', 'verified', 'throttle:60,1'])->prefix('managit')->gro
         'destroy' => 'managit.domains.destroy',
     ]);
     
+    Route::resource('products', App\Http\Controllers\Admin\ProductController::class)->names([
+        'index' => 'managit.products.index',
+        'create' => 'managit.products.create',
+        'store' => 'managit.products.store',
+        'show' => 'managit.products.show',
+        'edit' => 'managit.products.edit',
+        'update' => 'managit.products.update',
+        'destroy' => 'managit.products.destroy',
+    ]);
+    
     Route::get('/billing/transactions', [App\Http\Controllers\Admin\TransactionController::class, 'index'])->name('managit.transactions.index');
     Route::get('/billing/transactions/{transaction}', [App\Http\Controllers\Admin\TransactionController::class, 'show'])->name('managit.transactions.show');
     Route::post('/billing/transactions/{transaction}/review', [App\Http\Controllers\Admin\TransactionController::class, 'review'])->name('managit.transactions.review');
