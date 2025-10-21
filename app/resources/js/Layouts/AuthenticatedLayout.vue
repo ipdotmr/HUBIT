@@ -39,6 +39,65 @@ const showingNavigationDropdown = ref(false);
                                 >
                                     Dashboard
                                 </NavLink>
+                                
+                                <!-- Services Dropdown -->
+                                <Dropdown align="left" width="48">
+                                    <template #trigger>
+                                        <button
+                                            type="button"
+                                            class="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium leading-5 text-gray-500 transition duration-150 ease-in-out hover:border-gray-300 hover:text-gray-700 focus:border-gray-300 focus:text-gray-700 focus:outline-none dark:text-gray-400 dark:hover:border-gray-700 dark:hover:text-gray-300 dark:focus:border-gray-700 dark:focus:text-gray-300"
+                                        >
+                                            Services
+                                            <svg class="ms-1 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                            </svg>
+                                        </button>
+                                    </template>
+                                    <template #content>
+                                        <DropdownLink :href="route('client.services.index')">My Services</DropdownLink>
+                                        <DropdownLink :href="route('cart.index')">Order New Services</DropdownLink>
+                                    </template>
+                                </Dropdown>
+
+                                <!-- Domains Dropdown -->
+                                <Dropdown align="left" width="48">
+                                    <template #trigger>
+                                        <button
+                                            type="button"
+                                            class="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium leading-5 text-gray-500 transition duration-150 ease-in-out hover:border-gray-300 hover:text-gray-700 focus:border-gray-300 focus:text-gray-700 focus:outline-none dark:text-gray-400 dark:hover:border-gray-700 dark:hover:text-gray-300 dark:focus:border-gray-700 dark:focus:text-gray-300"
+                                        >
+                                            Domains
+                                            <svg class="ms-1 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                            </svg>
+                                        </button>
+                                    </template>
+                                    <template #content>
+                                        <DropdownLink :href="route('client.domains.index')">My Domains</DropdownLink>
+                                        <DropdownLink :href="route('domains.search')">Register Domain</DropdownLink>
+                                        <DropdownLink :href="route('domains.pricing')">Domain Pricing</DropdownLink>
+                                    </template>
+                                </Dropdown>
+
+                                <!-- Billing Dropdown -->
+                                <Dropdown align="left" width="48">
+                                    <template #trigger>
+                                        <button
+                                            type="button"
+                                            class="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium leading-5 text-gray-500 transition duration-150 ease-in-out hover:border-gray-300 hover:text-gray-700 focus:border-gray-300 focus:text-gray-700 focus:outline-none dark:text-gray-400 dark:hover:border-gray-700 dark:hover:text-gray-300 dark:focus:border-gray-700 dark:focus:text-gray-300"
+                                        >
+                                            Billing
+                                            <svg class="ms-1 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                            </svg>
+                                        </button>
+                                    </template>
+                                    <template #content>
+                                        <DropdownLink :href="route('client.invoices.index')">My Invoices</DropdownLink>
+                                        <DropdownLink :href="route('client.wallet.index')">My Wallet</DropdownLink>
+                                        <DropdownLink :href="route('client.wallet.transactions')">Transactions</DropdownLink>
+                                    </template>
+                                </Dropdown>
                             </div>
                         </div>
 
@@ -146,6 +205,29 @@ const showingNavigationDropdown = ref(false);
                         >
                             Dashboard
                         </ResponsiveNavLink>
+                        
+                        <!-- Services -->
+                        <div class="border-t border-gray-200 dark:border-gray-600">
+                            <div class="px-4 py-2 text-xs font-semibold text-gray-500 uppercase">Services</div>
+                            <ResponsiveNavLink :href="route('client.services.index')">My Services</ResponsiveNavLink>
+                            <ResponsiveNavLink :href="route('cart.index')">Order New Services</ResponsiveNavLink>
+                        </div>
+                        
+                        <!-- Domains -->
+                        <div class="border-t border-gray-200 dark:border-gray-600">
+                            <div class="px-4 py-2 text-xs font-semibold text-gray-500 uppercase">Domains</div>
+                            <ResponsiveNavLink :href="route('client.domains.index')">My Domains</ResponsiveNavLink>
+                            <ResponsiveNavLink :href="route('domains.search')">Register Domain</ResponsiveNavLink>
+                            <ResponsiveNavLink :href="route('domains.pricing')">Domain Pricing</ResponsiveNavLink>
+                        </div>
+                        
+                        <!-- Billing -->
+                        <div class="border-t border-gray-200 dark:border-gray-600">
+                            <div class="px-4 py-2 text-xs font-semibold text-gray-500 uppercase">Billing</div>
+                            <ResponsiveNavLink :href="route('client.invoices.index')">My Invoices</ResponsiveNavLink>
+                            <ResponsiveNavLink :href="route('client.wallet.index')">My Wallet</ResponsiveNavLink>
+                            <ResponsiveNavLink :href="route('client.wallet.transactions')">Transactions</ResponsiveNavLink>
+                        </div>
                     </div>
 
                     <!-- Responsive Settings Options -->

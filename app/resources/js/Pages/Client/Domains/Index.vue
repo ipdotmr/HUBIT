@@ -1,272 +1,192 @@
 <script setup>
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head, Link, router } from '@inertiajs/vue3';
 import { ref } from 'vue';
+import { Head, Link, router } from '@inertiajs/vue3';
+import OsenLayout from '@/Layouts/OsenLayout.vue';
 
 const props = defineProps({
     domains: Object,
     filters: Object,
 });
 
-const form = ref({
-    registrar: props.filters?.registrar || '',
+const filters = ref({
+    domain: props.filters?.domain || '',
     status: props.filters?.status || '',
-    expiring_in_days: props.filters?.expiring_in_days || '',
 });
 
-const applyFilters = () => {
-    router.get(route('client.domains.index'), form.value, {
+const search = () => {
+    router.get(route('client.domains.index'), filters.value, {
         preserveState: true,
-        replace: true,
+        preserveScroll: true,
     });
 };
 
 const clearFilters = () => {
-    form.value = { registrar: '', status: '', expiring_in_days: '' };
-    applyFilters();
+    filters.value = { domain: '', status: '' };
+    search();
 };
 
-const getStatusColor = (status) => {
-    const colors = {
-        active: 'bg-green-100 text-green-800',
-        pending: 'bg-yellow-100 text-yellow-800',
-        expired: 'bg-red-100 text-red-800',
-        suspended: 'bg-gray-100 text-gray-800',
+const statusBadge = (status) => {
+    const badges = {
+        active: 'text-success',
+        expired: 'text-danger',
+        pending: 'text-warning',
+        cancelled: 'text-secondary',
     };
-    return colors[status] || 'bg-gray-100 text-gray-800';
+    return badges[status] || badges.pending;
 };
 </script>
 
 <template>
-    <Head :title="$t('domains.my_domains')" />
+    <Head title="My Domains" />
 
-    <AuthenticatedLayout>
+    <OsenLayout>
         <template #header>
-            <h2 class="text-xl font-semibold leading-tight text-gray-800">
-                {{ $t('domains.my_domains') }}
-            </h2>
+            <h4 class="page-title">My Domains</h4>
+            <p class="text-muted">Manage your domain names</p>
         </template>
 
-        <div class="py-12">
-            <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                <div class="mb-6 overflow-hidden bg-white shadow-sm sm:rounded-lg">
-                    <div class="p-6">
-                        <div class="grid grid-cols-1 gap-4 md:grid-cols-4">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">
-                                    {{ $t('domains.filter_registrar') }}
-                                </label>
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="header-title">Filter Domains</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <label class="form-label">Domain Name</label>
+                                <input
+                                    v-model="filters.domain"
+                                    type="text"
+                                    placeholder="Search by domain name..."
+                                    class="form-control"
+                                    @keyup.enter="search"
+                                />
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="form-label">Status</label>
                                 <select
-                                    v-model="form.registrar"
-                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                    v-model="filters.status"
+                                    class="form-select"
+                                    @change="search"
                                 >
-                                    <option value="">
-                                        {{ $t('common.all') }}
-                                    </option>
-                                    <option value="namecheap">Namecheap</option>
-                                    <option value="namecom">Name.com</option>
-                                    <option value="coccaep">COCCA EP</option>
+                                    <option value="">All Statuses</option>
+                                    <option value="active">Active</option>
+                                    <option value="expired">Expired</option>
+                                    <option value="pending">Pending</option>
+                                    <option value="cancelled">Cancelled</option>
                                 </select>
                             </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">
-                                    {{ $t('domains.filter_status') }}
-                                </label>
-                                <select
-                                    v-model="form.status"
-                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                                >
-                                    <option value="">
-                                        {{ $t('common.all') }}
-                                    </option>
-                                    <option value="active">{{ $t('domains.status_active') }}</option>
-                                    <option value="pending">{{ $t('domains.status_pending') }}</option>
-                                    <option value="expired">{{ $t('domains.status_expired') }}</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">
-                                    {{ $t('domains.filter_expiring') }}
-                                </label>
-                                <select
-                                    v-model="form.expiring_in_days"
-                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                                >
-                                    <option value="">
-                                        {{ $t('common.all') }}
-                                    </option>
-                                    <option value="30">30 {{ $t('common.days') }}</option>
-                                    <option value="60">60 {{ $t('common.days') }}</option>
-                                    <option value="90">90 {{ $t('common.days') }}</option>
-                                </select>
-                            </div>
-                            <div class="flex items-end gap-2">
-                                <button
-                                    type="button"
-                                    class="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-                                    @click="applyFilters"
-                                >
-                                    {{ $t('common.apply') }}
+
+                            <div class="col-md-4 d-flex align-items-end gap-2">
+                                <button @click="search" class="btn btn-primary">
+                                    <i class="ti ti-search me-1"></i> Search
                                 </button>
-                                <button
-                                    type="button"
-                                    class="rounded-md bg-gray-200 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
-                                    @click="clearFilters"
-                                >
-                                    {{ $t('common.clear') }}
+                                <button @click="clearFilters" class="btn btn-light">
+                                    <i class="ti ti-x me-1"></i> Clear
                                 </button>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div
-                    v-if="!domains.data || domains.data.length === 0"
-                    class="overflow-hidden bg-white p-12 text-center shadow-sm sm:rounded-lg"
-                >
-                    <svg
-                        class="mx-auto h-12 w-12 text-gray-400"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                    >
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"
-                        />
-                    </svg>
-                    <p class="mt-4 text-gray-500">
-                        {{ $t('domains.no_domains') }}
-                    </p>
-                    <Link
-                        :href="route('domains.search')"
-                        class="mt-4 inline-block text-blue-600 hover:text-blue-700"
-                    >
-                        {{ $t('domains.search_domains') }}
-                    </Link>
-                </div>
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h4 class="header-title">Domains</h4>
+                        <div class="d-flex gap-2">
+                            <span class="badge bg-primary">{{ domains.total }} Total</span>
+                            <Link :href="route('domains.search')" class="btn btn-sm btn-success">
+                                <i class="ti ti-plus me-1"></i> Register New Domain
+                            </Link>
+                        </div>
+                    </div>
+                    <div class="card-body p-0">
+                        <div v-if="domains.data.length === 0" class="text-center py-5 text-muted">
+                            <i class="ti ti-world fs-48 mb-3 d-block"></i>
+                            <p>No domains found.</p>
+                            <Link :href="route('domains.search')" class="btn btn-primary mt-2">
+                                <i class="ti ti-plus me-1"></i> Register Your First Domain
+                            </Link>
+                        </div>
 
-                <div v-else class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
-                    <table class="min-w-full divide-y divide-gray-200">
-                        <thead class="bg-gray-50">
-                            <tr>
-                                <th
-                                    class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500"
-                                >
-                                    {{ $t('domains.domain') }}
-                                </th>
-                                <th
-                                    class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500"
-                                >
-                                    {{ $t('domains.registrar') }}
-                                </th>
-                                <th
-                                    class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500"
-                                >
-                                    {{ $t('domains.status') }}
-                                </th>
-                                <th
-                                    class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500"
-                                >
-                                    {{ $t('domains.expires_at') }}
-                                </th>
-                                <th
-                                    class="px-6 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-500"
-                                >
-                                    {{ $t('common.actions') }}
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-gray-200 bg-white">
-                            <tr v-for="domain in domains.data" :key="domain.id" class="hover:bg-gray-50">
-                                <td class="whitespace-nowrap px-6 py-4 text-sm font-medium text-gray-900">
-                                    {{ domain.domain }}
-                                </td>
-                                <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
-                                    {{ domain.registrar }}
-                                </td>
-                                <td class="whitespace-nowrap px-6 py-4 text-sm">
-                                    <span
-                                        :class="getStatusColor(domain.status)"
-                                        class="inline-flex rounded-full px-2 py-1 text-xs font-semibold leading-5"
-                                    >
-                                        {{ $t(`domains.status_${domain.status}`) }}
-                                    </span>
-                                </td>
-                                <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
-                                    {{ domain.expires_at ? new Date(domain.expires_at).toLocaleDateString() : '-' }}
-                                </td>
-                                <td class="whitespace-nowrap px-6 py-4 text-right text-sm font-medium">
-                                    <Link
-                                        :href="route('client.domains.show', domain.id)"
-                                        class="text-blue-600 hover:text-blue-900 focus:outline-none focus:underline"
-                                    >
-                                        {{ $t('common.manage') }}
-                                    </Link>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                        <div v-else class="table-responsive">
+                            <table class="table table-custom table-centered table-nowrap table-hover mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Domain</th>
+                                        <th>Status</th>
+                                        <th>Registration Date</th>
+                                        <th>Expiry Date</th>
+                                        <th class="text-end">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="domain in domains.data" :key="domain.id">
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <div class="avatar-sm flex-shrink-0 me-2">
+                                                    <span class="avatar-title bg-info-subtle rounded-circle">
+                                                        <i class="ti ti-world"></i>
+                                                    </span>
+                                                </div>
+                                                <div>
+                                                    <h5 class="fs-14 mb-0">{{ domain.domain }}</h5>
+                                                    <span class="text-muted fs-12">{{ domain.registrar || 'N/A' }}</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <i class="ti ti-circle-filled fs-12" :class="statusBadge(domain.status)"></i>
+                                            <span class="text-capitalize">{{ domain.status }}</span>
+                                        </td>
+                                        <td>
+                                            <span class="text-muted">{{ domain.registration_date ? new Date(domain.registration_date).toLocaleDateString() : 'N/A' }}</span>
+                                        </td>
+                                        <td>
+                                            <span class="text-muted">{{ domain.expiry_date ? new Date(domain.expiry_date).toLocaleDateString() : 'N/A' }}</span>
+                                        </td>
+                                        <td class="text-end">
+                                            <Link
+                                                :href="route('client.domains.show', domain.id)"
+                                                class="btn btn-sm btn-light"
+                                            >
+                                                <i class="ti ti-settings me-1"></i> Manage
+                                            </Link>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
 
-                    <div
-                        v-if="domains.links && domains.links.length > 3"
-                        class="border-t border-gray-200 bg-white px-4 py-3 sm:px-6"
-                    >
-                        <div class="flex items-center justify-between">
-                            <div class="flex flex-1 justify-between sm:hidden">
-                                <Link
-                                    v-if="domains.prev_page_url"
-                                    :href="domains.prev_page_url"
-                                    class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
-                                >
-                                    {{ $t('common.previous') }}
-                                </Link>
-                                <Link
-                                    v-if="domains.next_page_url"
-                                    :href="domains.next_page_url"
-                                    class="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
-                                >
-                                    {{ $t('common.next') }}
-                                </Link>
-                            </div>
-                            <div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
-                                <div>
-                                    <p class="text-sm text-gray-700">
-                                        {{ $t('common.showing') }}
-                                        <span class="font-medium">{{ domains.from }}</span>
-                                        {{ $t('common.to') }}
-                                        <span class="font-medium">{{ domains.to }}</span>
-                                        {{ $t('common.of') }}
-                                        <span class="font-medium">{{ domains.total }}</span>
-                                        {{ $t('common.results') }}
-                                    </p>
+                        <div v-if="domains.links.length > 3" class="card-footer">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="text-muted">
+                                    Showing {{ domains.from }} to {{ domains.to }} of {{ domains.total }} results
                                 </div>
-                                <div>
-                                    <nav class="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
-                                        <component
-                                            :is="link.url ? Link : 'span'"
+                                <nav>
+                                    <ul class="pagination pagination-sm mb-0">
+                                        <li
                                             v-for="(link, index) in domains.links"
                                             :key="index"
-                                            :href="link.url"
-                                            :class="[
-                                                link.active
-                                                    ? 'z-10 bg-blue-50 border-blue-500 text-blue-600'
-                                                    : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50',
-                                                'relative inline-flex items-center px-4 py-2 text-sm font-medium border',
-                                                index === 0 ? 'rounded-l-md' : '',
-                                                index === domains.links.length - 1 ? 'rounded-r-md' : '',
-                                            ]"
-                                            v-html="link.label"
-                                        />
-                                    </nav>
-                                </div>
+                                            class="page-item"
+                                            :class="{ 'active': link.active, 'disabled': !link.url }"
+                                        >
+                                            <Link
+                                                v-if="link.url"
+                                                :href="link.url"
+                                                class="page-link"
+                                                v-html="link.label"
+                                            ></Link>
+                                            <span v-else class="page-link" v-html="link.label"></span>
+                                        </li>
+                                    </ul>
+                                </nav>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </AuthenticatedLayout>
+    </OsenLayout>
 </template>

@@ -54,6 +54,7 @@ Route::middleware('auth')->group(function () {
 
     Route::prefix('cart')->name('cart.')->group(function () {
         Route::get('/', [App\Http\Controllers\CartController::class, 'index'])->name('index');
+        Route::post('/add', [App\Http\Controllers\CartController::class, 'add'])->name('add');
         Route::post('/domain', [App\Http\Controllers\CartController::class, 'addDomain'])->name('add-domain');
         Route::post('/hosting', [App\Http\Controllers\CartController::class, 'addHosting'])->name('add-hosting');
         Route::delete('/items/{item}', [App\Http\Controllers\CartController::class, 'remove'])->name('remove');
@@ -94,13 +95,48 @@ Route::middleware('auth')->group(function () {
         Route::post('/add-credit', [App\Http\Controllers\Client\WalletController::class, 'addCredit'])->name('add-credit');
         Route::get('/transactions', [App\Http\Controllers\Client\WalletController::class, 'transactions'])->name('transactions');
     });
+
+    Route::prefix('dashboard/invoices')->name('client.invoices.')->middleware('throttle:60,1')->group(function () {
+        Route::get('/', [App\Http\Controllers\Client\InvoiceController::class, 'index'])->name('index');
+    });
+
+    Route::prefix('products')->name('products.')->middleware('throttle:60,1')->group(function () {
+        Route::get('/', [App\Http\Controllers\Client\ProductController::class, 'index'])->name('index');
+        Route::get('/{slug}', [App\Http\Controllers\Client\ProductController::class, 'show'])->name('show');
+    });
 });
 
 require __DIR__.'/auth.php';
 
 Route::post('/webhooks/stripe', [App\Http\Controllers\WebhookController::class, 'stripe'])->name('webhooks.stripe');
 
+Route::post('/language', function (Illuminate\Http\Request $request) {
+    $locale = $request->input('locale', 'en');
+    if (in_array($locale, ['en', 'ar', 'fr'])) {
+        session(['locale' => $locale]);
+    }
+    return back();
+})->name('language.switch');
+
 Route::middleware(['auth', 'verified', 'throttle:60,1'])->prefix('managit')->group(function () {
+    Route::get('/dashboard', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('managit.dashboard');
+    
+    Route::resource('clients', App\Http\Controllers\Admin\ClientController::class)->names([
+        'index' => 'managit.clients.index',
+        'create' => 'managit.clients.create',
+        'store' => 'managit.clients.store',
+        'show' => 'managit.clients.show',
+        'edit' => 'managit.clients.edit',
+        'update' => 'managit.clients.update',
+        'destroy' => 'managit.clients.destroy',
+    ]);
+    
+    Route::prefix('orders')->name('managit.orders.')->group(function () {
+        Route::get('/', [App\Http\Controllers\Admin\OrderController::class, 'index'])->name('index');
+        Route::get('/{order}', [App\Http\Controllers\Admin\OrderController::class, 'show'])->name('show');
+        Route::post('/{order}/status', [App\Http\Controllers\Admin\OrderController::class, 'updateStatus'])->name('update-status');
+    });
+    
     Route::get('/billing/transactions', [App\Http\Controllers\Admin\TransactionController::class, 'index'])->name('managit.transactions.index');
     Route::get('/billing/transactions/{transaction}', [App\Http\Controllers\Admin\TransactionController::class, 'show'])->name('managit.transactions.show');
     Route::post('/billing/transactions/{transaction}/review', [App\Http\Controllers\Admin\TransactionController::class, 'review'])->name('managit.transactions.review');

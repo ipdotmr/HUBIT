@@ -1,5 +1,5 @@
 <script setup>
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import OsenLayout from '@/Layouts/OsenLayout.vue';
 import DeleteUserForm from './Partials/DeleteUserForm.vue';
 import UpdatePasswordForm from './Partials/UpdatePasswordForm.vue';
 import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm.vue';
@@ -18,39 +18,44 @@ defineProps({
 <template>
     <Head title="Profile" />
 
-    <AuthenticatedLayout>
+    <OsenLayout>
         <template #header>
-            <h2
-                class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200"
-            >
-                Profile
-            </h2>
+            <h4 class="page-title">Profile Settings</h4>
+            <p class="text-muted">Manage your account information and security</p>
         </template>
 
-        <div class="py-12">
-            <div class="mx-auto max-w-7xl space-y-6 sm:px-6 lg:px-8">
-                <div
-                    class="bg-white p-4 shadow sm:rounded-lg sm:p-8 dark:bg-gray-800"
-                >
-                    <UpdateProfileInformationForm
-                        :must-verify-email="mustVerifyEmail"
-                        :status="status"
-                        class="max-w-xl"
-                    />
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="header-title">Profile Information</h4>
+                    </div>
+                    <div class="card-body">
+                        <UpdateProfileInformationForm
+                            :must-verify-email="mustVerifyEmail"
+                            :status="status"
+                        />
+                    </div>
                 </div>
 
-                <div
-                    class="bg-white p-4 shadow sm:rounded-lg sm:p-8 dark:bg-gray-800"
-                >
-                    <UpdatePasswordForm class="max-w-xl" />
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="header-title">Update Password</h4>
+                    </div>
+                    <div class="card-body">
+                        <UpdatePasswordForm />
+                    </div>
                 </div>
 
-                <div
-                    class="bg-white p-4 shadow sm:rounded-lg sm:p-8 dark:bg-gray-800"
-                >
-                    <DeleteUserForm class="max-w-xl" />
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="header-title">Delete Account</h4>
+                    </div>
+                    <div class="card-body">
+                        <DeleteUserForm />
+                    </div>
                 </div>
             </div>
         </div>
-    </AuthenticatedLayout>
+    </OsenLayout>
 </template>

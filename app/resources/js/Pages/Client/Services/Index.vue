@@ -1,7 +1,7 @@
 <script setup>
-import { ref, computed } from 'vue';
+import { ref } from 'vue';
 import { Head, Link, router } from '@inertiajs/vue3';
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import OsenLayout from '@/Layouts/OsenLayout.vue';
 
 const props = defineProps({
     services: Object,
@@ -27,12 +27,12 @@ const clearFilters = () => {
 
 const statusBadge = (status) => {
     const badges = {
-        active: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
-        suspended: 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
-        pending: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
-        pending_suspension: 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200',
-        pending_unsuspension: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
-        terminated: 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200',
+        active: 'text-success',
+        suspended: 'text-danger',
+        pending: 'text-warning',
+        pending_suspension: 'text-orange',
+        pending_unsuspension: 'text-info',
+        terminated: 'text-secondary',
     };
     return badges[status] || badges.pending;
 };
@@ -41,38 +41,36 @@ const statusBadge = (status) => {
 <template>
     <Head title="My Services" />
 
-    <AuthenticatedLayout>
+    <OsenLayout>
         <template #header>
-            <h2 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
-                My Services
-            </h2>
+            <h4 class="page-title">My Services</h4>
+            <p class="text-muted">Manage your hosting services and products</p>
         </template>
 
-        <div class="py-12">
-            <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                <div class="mb-6 overflow-hidden bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">
-                    <div class="p-6">
-                        <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
-                            <div>
-                                <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                    Product
-                                </label>
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="header-title">Filter Services</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <label class="form-label">Product Name</label>
                                 <input
                                     v-model="filters.product"
                                     type="text"
                                     placeholder="Search by product name..."
-                                    class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300"
+                                    class="form-control"
                                     @keyup.enter="search"
                                 />
                             </div>
 
-                            <div>
-                                <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                    Status
-                                </label>
+                            <div class="col-md-4">
+                                <label class="form-label">Status</label>
                                 <select
                                     v-model="filters.status"
-                                    class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300"
+                                    class="form-select"
                                     @change="search"
                                 >
                                     <option value="">All Statuses</option>
@@ -83,78 +81,80 @@ const statusBadge = (status) => {
                                 </select>
                             </div>
 
-                            <div class="flex items-end gap-2">
-                                <button
-                                    @click="search"
-                                    class="rounded-md bg-indigo-600 px-4 py-2 text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                                >
-                                    Search
+                            <div class="col-md-4 d-flex align-items-end gap-2">
+                                <button @click="search" class="btn btn-primary">
+                                    <i class="ti ti-search me-1"></i> Search
                                 </button>
-                                <button
-                                    @click="clearFilters"
-                                    class="rounded-md bg-gray-200 px-4 py-2 text-gray-700 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
-                                >
-                                    Clear
+                                <button @click="clearFilters" class="btn btn-light">
+                                    <i class="ti ti-x me-1"></i> Clear
                                 </button>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="overflow-hidden bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">
-                    <div class="p-6 text-gray-900 dark:text-gray-100">
-                        <div v-if="services.data.length === 0" class="py-8 text-center text-gray-500">
-                            No services found.
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h4 class="header-title">Services</h4>
+                        <div class="d-flex gap-2">
+                            <span class="badge bg-primary">{{ services.total }} Total</span>
+                            <Link :href="route('cart.index')" class="btn btn-sm btn-success">
+                                <i class="ti ti-plus me-1"></i> Order New Service
+                            </Link>
+                        </div>
+                    </div>
+                    <div class="card-body p-0">
+                        <div v-if="services.data.length === 0" class="text-center py-5 text-muted">
+                            <i class="ti ti-server fs-48 mb-3 d-block"></i>
+                            <p>No services found.</p>
+                            <Link :href="route('cart.index')" class="btn btn-primary mt-2">
+                                <i class="ti ti-plus me-1"></i> Order Your First Service
+                            </Link>
                         </div>
 
-                        <div v-else class="overflow-x-auto">
-                            <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                                <thead class="bg-gray-50 dark:bg-gray-900">
+                        <div v-else class="table-responsive">
+                            <table class="table table-custom table-centered table-nowrap table-hover mb-0">
+                                <thead class="table-light">
                                     <tr>
-                                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400">
-                                            Product
-                                        </th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400">
-                                            Status
-                                        </th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400">
-                                            Next Due
-                                        </th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400">
-                                            Recurring
-                                        </th>
-                                        <th class="px-6 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400">
-                                            Actions
-                                        </th>
+                                        <th>Product</th>
+                                        <th>Status</th>
+                                        <th>Next Due</th>
+                                        <th>Recurring</th>
+                                        <th class="text-end">Actions</th>
                                     </tr>
                                 </thead>
-                                <tbody class="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-800">
-                                    <tr v-for="service in services.data" :key="service.id" class="hover:bg-gray-50 dark:hover:bg-gray-700">
-                                        <td class="whitespace-nowrap px-6 py-4">
-                                            <div class="text-sm font-medium text-gray-900 dark:text-gray-100">
-                                                {{ service.product?.name || 'N/A' }}
+                                <tbody>
+                                    <tr v-for="service in services.data" :key="service.id">
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <div class="avatar-sm flex-shrink-0 me-2">
+                                                    <span class="avatar-title bg-primary-subtle rounded-circle">
+                                                        <i class="ti ti-server"></i>
+                                                    </span>
+                                                </div>
+                                                <div>
+                                                    <h5 class="fs-14 mb-0">{{ service.product?.name || 'N/A' }}</h5>
+                                                    <span class="text-muted fs-12">{{ service.provisioner || 'N/A' }}</span>
+                                                </div>
                                             </div>
-                                            <div class="text-sm text-gray-500 dark:text-gray-400">
-                                                {{ service.provisioner || 'N/A' }}
-                                            </div>
                                         </td>
-                                        <td class="whitespace-nowrap px-6 py-4">
-                                            <span :class="statusBadge(service.status)" class="inline-flex rounded-full px-2 text-xs font-semibold leading-5">
-                                                {{ service.status }}
-                                            </span>
+                                        <td>
+                                            <i class="ti ti-circle-filled fs-12" :class="statusBadge(service.status)"></i>
+                                            <span class="text-capitalize">{{ service.status }}</span>
                                         </td>
-                                        <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500 dark:text-gray-400">
-                                            {{ service.next_due_at ? new Date(service.next_due_at).toLocaleDateString() : 'N/A' }}
+                                        <td>
+                                            <span class="text-muted">{{ service.next_due_at ? new Date(service.next_due_at).toLocaleDateString() : 'N/A' }}</span>
                                         </td>
-                                        <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500 dark:text-gray-400">
-                                            ${{ service.recurring_amount || '0.00' }}/{{ service.billing_cycle || 'monthly' }}
+                                        <td>
+                                            <span class="fw-semibold">${{ service.recurring_amount || '0.00' }}</span>
+                                            <span class="text-muted">/{{ service.billing_cycle || 'monthly' }}</span>
                                         </td>
-                                        <td class="whitespace-nowrap px-6 py-4 text-right text-sm font-medium">
+                                        <td class="text-end">
                                             <Link
                                                 :href="route('client.services.show', service.id)"
-                                                class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300"
+                                                class="btn btn-sm btn-light"
                                             >
-                                                Manage
+                                                <i class="ti ti-settings me-1"></i> Manage
                                             </Link>
                                         </td>
                                     </tr>
@@ -162,29 +162,34 @@ const statusBadge = (status) => {
                             </table>
                         </div>
 
-                        <div v-if="services.links.length > 3" class="mt-6 flex items-center justify-between">
-                            <div class="text-sm text-gray-700 dark:text-gray-300">
-                                Showing {{ services.from }} to {{ services.to }} of {{ services.total }} results
-                            </div>
-                            <div class="flex gap-1">
-                                <Link
-                                    v-for="(link, index) in services.links"
-                                    :key="index"
-                                    :href="link.url"
-                                    :class="[
-                                        'px-3 py-2 rounded-md text-sm',
-                                        link.active
-                                            ? 'bg-indigo-600 text-white'
-                                            : 'bg-white text-gray-700 hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700',
-                                        !link.url && 'opacity-50 cursor-not-allowed',
-                                    ]"
-                                    v-html="link.label"
-                                ></Link>
+                        <div v-if="services.links.length > 3" class="card-footer">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="text-muted">
+                                    Showing {{ services.from }} to {{ services.to }} of {{ services.total }} results
+                                </div>
+                                <nav>
+                                    <ul class="pagination pagination-sm mb-0">
+                                        <li
+                                            v-for="(link, index) in services.links"
+                                            :key="index"
+                                            class="page-item"
+                                            :class="{ 'active': link.active, 'disabled': !link.url }"
+                                        >
+                                            <Link
+                                                v-if="link.url"
+                                                :href="link.url"
+                                                class="page-link"
+                                                v-html="link.label"
+                                            ></Link>
+                                            <span v-else class="page-link" v-html="link.label"></span>
+                                        </li>
+                                    </ul>
+                                </nav>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </AuthenticatedLayout>
+    </OsenLayout>
 </template>

@@ -1,33 +1,43 @@
 <template>
-  <AuthenticatedLayout>
-    <Head :title="$t('cart.title')" />
+  <OsenLayout>
+    <Head title="Shopping Cart" />
 
-    <div class="py-12">
-      <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-          <div class="p-6 text-gray-900 dark:text-gray-100">
-            <div class="flex justify-between items-center mb-6">
-              <h2 class="text-2xl font-semibold">{{ $t('cart.title') }}</h2>
+    <template #header>
+      <div class="row">
+        <div class="col-12">
+          <div class="page-title-box">
+            <h4 class="page-title">Shopping Cart</h4>
+          </div>
+        </div>
+      </div>
+    </template>
+
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-3">
               <button
                 v-if="cart.items && cart.items.length > 0"
                 @click="clearCart"
-                class="text-sm text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300"
+                class="btn btn-sm btn-outline-danger"
               >
-                {{ $t('cart.clear_cart') }}
+                <i class="ti ti-trash me-1"></i>
+                Clear Cart
               </button>
             </div>
 
             <!-- Empty Cart -->
-            <div v-if="!cart.items || cart.items.length === 0" class="text-center py-12">
-              <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-              </svg>
-              <p class="mt-4 text-gray-500 dark:text-gray-400">{{ $t('cart.empty') }}</p>
+            <div v-if="!cart.items || cart.items.length === 0" class="text-center py-5">
+              <i class="ti ti-shopping-cart-off display-4 text-muted mb-3"></i>
+              <h4 class="text-muted">Your cart is empty</h4>
+              <p class="text-muted">Browse our products and add items to your cart.</p>
               <Link
-                :href="route('domains.search')"
-                class="mt-4 inline-block px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
+                :href="route('products.index')"
+                class="btn btn-primary mt-3"
               >
-                {{ $t('domains.search_domains') }}
+                <i class="ti ti-shopping-bag me-1"></i>
+                Browse Products
               </Link>
             </div>
 
@@ -56,9 +66,9 @@
                           <span v-if="item.type === 'domain'">{{ item.fqdn }}</span>
                           <span v-else>{{ item.config?.plan || 'Hosting Plan' }}</span>
                         </p>
-                        <p class="text-sm text-gray-600 dark:text-gray-400">
+                        <p class="text-sm text-muted">
                           <span v-if="item.type === 'domain'">
-                            {{ item.years }} {{ item.years > 1 ? $t('common.years') : $t('common.year') }} - {{ item.config?.registrar || 'Namecheap' }}
+                            {{ item.years }} {{ item.years > 1 ? 'years' : 'year' }} - {{ item.config?.registrar || 'Namecheap' }}
                           </span>
                           <span v-else>
                             {{ item.config?.cycle || 'monthly' }} - {{ item.sku }}
@@ -85,27 +95,28 @@
               </div>
 
               <!-- Totals -->
-              <div class="border-t border-gray-200 dark:border-gray-700 pt-6">
-                <div class="space-y-2 mb-4">
-                  <div class="flex justify-between text-sm">
-                    <span>{{ $t('cart.subtotal') }}:</span>
+              <div class="border-top pt-4 mt-4">
+                <div class="mb-3">
+                  <div class="d-flex justify-content-between mb-2">
+                    <span>Subtotal:</span>
                     <span>{{ formatPrice(totals.subtotal, cart.currency) }}</span>
                   </div>
-                  <div class="flex justify-between text-sm">
-                    <span>{{ $t('cart.tax') }}:</span>
+                  <div class="d-flex justify-content-between mb-2">
+                    <span>Tax:</span>
                     <span>{{ formatPrice(totals.tax, cart.currency) }}</span>
                   </div>
-                  <div class="flex justify-between text-lg font-semibold">
-                    <span>{{ $t('cart.total') }}:</span>
-                    <span>{{ formatPrice(totals.total, cart.currency) }}</span>
+                  <div class="d-flex justify-content-between fs-5 fw-bold">
+                    <span>Total:</span>
+                    <span class="text-primary">{{ formatPrice(totals.total, cart.currency) }}</span>
                   </div>
                 </div>
 
                 <button
                   @click="checkout"
-                  class="w-full px-6 py-3 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                  class="btn btn-primary w-100"
                 >
-                  {{ $t('cart.checkout') }}
+                  <i class="ti ti-credit-card me-1"></i>
+                  Proceed to Checkout
                 </button>
               </div>
             </div>
@@ -113,15 +124,12 @@
         </div>
       </div>
     </div>
-  </AuthenticatedLayout>
+  </OsenLayout>
 </template>
 
 <script setup>
 import { Head, Link, router } from '@inertiajs/vue3'
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
-import { useI18n } from 'vue-i18n'
-
-const { t } = useI18n()
+import OsenLayout from '@/Layouts/OsenLayout.vue'
 
 const props = defineProps({
   cart: Object,
@@ -135,7 +143,7 @@ const removeItem = (itemId) => {
 }
 
 const clearCart = () => {
-  if (confirm(t('cart.confirm_clear'))) {
+  if (confirm('Are you sure you want to clear your cart?')) {
     router.post(route('cart.clear'), {}, {
       preserveScroll: true
     })

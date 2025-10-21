@@ -77,6 +77,34 @@ class CartController extends Controller
         return redirect()->back()->with('success', __('Hosting added to cart'));
     }
 
+    public function add(Request $request)
+    {
+        $validated = $request->validate([
+            'product_id' => 'required|integer|exists:products,id',
+            'billing_cycle' => 'required|string',
+            'config_options' => 'nullable|array',
+            'quantity' => 'required|integer|min:1',
+        ]);
+
+        $product = \App\Models\Product::findOrFail($validated['product_id']);
+        
+        $client = $request->user()->client;
+        $cart = $this->cartService->getOrCreateCart($client);
+
+        $price = $product->base_price * $validated['quantity'];
+
+        $item = $this->cartService->addHosting(
+            $cart,
+            $validated['product_id'],
+            $product->name,
+            $validated['billing_cycle'],
+            $price,
+            $validated['config_options'] ?? []
+        );
+
+        return redirect()->route('cart.index')->with('success', __('Product added to cart'));
+    }
+
     public function remove(Request $request, CartItem $item)
     {
         if ($item->cart->client_id !== $request->user()->client->id) {
