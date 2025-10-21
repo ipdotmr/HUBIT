@@ -1,8 +1,8 @@
 <template>
-  <div class="form-field">
-    <label v-if="label" :for="id" class="field-label">
+  <div class="mb-3">
+    <label v-if="label" :for="id" class="form-label fw-semibold">
       {{ label }}
-      <span v-if="required" class="required">*</span>
+      <span v-if="required" class="text-danger">*</span>
     </label>
     
     <input
@@ -14,7 +14,7 @@
       :placeholder="placeholder"
       :disabled="disabled"
       :required="required"
-      :class="['field-input', { error: hasError }]"
+      :class="['form-control', { 'is-invalid': hasError }]"
       :aria-label="label"
       :aria-invalid="hasError"
       :aria-describedby="hasError ? `${id}-error` : helpText ? `${id}-help` : undefined"
@@ -29,7 +29,7 @@
       :disabled="disabled"
       :required="required"
       :rows="rows"
-      :class="['field-textarea', { error: hasError }]"
+      :class="['form-control', { 'is-invalid': hasError }]"
       :aria-label="label"
       :aria-invalid="hasError"
       :aria-describedby="hasError ? `${id}-error` : helpText ? `${id}-help` : undefined"
@@ -42,7 +42,7 @@
       @change="$emit('update:modelValue', $event.target.value)"
       :disabled="disabled"
       :required="required"
-      :class="['field-select', { error: hasError }]"
+      :class="['form-select', { 'is-invalid': hasError }]"
       :aria-label="label"
       :aria-invalid="hasError"
       :aria-describedby="hasError ? `${id}-error` : helpText ? `${id}-help` : undefined"
@@ -53,8 +53,8 @@
       </option>
     </select>
 
-    <p v-if="helpText" :id="`${id}-help`" class="help-text">{{ helpText }}</p>
-    <p v-if="hasError" :id="`${id}-error`" class="error-text">{{ error }}</p>
+    <div v-if="helpText" :id="`${id}-help`" class="form-text">{{ helpText }}</div>
+    <div v-if="hasError" :id="`${id}-error`" class="invalid-feedback d-block">{{ error }}</div>
   </div>
 </template>
 
@@ -111,84 +111,5 @@ const hasError = computed(() => !!props.error);
 </script>
 
 <style scoped>
-.form-field {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-}
-
-.field-label {
-  font-size: var(--text-sm);
-  font-weight: var(--font-medium);
-  color: var(--color-text);
-}
-
-.required {
-  color: var(--color-error-500);
-  margin-left: 2px;
-}
-
-.field-input,
-.field-textarea,
-.field-select {
-  width: 100%;
-  padding: var(--space-2) var(--space-3);
-  background: var(--color-background);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  font-size: var(--text-sm);
-  color: var(--color-text);
-  transition: all var(--transition-fast);
-}
-
-.field-input:focus,
-.field-textarea:focus,
-.field-select:focus {
-  outline: none;
-  border-color: var(--color-primary-500);
-  box-shadow: 0 0 0 3px var(--color-primary-50);
-}
-
-.field-input:disabled,
-.field-textarea:disabled,
-.field-select:disabled {
-  background: var(--color-surface);
-  color: var(--color-text-disabled);
-  cursor: not-allowed;
-}
-
-.field-input.error,
-.field-textarea.error,
-.field-select.error {
-  border-color: var(--color-error-500);
-}
-
-.field-input.error:focus,
-.field-textarea.error:focus,
-.field-select.error:focus {
-  box-shadow: 0 0 0 3px var(--color-error-50);
-}
-
-.field-textarea {
-  resize: vertical;
-  min-height: 80px;
-}
-
-.help-text {
-  font-size: var(--text-xs);
-  color: var(--color-text-muted);
-  margin: 0;
-}
-
-.error-text {
-  font-size: var(--text-xs);
-  color: var(--color-error-700);
-  margin: 0;
-}
-
-/* RTL Support */
-[dir="rtl"] .required {
-  margin-left: 0;
-  margin-right: 2px;
-}
+/* Bootstrap classes are used, minimal custom styling needed */
 </style>
