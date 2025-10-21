@@ -218,6 +218,59 @@ class SettingsController extends Controller
     }
 
     /**
+     * Store a new payment account
+     */
+    public function storePaymentAccount(Request $request)
+    {
+        $validated = $request->validate([
+            'gateway' => 'required|string|max:255',
+            'name' => 'required|string|max:255',
+            'account_number' => 'nullable|string|max:255',
+            'bank_name' => 'nullable|string|max:255',
+            'currency_id' => 'nullable|exists:currencies,id',
+            'status' => 'required|in:active,inactive',
+            'notes' => 'nullable|string',
+        ]);
+
+        $account = \App\Models\PaymentAccount::create($validated);
+
+        return redirect()->back()->with('success', 'Payment account created successfully');
+    }
+
+    /**
+     * Update a payment account
+     */
+    public function updatePaymentAccount(Request $request, $id)
+    {
+        $account = \App\Models\PaymentAccount::findOrFail($id);
+
+        $validated = $request->validate([
+            'gateway' => 'required|string|max:255',
+            'name' => 'required|string|max:255',
+            'account_number' => 'nullable|string|max:255',
+            'bank_name' => 'nullable|string|max:255',
+            'currency_id' => 'nullable|exists:currencies,id',
+            'status' => 'required|in:active,inactive',
+            'notes' => 'nullable|string',
+        ]);
+
+        $account->update($validated);
+
+        return redirect()->back()->with('success', 'Payment account updated successfully');
+    }
+
+    /**
+     * Delete a payment account
+     */
+    public function deletePaymentAccount($id)
+    {
+        $account = \App\Models\PaymentAccount::findOrFail($id);
+        $account->delete();
+
+        return redirect()->back()->with('success', 'Payment account deleted successfully');
+    }
+
+    /**
      * Show Exchange Rates settings page
      */
     public function exchangeRates()

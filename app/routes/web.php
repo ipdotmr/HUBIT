@@ -220,6 +220,9 @@ Route::middleware(['auth', 'verified', 'throttle:60,1'])->prefix('managit')->gro
         Route::get('/domains/namecom', [App\Http\Controllers\Admin\SettingsController::class, 'namecom'])->name('namecom');
         Route::get('/domains/coccaep', [App\Http\Controllers\Admin\SettingsController::class, 'coccaep'])->name('coccaep');
         Route::get('/payments/accounts', [App\Http\Controllers\Admin\SettingsController::class, 'paymentAccounts'])->name('payment-accounts');
+        Route::post('/payments/accounts', [App\Http\Controllers\Admin\SettingsController::class, 'storePaymentAccount'])->name('payment-accounts.store');
+        Route::put('/payments/accounts/{id}', [App\Http\Controllers\Admin\SettingsController::class, 'updatePaymentAccount'])->name('payment-accounts.update');
+        Route::delete('/payments/accounts/{id}', [App\Http\Controllers\Admin\SettingsController::class, 'deletePaymentAccount'])->name('payment-accounts.delete');
         Route::get('/payments/rates', [App\Http\Controllers\Admin\SettingsController::class, 'exchangeRates'])->name('exchange-rates');
         Route::get('/localization', [App\Http\Controllers\Admin\SettingsController::class, 'localization'])->name('localization');
         Route::post('/', [App\Http\Controllers\Admin\SettingsController::class, 'update'])->name('update');
