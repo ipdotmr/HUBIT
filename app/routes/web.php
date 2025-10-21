@@ -206,6 +206,15 @@ Route::middleware(['auth', 'verified', 'throttle:60,1'])->prefix('managit')->gro
         'destroy' => 'managit.email-templates.destroy',
     ]);
 
+    Route::resource('currencies', App\Http\Controllers\Admin\CurrencyController::class)->names([
+        'index' => 'managit.currencies.index',
+        'create' => 'managit.currencies.create',
+        'store' => 'managit.currencies.store',
+        'edit' => 'managit.currencies.edit',
+        'update' => 'managit.currencies.update',
+        'destroy' => 'managit.currencies.destroy',
+    ]);
+
     Route::prefix('settings')->name('managit.settings.')->group(function () {
         Route::get('/', [App\Http\Controllers\Admin\SettingsController::class, 'index'])->name('index');
         Route::get('/company', [App\Http\Controllers\Admin\SettingsController::class, 'company'])->name('company');
