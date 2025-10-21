@@ -22,9 +22,10 @@ class ClientController extends Controller
         if ($request->has('search') && $request->search) {
             $search = $request->search;
             $query->where(function ($q) use ($search) {
-                $q->where('name', 'like', "%{$search}%")
+                $q->where('first_name', 'like', "%{$search}%")
+                  ->orWhere('last_name', 'like', "%{$search}%")
                   ->orWhere('email', 'like', "%{$search}%")
-                  ->orWhere('company', 'like', "%{$search}%");
+                  ->orWhere('company_name', 'like', "%{$search}%");
             });
         }
 
@@ -39,9 +40,9 @@ class ClientController extends Controller
                     'id' => $client->id,
                     'name' => $client->name,
                     'email' => $client->email,
-                    'company' => $client->company,
+                    'company' => $client->company_name,
                     'status' => $client->status,
-                    'balance' => $client->balance,
+                    'balance' => $client->credit_balance,
                     'created_at' => $client->created_at->format('Y-m-d'),
                 ];
             });
@@ -66,37 +67,40 @@ class ClientController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'company' => 'nullable|string|max:255',
+            'company_name' => 'nullable|string|max:255',
             'address' => 'nullable|string',
             'city' => 'nullable|string|max:255',
             'state' => 'nullable|string|max:255',
-            'postcode' => 'nullable|string|max:20',
+            'postal_code' => 'nullable|string|max:20',
             'country' => 'nullable|string|max:2',
             'phone' => 'nullable|string|max:50',
         ]);
 
         $user = User::create([
-            'name' => $validated['name'],
+            'name' => $validated['first_name'] . ' ' . $validated['last_name'],
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
         ]);
 
         $client = Client::create([
+            'organization_id' => 1,
             'user_id' => $user->id,
-            'name' => $validated['name'],
+            'first_name' => $validated['first_name'],
+            'last_name' => $validated['last_name'],
             'email' => $validated['email'],
-            'company' => $validated['company'] ?? null,
+            'company_name' => $validated['company_name'] ?? null,
             'address' => $validated['address'] ?? null,
             'city' => $validated['city'] ?? null,
             'state' => $validated['state'] ?? null,
-            'postcode' => $validated['postcode'] ?? null,
+            'postal_code' => $validated['postal_code'] ?? null,
             'country' => $validated['country'] ?? null,
             'phone' => $validated['phone'] ?? null,
             'status' => 'active',
-            'balance' => 0,
+            'credit_balance' => 0,
         ]);
 
         return redirect()->route('managit.clients.show', $client->id)
@@ -114,16 +118,18 @@ class ClientController extends Controller
             'client' => [
                 'id' => $client->id,
                 'name' => $client->name,
+                'first_name' => $client->first_name,
+                'last_name' => $client->last_name,
                 'email' => $client->email,
-                'company' => $client->company,
+                'company' => $client->company_name,
                 'address' => $client->address,
                 'city' => $client->city,
                 'state' => $client->state,
-                'postcode' => $client->postcode,
+                'postcode' => $client->postal_code,
                 'country' => $client->country,
                 'phone' => $client->phone,
                 'status' => $client->status,
-                'balance' => $client->balance,
+                'balance' => $client->credit_balance,
                 'created_at' => $client->created_at->format('Y-m-d H:i'),
                 'services_count' => $client->services->count(),
                 'domains_count' => $client->domains->count(),

@@ -65,4 +65,13 @@ class Client extends Model
     {
         return $this->hasMany(Ticket::class);
     }
+
+    public function getNameAttribute()
+    {
+        $name = trim($this->first_name . ' ' . $this->last_name);
+        if ($this->company_name) {
+            return $this->company_name . ' (' . $name . ')';
+        }
+        return $name;
+    }
 }
