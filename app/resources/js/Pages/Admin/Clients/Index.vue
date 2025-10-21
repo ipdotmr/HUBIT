@@ -1,6 +1,6 @@
 <script setup>
 import { Head, Link, router } from '@inertiajs/vue3';
-import AdminLayout from '@/Layouts/AdminLayout.vue';
+import WhmcsAdminLayout from '@/Layouts/WhmcsAdminLayout.vue';
 import { ref, watch } from 'vue';
 
 const props = defineProps({
@@ -47,7 +47,7 @@ const deleteClient = (clientId) => {
 <template>
     <Head title="Clients Management" />
 
-    <AdminLayout>
+    <WhmcsAdminLayout>
         <template #header>
             <div class="row">
                 <div class="col-12">
@@ -184,5 +184,5 @@ const deleteClient = (clientId) => {
                 </div>
             </div>
         </div>
-    </AdminLayout>
+    </WhmcsAdminLayout>
 </template>

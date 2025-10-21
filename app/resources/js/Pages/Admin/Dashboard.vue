@@ -1,6 +1,6 @@
 <script setup>
 import { Head } from '@inertiajs/vue3';
-import AdminLayout from '@/Layouts/AdminLayout.vue';
+import WhmcsAdminLayout from '@/Layouts/WhmcsAdminLayout.vue';
 import { computed } from 'vue';
 
 const props = defineProps({
@@ -46,7 +46,7 @@ const getPriorityBadgeClass = (priority) => {
 <template>
     <Head title="Admin Dashboard" />
 
-    <AdminLayout>
+    <WhmcsAdminLayout>
         <template #header>
             <div class="row">
                 <div class="col-12">
@@ -391,5 +391,5 @@ const getPriorityBadgeClass = (priority) => {
                 </div>
             </div>
         </div>
-    </AdminLayout>
+    </WhmcsAdminLayout>
 </template>
