@@ -11,9 +11,10 @@
   >
     <div class="settings-grid">
       <!-- Theme Selection Section -->
-      <div class="settings-section">
-        <h2 class="section-title">Theme Selection</h2>
-        <p class="section-description">Choose a theme for your HUBIT installation</p>
+      <div class="card mb-4">
+        <div class="card-body">
+          <h5 class="card-title mb-2">Theme Selection</h5>
+          <p class="text-muted small mb-3">Choose a theme for your HUBIT installation</p>
         
         <div class="themes-grid">
           <div
@@ -46,59 +47,73 @@
           </div>
         </div>
       </div>
+      </div>
 
       <!-- UI Preferences Section -->
-      <div class="settings-section">
-        <h2 class="section-title">UI Preferences</h2>
-        <p class="section-description">Customize user interface behavior</p>
+      <div class="card mb-4">
+        <div class="card-body">
+          <h5 class="card-title mb-2">UI Preferences</h5>
+          <p class="text-muted small mb-3">Customize user interface behavior</p>
         
         <div class="form-grid">
-          <div class="toggle-field">
-            <div class="toggle-info">
-              <label class="toggle-label">Allow User Theme Selection</label>
-              <p class="toggle-description">Let users choose their own theme preference</p>
+          <div class="card mb-3">
+            <div class="card-body d-flex justify-content-between align-items-center">
+              <div>
+                <label class="form-label fw-semibold mb-1">Allow User Theme Selection</label>
+                <p class="text-muted small mb-0">Let users choose their own theme preference</p>
+              </div>
+              <div class="form-check form-switch">
+                <input
+                  type="checkbox"
+                  v-model="form.allow_user_selection"
+                  class="form-check-input"
+                  role="switch"
+                  style="width: 48px; height: 24px; cursor: pointer;"
+                />
+              </div>
             </div>
-            <label class="toggle-switch">
-              <input
-                type="checkbox"
-                v-model="form.allow_user_selection"
-                class="toggle-input"
-              />
-              <span class="toggle-slider"></span>
-            </label>
           </div>
 
-          <div class="toggle-field">
-            <div class="toggle-info">
-              <label class="toggle-label">Enable RTL Support</label>
-              <p class="toggle-description">Support right-to-left languages (Arabic, Hebrew)</p>
+          <div class="card mb-3">
+            <div class="card-body d-flex justify-content-between align-items-center">
+              <div>
+                <label class="form-label fw-semibold mb-1">Enable RTL Support</label>
+                <p class="text-muted small mb-0">Support right-to-left languages (Arabic, Hebrew)</p>
+              </div>
+              <div class="form-check form-switch">
+                <input
+                  type="checkbox"
+                  v-model="form.rtl_enabled"
+                  class="form-check-input"
+                  role="switch"
+                  style="width: 48px; height: 24px; cursor: pointer;"
+                />
+              </div>
             </div>
-            <label class="toggle-switch">
-              <input
-                type="checkbox"
-                v-model="form.rtl_enabled"
-                class="toggle-input"
-              />
-              <span class="toggle-slider"></span>
-            </label>
           </div>
+        </div>
         </div>
       </div>
 
       <!-- Custom CSS Section -->
-      <div class="settings-section">
-        <h2 class="section-title">Custom CSS</h2>
-        <p class="section-description">Add custom CSS to override theme styles</p>
-        
-        <FormField
-          v-model="form.custom_css"
-          type="textarea"
-          label="Custom CSS Code"
-          placeholder="/* Add your custom CSS here */"
-          :rows="10"
-          helpText="Advanced: CSS will be injected after theme styles"
-          :error="errors.custom_css"
-        />
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title mb-2">Custom CSS</h5>
+          <p class="text-muted small mb-3">Add custom CSS to override theme styles</p>
+          
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Custom CSS Code</label>
+            <textarea
+              v-model="form.custom_css"
+              class="form-control font-monospace"
+              rows="10"
+              placeholder="/* Add your custom CSS here */"
+              style="font-size: 13px;"
+            ></textarea>
+            <div class="form-text">Advanced: CSS will be injected after theme styles</div>
+            <div v-if="errors.custom_css" class="text-danger small mt-1">{{ errors.custom_css }}</div>
+          </div>
+        </div>
       </div>
     </div>
     </SettingPageLayout>
