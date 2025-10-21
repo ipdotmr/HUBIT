@@ -243,6 +243,15 @@ Route::middleware(['auth', 'verified', 'throttle:60,1'])->prefix('managit')->gro
         'destroy' => 'managit.support-statuses.destroy',
     ]);
 
+    Route::resource('product-groups', App\Http\Controllers\Admin\ProductGroupController::class)->names([
+        'index' => 'managit.product-groups.index',
+        'create' => 'managit.product-groups.create',
+        'store' => 'managit.product-groups.store',
+        'edit' => 'managit.product-groups.edit',
+        'update' => 'managit.product-groups.update',
+        'destroy' => 'managit.product-groups.destroy',
+    ]);
+
     Route::prefix('settings')->name('managit.settings.')->group(function () {
         Route::get('/', [App\Http\Controllers\Admin\SettingsController::class, 'index'])->name('index');
         Route::get('/company', [App\Http\Controllers\Admin\SettingsController::class, 'company'])->name('company');
