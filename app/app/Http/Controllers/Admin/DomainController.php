@@ -37,9 +37,9 @@ class DomainController extends Controller
                     'id' => $domain->id,
                     'domain' => $domain->domain,
                     'client_name' => $domain->client ? $domain->client->name : 'N/A',
-                    'registration_date' => $domain->registration_date ? $domain->registration_date->format('Y-m-d') : 'N/A',
-                    'expiry_date' => $domain->expiry_date ? $domain->expiry_date->format('Y-m-d') : 'N/A',
-                    'status' => $domain->status,
+                    'registration_date' => $domain->registration_date ? (is_string($domain->registration_date) ? $domain->registration_date : $domain->registration_date->format('Y-m-d')) : 'N/A',
+                    'expiry_date' => $domain->expiry_date ? (is_string($domain->expiry_date) ? $domain->expiry_date : $domain->expiry_date->format('Y-m-d')) : 'N/A',
+                    'status' => $domain->status ?? 'active',
                 ];
             });
 
@@ -102,11 +102,11 @@ class DomainController extends Controller
                 'domain' => $domain->domain,
                 'client_name' => $domain->client ? $domain->client->name : 'N/A',
                 'client_email' => $domain->client ? $domain->client->email : 'N/A',
-                'registration_date' => $domain->registration_date ? $domain->registration_date->format('Y-m-d') : 'N/A',
-                'expiry_date' => $domain->expiry_date ? $domain->expiry_date->format('Y-m-d') : 'N/A',
+                'registration_date' => $domain->registration_date ? (is_string($domain->registration_date) ? $domain->registration_date : $domain->registration_date->format('Y-m-d')) : 'N/A',
+                'expiry_date' => $domain->expiry_date ? (is_string($domain->expiry_date) ? $domain->expiry_date : $domain->expiry_date->format('Y-m-d')) : 'N/A',
                 'registrar' => $domain->registrar ?? 'N/A',
                 'nameservers' => $domain->nameservers ?? [],
-                'status' => $domain->status,
+                'status' => $domain->status ?? 'active',
             ],
         ]);
     }
@@ -129,11 +129,11 @@ class DomainController extends Controller
                 'id' => $domain->id,
                 'client_id' => $domain->client_id,
                 'domain' => $domain->domain,
-                'registration_date' => $domain->registration_date ? $domain->registration_date->format('Y-m-d') : '',
-                'expiry_date' => $domain->expiry_date ? $domain->expiry_date->format('Y-m-d') : '',
+                'registration_date' => $domain->registration_date ? (is_string($domain->registration_date) ? $domain->registration_date : $domain->registration_date->format('Y-m-d')) : '',
+                'expiry_date' => $domain->expiry_date ? (is_string($domain->expiry_date) ? $domain->expiry_date : $domain->expiry_date->format('Y-m-d')) : '',
                 'registrar' => $domain->registrar ?? '',
                 'nameservers' => $domain->nameservers ?? [],
-                'status' => $domain->status,
+                'status' => $domain->status ?? 'active',
             ],
             'clients' => $clients,
         ]);
