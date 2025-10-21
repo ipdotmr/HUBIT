@@ -3,15 +3,16 @@ import { Head, Link, useForm } from '@inertiajs/vue3';
 import WhmcsAdminLayout from '@/Layouts/WhmcsAdminLayout.vue';
 
 const form = useForm({
-    name: '',
+    first_name: '',
+    last_name: '',
     email: '',
     password: '',
     password_confirmation: '',
-    company: '',
+    company_name: '',
     address: '',
     city: '',
     state: '',
-    postcode: '',
+    postal_code: '',
     country: '',
     phone: '',
 });
@@ -46,21 +47,38 @@ const submit = () => {
                                 <!-- Personal Information -->
                                 <div class="row mb-3">
                                     <div class="col-md-6">
-                                        <label for="name" class="form-label">Full Name *</label>
+                                        <label for="first_name" class="form-label">First Name *</label>
                                         <input
-                                            id="name"
-                                            v-model="form.name"
+                                            id="first_name"
+                                            v-model="form.first_name"
                                             type="text"
                                             class="form-control"
-                                            :class="{ 'is-invalid': form.errors.name }"
+                                            :class="{ 'is-invalid': form.errors.first_name }"
                                             required
                                         />
-                                        <div v-if="form.errors.name" class="invalid-feedback">
-                                            {{ form.errors.name }}
+                                        <div v-if="form.errors.first_name" class="invalid-feedback">
+                                            {{ form.errors.first_name }}
                                         </div>
                                     </div>
 
                                     <div class="col-md-6">
+                                        <label for="last_name" class="form-label">Last Name *</label>
+                                        <input
+                                            id="last_name"
+                                            v-model="form.last_name"
+                                            type="text"
+                                            class="form-control"
+                                            :class="{ 'is-invalid': form.errors.last_name }"
+                                            required
+                                        />
+                                        <div v-if="form.errors.last_name" class="invalid-feedback">
+                                            {{ form.errors.last_name }}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <div class="col-md-12">
                                         <label for="email" class="form-label">Email Address *</label>
                                         <input
                                             id="email"
@@ -108,10 +126,10 @@ const submit = () => {
                                 <!-- Company Information -->
                                 <div class="row mb-3">
                                     <div class="col-md-6">
-                                        <label for="company" class="form-label">Company Name</label>
+                                        <label for="company_name" class="form-label">Company Name</label>
                                         <input
-                                            id="company"
-                                            v-model="form.company"
+                                            id="company_name"
+                                            v-model="form.company_name"
                                             type="text"
                                             class="form-control"
                                         />
@@ -161,10 +179,10 @@ const submit = () => {
                                     </div>
 
                                     <div class="col-md-4">
-                                        <label for="postcode" class="form-label">Postal Code</label>
+                                        <label for="postal_code" class="form-label">Postal Code</label>
                                         <input
-                                            id="postcode"
-                                            v-model="form.postcode"
+                                            id="postal_code"
+                                            v-model="form.postal_code"
                                             type="text"
                                             class="form-control"
                                         />
@@ -217,7 +235,8 @@ const submit = () => {
                         <div class="card-body">
                             <p class="mb-2"><strong>Required Fields:</strong></p>
                             <ul class="mb-3">
-                                <li>Full Name</li>
+                                <li>First Name</li>
+                                <li>Last Name</li>
                                 <li>Email Address</li>
                                 <li>Password</li>
                             </ul>
