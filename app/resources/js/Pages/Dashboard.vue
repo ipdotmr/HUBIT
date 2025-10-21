@@ -1,5 +1,5 @@
 <script setup>
-import OsenLayout from '@/Layouts/OsenLayout.vue';
+import ClientLayout from '@/Layouts/ClientLayout.vue';
 import { Head, Link } from '@inertiajs/vue3';
 
 defineProps({
@@ -13,11 +13,11 @@ defineProps({
 <template>
     <Head title="Dashboard" />
 
-    <OsenLayout>
-        <template #header>
-            <h4 class="page-title">Dashboard</h4>
+    <ClientLayout>
+        <div class="mb-4">
+            <h2>Dashboard</h2>
             <p class="text-muted">Welcome to your HUBIT dashboard</p>
-        </template>
+        </div>
 
         <div class="row">
             <div class="col">
@@ -212,5 +212,5 @@ defineProps({
                 </div>
             </div>
         </div>
-    </OsenLayout>
+    </ClientLayout>
 </template>
