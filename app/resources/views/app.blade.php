@@ -15,6 +15,9 @@
         <link href="{{ asset('osen-css/vendor.min.css') }}" rel="stylesheet" type="text/css" />
         <link href="{{ asset('osen-css/icons.min.css') }}" rel="stylesheet" type="text/css" />
         <link href="{{ asset('osen-css/app.min.css') }}" rel="stylesheet" type="text/css" />
+        
+        <!-- MRU Icon Font -->
+        <link href="{{ asset('fonts/mru/style.css') }}" rel="stylesheet" type="text/css" />
 
         <!-- Scripts -->
         @routes
