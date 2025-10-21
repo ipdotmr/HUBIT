@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 import { Head, Link, router } from '@inertiajs/vue3';
-import OsenLayout from '@/Layouts/OsenLayout.vue';
+import ClientLayout from '@/Layouts/ClientLayout.vue';
 
 const props = defineProps({
     services: Object,
@@ -41,11 +41,11 @@ const statusBadge = (status) => {
 <template>
     <Head title="My Services" />
 
-    <OsenLayout>
-        <template #header>
-            <h4 class="page-title">My Services</h4>
+    <ClientLayout>
+        <div class="mb-4">
+            <h2>My Services</h2>
             <p class="text-muted">Manage your hosting services and products</p>
-        </template>
+        </div>
 
         <div class="row">
             <div class="col">
@@ -191,5 +191,5 @@ const statusBadge = (status) => {
                 </div>
             </div>
         </div>
-    </OsenLayout>
+    </ClientLayout>
 </template>
