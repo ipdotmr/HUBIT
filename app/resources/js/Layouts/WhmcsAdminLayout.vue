@@ -25,7 +25,7 @@ const showSettingsMenu = ref(false);
             <div class="container-fluid">
                 <!-- Logo -->
                 <Link href="/managit/dashboard" class="navbar-brand">
-                    <strong style="color: #0066cc;">WHMCS</strong>
+                    <strong style="color: #0066cc;">HUBIT</strong>
                 </Link>
 
                 <!-- Search Bar -->

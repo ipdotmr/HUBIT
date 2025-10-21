@@ -44,7 +44,7 @@ const getPriorityBadgeClass = (priority) => {
 </script>
 
 <template>
-    <Head title="Admin Dashboard" />
+    <Head title="HUBIT - Admin Dashboard" />
 
     <WhmcsAdminLayout>
         <template #header>

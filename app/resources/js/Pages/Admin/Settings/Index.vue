@@ -9,7 +9,7 @@ defineProps({
 </script>
 
 <template>
-  <Head title="Settings - Admin" />
+  <Head title="HUBIT - Settings" />
   
   <WhmcsAdminLayout>
     <div class="container-fluid">
