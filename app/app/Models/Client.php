@@ -46,6 +46,11 @@ class Client extends Model
         return $this->hasMany(Service::class);
     }
 
+    public function domains()
+    {
+        return $this->hasMany(Domain::class);
+    }
+
     public function invoices()
     {
         return $this->hasMany(Invoice::class);
