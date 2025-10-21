@@ -118,6 +118,15 @@ Route::post('/language', function (Illuminate\Http\Request $request) {
     return back();
 })->name('language.switch');
 
+Route::middleware('guest')->prefix('managit')->group(function () {
+    Route::get('/login', [App\Http\Controllers\Auth\AdminLoginController::class, 'create'])->name('managit.login');
+    Route::post('/login', [App\Http\Controllers\Auth\AdminLoginController::class, 'store']);
+});
+
+Route::middleware('auth')->prefix('managit')->group(function () {
+    Route::post('/logout', [App\Http\Controllers\Auth\AdminLoginController::class, 'destroy'])->name('managit.logout');
+});
+
 Route::middleware(['auth', 'verified', 'throttle:60,1'])->prefix('managit')->group(function () {
     Route::get('/', function () {
         return redirect()->route('managit.dashboard');
