@@ -271,6 +271,15 @@ Route::middleware(['auth', 'verified', 'throttle:60,1'])->prefix('managit')->gro
         'destroy' => 'managit.knowledgebase.destroy',
     ]);
 
+    Route::resource('announcements', App\Http\Controllers\Admin\AnnouncementController::class)->names([
+        'index' => 'managit.announcements.index',
+        'create' => 'managit.announcements.create',
+        'store' => 'managit.announcements.store',
+        'edit' => 'managit.announcements.edit',
+        'update' => 'managit.announcements.update',
+        'destroy' => 'managit.announcements.destroy',
+    ]);
+
     Route::prefix('settings')->name('managit.settings.')->group(function () {
         Route::get('/', [App\Http\Controllers\Admin\SettingsController::class, 'index'])->name('index');
         Route::get('/company', [App\Http\Controllers\Admin\SettingsController::class, 'company'])->name('company');
