@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 import { Head, Link, router } from '@inertiajs/vue3';
-import OsenLayout from '@/Layouts/OsenLayout.vue';
+import ClientLayout from '@/Layouts/ClientLayout.vue';
 
 const props = defineProps({
     domains: Object,
@@ -39,11 +39,11 @@ const statusBadge = (status) => {
 <template>
     <Head title="My Domains" />
 
-    <OsenLayout>
-        <template #header>
+    <ClientLayout>
+        <div class="mb-4">
             <h4 class="page-title">My Domains</h4>
             <p class="text-muted">Manage your domain names</p>
-        </template>
+        </div>
 
         <div class="row">
             <div class="col">
@@ -188,5 +188,5 @@ const statusBadge = (status) => {
                 </div>
             </div>
         </div>
-    </OsenLayout>
+    </ClientLayout>
 </template>

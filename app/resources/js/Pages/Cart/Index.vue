@@ -1,8 +1,8 @@
 <template>
-  <OsenLayout>
+  <ClientLayout>
     <Head title="Shopping Cart" />
 
-    <template #header>
+    <div class="mb-4">
       <div class="row">
         <div class="col-12">
           <div class="page-title-box">
@@ -10,7 +10,7 @@
           </div>
         </div>
       </div>
-    </template>
+    </div>
 
     <div class="row">
       <div class="col-12">
@@ -124,12 +124,12 @@
         </div>
       </div>
     </div>
-  </OsenLayout>
+  </ClientLayout>
 </template>
 
 <script setup>
 import { Head, Link, router } from '@inertiajs/vue3'
-import OsenLayout from '@/Layouts/OsenLayout.vue'
+import ClientLayout from '@/Layouts/ClientLayout.vue'
 
 const props = defineProps({
   cart: Object,

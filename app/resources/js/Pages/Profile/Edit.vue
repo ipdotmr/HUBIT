@@ -1,5 +1,5 @@
 <script setup>
-import OsenLayout from '@/Layouts/OsenLayout.vue';
+import ClientLayout from '@/Layouts/ClientLayout.vue';
 import DeleteUserForm from './Partials/DeleteUserForm.vue';
 import UpdatePasswordForm from './Partials/UpdatePasswordForm.vue';
 import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm.vue';
@@ -18,11 +18,11 @@ defineProps({
 <template>
     <Head title="Profile" />
 
-    <OsenLayout>
-        <template #header>
+    <ClientLayout>
+        <div class="mb-4">
             <h4 class="page-title">Profile Settings</h4>
             <p class="text-muted">Manage your account information and security</p>
-        </template>
+        </div>
 
         <div class="row">
             <div class="col">
@@ -57,5 +57,5 @@ defineProps({
                 </div>
             </div>
         </div>
-    </OsenLayout>
+    </ClientLayout>
 </template>

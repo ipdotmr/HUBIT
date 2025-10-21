@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 import { Head, Link, router, useForm } from '@inertiajs/vue3';
-import OsenLayout from '@/Layouts/OsenLayout.vue';
+import ClientLayout from '@/Layouts/ClientLayout.vue';
 
 const props = defineProps({
     balance: Number,
@@ -42,11 +42,11 @@ const transactionBadge = (type) => {
 <template>
     <Head title="My Wallet" />
 
-    <OsenLayout>
-        <template #header>
+    <ClientLayout>
+        <div class="mb-4">
             <h4 class="page-title">My Wallet</h4>
             <p class="text-muted">Manage your account balance and transactions</p>
-        </template>
+        </div>
 
         <div class="row">
             <div class="col-xxl-4">
@@ -196,5 +196,5 @@ const transactionBadge = (type) => {
                 </div>
             </div>
         </div>
-    </OsenLayout>
+    </ClientLayout>
 </template>
