@@ -30,8 +30,8 @@ const showQuickCreate = ref(false);
                             <i class="fas fa-plus"></i> Quick Create
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>New Client</a></li>
-                            <li><a class="dropdown-item" href="#"><i class="fas fa-shopping-cart me-2"></i>New Order</a></li>
+                            <li><Link :href="route('managit.clients.create')" class="dropdown-item"><i class="fas fa-user me-2"></i>New Client</Link></li>
+                            <li><Link :href="route('managit.orders.index')" class="dropdown-item"><i class="fas fa-shopping-cart me-2"></i>New Order</Link></li>
                             <li><a class="dropdown-item" href="#"><i class="fas fa-file-invoice me-2"></i>New Invoice</a></li>
                             <li><a class="dropdown-item" href="#"><i class="fas fa-ticket-alt me-2"></i>New Ticket</a></li>
                         </ul>
@@ -41,9 +41,9 @@ const showQuickCreate = ref(false);
                     <LanguageSwitcher />
 
                     <!-- Settings Icon -->
-                    <a href="#" class="text-dark">
+                    <Link :href="route('managit.settings.index')" class="text-dark">
                         <i class="fas fa-cog fs-5"></i>
-                    </a>
+                    </Link>
 
                     <!-- Help Icon -->
                     <a href="#" class="text-dark">
@@ -88,18 +88,18 @@ const showQuickCreate = ref(false);
 
                     <!-- Orders -->
                     <li class="nav-item mb-2">
-                        <a href="#" class="nav-link">
+                        <Link :href="route('managit.orders.index')" class="nav-link" :class="{ 'active': route().current('managit.orders.*') }">
                             <i class="fas fa-shopping-cart me-2"></i> Orders
                             <span class="badge bg-primary float-end">1</span>
-                        </a>
+                        </Link>
                     </li>
 
                     <!-- Billing -->
                     <li class="nav-item mb-2">
-                        <a href="#" class="nav-link">
+                        <Link :href="route('managit.transactions.index')" class="nav-link" :class="{ 'active': route().current('managit.transactions.*') }">
                             <i class="fas fa-file-invoice-dollar me-2"></i> Billing
                             <span class="badge bg-danger float-end">74</span>
-                        </a>
+                        </Link>
                     </li>
 
                     <!-- Support -->
@@ -111,9 +111,9 @@ const showQuickCreate = ref(false);
 
                     <!-- Reports -->
                     <li class="nav-item mb-2">
-                        <a href="#" class="nav-link">
+                        <Link :href="route('managit.reports.services')" class="nav-link" :class="{ 'active': route().current('managit.reports.*') }">
                             <i class="fas fa-chart-bar me-2"></i> Reports
-                        </a>
+                        </Link>
                     </li>
 
                     <!-- Utilities -->
@@ -125,9 +125,9 @@ const showQuickCreate = ref(false);
 
                     <!-- Addons -->
                     <li class="nav-item mb-2">
-                        <a href="#" class="nav-link">
-                            <i class="fas fa-puzzle-piece me-2"></i> Addons
-                        </a>
+                        <Link :href="route('managit.settings.index')" class="nav-link" :class="{ 'active': route().current('managit.settings.*') }">
+                            <i class="fas fa-puzzle-piece me-2"></i> Settings
+                        </Link>
                     </li>
                 </ul>
             </div>
