@@ -109,15 +109,23 @@ const submit = () => {
                             </div>
 
                             <div class="col-md-6 mb-3">
-                                <label for="registrar" class="form-label">Registrar</label>
-                                <input 
+                                <label for="registrar" class="form-label">Registrar *</label>
+                                <select 
                                     v-model="form.registrar" 
-                                    type="text" 
-                                    class="form-control" 
+                                    class="form-select" 
                                     :class="{ 'is-invalid': form.errors.registrar }"
                                     id="registrar"
+                                    required
                                 >
+                                    <option value="">Select Registrar</option>
+                                    <option value="hubit">Hubit Registrar (Offline)</option>
+                                    <option value="coccaep">CoccaEP</option>
+                                    <option value="namecom">Name.com</option>
+                                    <option value="namecheap">Namecheap</option>
+                                    <option value="resellerclub">ResellerClub</option>
+                                </select>
                                 <div v-if="form.errors.registrar" class="invalid-feedback">{{ form.errors.registrar }}</div>
+                                <div class="form-text">Select "Hubit Registrar" for offline/manual domain registration</div>
                             </div>
 
                             <div class="col-md-6 mb-3">
