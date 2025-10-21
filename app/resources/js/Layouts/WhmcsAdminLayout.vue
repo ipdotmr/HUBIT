@@ -104,9 +104,9 @@ const showQuickCreate = ref(false);
 
                     <!-- Support -->
                     <li class="nav-item mb-2">
-                        <a href="#" class="nav-link">
+                        <Link :href="route('managit.support.index')" class="nav-link" :class="{ 'active': route().current('managit.support.*') }">
                             <i class="fas fa-life-ring me-2"></i> Support
-                        </a>
+                        </Link>
                     </li>
 
                     <!-- Reports -->
@@ -118,9 +118,9 @@ const showQuickCreate = ref(false);
 
                     <!-- Utilities -->
                     <li class="nav-item mb-2">
-                        <a href="#" class="nav-link">
+                        <Link :href="route('managit.dashboard')" class="nav-link">
                             <i class="fas fa-tools me-2"></i> Utilities
-                        </a>
+                        </Link>
                     </li>
 
                     <!-- Addons -->
