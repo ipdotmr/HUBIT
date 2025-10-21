@@ -137,6 +137,16 @@ Route::middleware(['auth', 'verified', 'throttle:60,1'])->prefix('managit')->gro
         Route::post('/{order}/status', [App\Http\Controllers\Admin\OrderController::class, 'updateStatus'])->name('update-status');
     });
     
+    Route::resource('invoices', App\Http\Controllers\Admin\InvoiceController::class)->names([
+        'index' => 'managit.invoices.index',
+        'create' => 'managit.invoices.create',
+        'store' => 'managit.invoices.store',
+        'show' => 'managit.invoices.show',
+        'edit' => 'managit.invoices.edit',
+        'update' => 'managit.invoices.update',
+        'destroy' => 'managit.invoices.destroy',
+    ]);
+    
     Route::get('/billing/transactions', [App\Http\Controllers\Admin\TransactionController::class, 'index'])->name('managit.transactions.index');
     Route::get('/billing/transactions/{transaction}', [App\Http\Controllers\Admin\TransactionController::class, 'show'])->name('managit.transactions.show');
     Route::post('/billing/transactions/{transaction}/review', [App\Http\Controllers\Admin\TransactionController::class, 'review'])->name('managit.transactions.review');
