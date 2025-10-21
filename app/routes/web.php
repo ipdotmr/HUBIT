@@ -215,6 +215,16 @@ Route::middleware(['auth', 'verified', 'throttle:60,1'])->prefix('managit')->gro
         'destroy' => 'managit.currencies.destroy',
     ]);
 
+    Route::resource('servers', App\Http\Controllers\Admin\ServerController::class)->names([
+        'index' => 'managit.servers.index',
+        'create' => 'managit.servers.create',
+        'store' => 'managit.servers.store',
+        'edit' => 'managit.servers.edit',
+        'update' => 'managit.servers.update',
+        'destroy' => 'managit.servers.destroy',
+    ]);
+    Route::post('servers/{id}/test', [App\Http\Controllers\Admin\ServerController::class, 'testConnection'])->name('managit.servers.test');
+
     Route::prefix('settings')->name('managit.settings.')->group(function () {
         Route::get('/', [App\Http\Controllers\Admin\SettingsController::class, 'index'])->name('index');
         Route::get('/company', [App\Http\Controllers\Admin\SettingsController::class, 'company'])->name('company');
