@@ -9,324 +9,371 @@ defineProps({
 </script>
 
 <template>
-  <Head title="HUBIT - Settings" />
+  <Head title="HUBIT - System Settings" />
   
   <WhmcsAdminLayout>
-    <div class="container-fluid">
-      <!-- Header -->
-      <div class="mb-4">
-        <h3 class="mb-0">Settings Console</h3>
-        <p class="text-muted">Manage your HUBIT installation configuration</p>
+    <!-- Page Header -->
+    <div class="page-header mb-4">
+      <h1 class="page-title">System Settings</h1>
+      <p class="page-subtitle">Set up and configure your WHMCS installation.</p>
+    </div>
+
+    <!-- Category Filter -->
+    <div class="settings-filter mb-4">
+      <div class="filter-sidebar">
+        <button class="filter-btn active">All</button>
+        <button class="filter-btn">System</button>
+        <button class="filter-btn">Apps & Integrations</button>
+        <button class="filter-btn">User Management</button>
+        <button class="filter-btn">Products & Services</button>
+        <button class="filter-btn">Support</button>
+        <button class="filter-btn">API & Security</button>
       </div>
-
-      <!-- Settings Grid -->
-      <div class="row g-3">
-        <!-- Company & Branding -->
-        <div class="col-md-4">
-          <Link :href="route('managit.settings.company')" class="text-decoration-none">
-            <div class="card border-0 shadow-sm h-100 settings-card">
-              <div class="card-body d-flex align-items-center">
-                <div class="icon-box me-3" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-                  <i class="fas fa-building text-white"></i>
-                </div>
-                <div class="flex-grow-1">
-                  <h5 class="mb-1">Company & Branding</h5>
-                  <p class="text-muted small mb-0">Company information, logos, and invoice settings</p>
-                </div>
-                <i class="fas fa-chevron-right text-muted"></i>
-              </div>
-            </div>
-          </Link>
-        </div>
-
-        <!-- Themes & UI -->
-        <div class="col-md-4">
-          <Link :href="route('managit.settings.themes')" class="text-decoration-none">
-            <div class="card border-0 shadow-sm h-100 settings-card">
-              <div class="card-body d-flex align-items-center">
-                <div class="icon-box me-3" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
-                  <i class="fas fa-palette text-white"></i>
-                </div>
-                <div class="flex-grow-1">
-                  <h5 class="mb-1">Themes & UI</h5>
-                  <p class="text-muted small mb-0">Visual themes, RTL support, and custom CSS</p>
-                </div>
-                <i class="fas fa-chevron-right text-muted"></i>
-              </div>
-            </div>
-          </Link>
-        </div>
-
-        <!-- Email & SMTP -->
-        <div class="col-md-4">
-          <Link :href="route('managit.settings.email')" class="text-decoration-none">
-            <div class="card border-0 shadow-sm h-100 settings-card">
-              <div class="card-body d-flex align-items-center">
-                <div class="icon-box me-3" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">
-                  <i class="fas fa-envelope text-white"></i>
-                </div>
-                <div class="flex-grow-1">
-                  <h5 class="mb-1">Email & SMTP</h5>
-                  <p class="text-muted small mb-0">Mail server configuration and test email</p>
-                </div>
-                <i class="fas fa-chevron-right text-muted"></i>
-              </div>
-            </div>
-          </Link>
-        </div>
-
-        <!-- Stripe Payments -->
-        <div class="col-md-4">
-          <Link :href="route('managit.settings.stripe')" class="text-decoration-none">
-            <div class="card border-0 shadow-sm h-100 settings-card">
-              <div class="card-body d-flex align-items-center">
-                <div class="icon-box me-3" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
-                  <i class="fab fa-stripe text-white"></i>
-                </div>
-                <div class="flex-grow-1">
-                  <h5 class="mb-1">Stripe Payments</h5>
-                  <p class="text-muted small mb-0">Payment gateway, API keys, and webhooks</p>
-                </div>
-                <i class="fas fa-chevron-right text-muted"></i>
-              </div>
-            </div>
-          </Link>
-        </div>
-
-        <!-- PayPal Payments -->
-        <div class="col-md-4">
-          <Link :href="route('managit.settings.paypal')" class="text-decoration-none">
-            <div class="card border-0 shadow-sm h-100 settings-card">
-              <div class="card-body d-flex align-items-center">
-                <div class="icon-box me-3" style="background: linear-gradient(135deg, #0070ba 0%, #1546a0 100%);">
-                  <i class="fab fa-paypal text-white"></i>
-                </div>
-                <div class="flex-grow-1">
-                  <h5 class="mb-1">PayPal Payments</h5>
-                  <p class="text-muted small mb-0">PayPal REST API and webhook configuration</p>
-                </div>
-                <i class="fas fa-chevron-right text-muted"></i>
-              </div>
-            </div>
-          </Link>
-        </div>
-
-        <!-- Payment Accounts -->
-        <div class="col-md-4">
-          <Link :href="route('managit.settings.payment-accounts')" class="text-decoration-none">
-            <div class="card border-0 shadow-sm h-100 settings-card">
-              <div class="card-body d-flex align-items-center">
-                <div class="icon-box me-3" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
-                  <i class="fas fa-wallet text-white"></i>
-                </div>
-                <div class="flex-grow-1">
-                  <h5 class="mb-1">Payment Accounts</h5>
-                  <p class="text-muted small mb-0">Manage payment accounts and currencies</p>
-                </div>
-                <i class="fas fa-chevron-right text-muted"></i>
-              </div>
-            </div>
-          </Link>
-        </div>
-
-        <!-- cPanel/WHM -->
-        <div class="col-md-4">
-          <Link :href="route('managit.settings.cpanel')" class="text-decoration-none">
-            <div class="card border-0 shadow-sm h-100 settings-card">
-              <div class="card-body d-flex align-items-center">
-                <div class="icon-box me-3" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
-                  <i class="fas fa-server text-white"></i>
-                </div>
-                <div class="flex-grow-1">
-                  <h5 class="mb-1">cPanel/WHM</h5>
-                  <p class="text-muted small mb-0">Provisioning server, packages, and nameservers</p>
-                </div>
-                <i class="fas fa-chevron-right text-muted"></i>
-              </div>
-            </div>
-          </Link>
-        </div>
-
-        <!-- Plesk Server -->
-        <div class="col-md-4">
-          <Link :href="route('managit.settings.plesk')" class="text-decoration-none">
-            <div class="card border-0 shadow-sm h-100 settings-card">
-              <div class="card-body d-flex align-items-center">
-                <div class="icon-box me-3" style="background: linear-gradient(135deg, #52c5fd 0%, #1e88e5 100%);">
-                  <i class="fas fa-server text-white"></i>
-                </div>
-                <div class="flex-grow-1">
-                  <h5 class="mb-1">Plesk Server</h5>
-                  <p class="text-muted small mb-0">Plesk provisioning server and service plans</p>
-                </div>
-                <i class="fas fa-chevron-right text-muted"></i>
-              </div>
-            </div>
-          </Link>
-        </div>
-
-        <!-- Exchange Rates -->
-        <div class="col-md-4">
-          <Link :href="route('managit.settings.exchange-rates')" class="text-decoration-none">
-            <div class="card border-0 shadow-sm h-100 settings-card">
-              <div class="card-body d-flex align-items-center">
-                <div class="icon-box me-3" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-                  <i class="fas fa-exchange-alt text-white"></i>
-                </div>
-                <div class="flex-grow-1">
-                  <h5 class="mb-1">Exchange Rates</h5>
-                  <p class="text-muted small mb-0">Currency exchange rates configuration</p>
-                </div>
-                <i class="fas fa-chevron-right text-muted"></i>
-              </div>
-            </div>
-          </Link>
-        </div>
-
-        <!-- Namecheap Domains -->
-        <div class="col-md-4">
-          <Link :href="route('managit.settings.namecheap')" class="text-decoration-none">
-            <div class="card border-0 shadow-sm h-100 settings-card">
-              <div class="card-body d-flex align-items-center">
-                <div class="icon-box me-3" style="background: linear-gradient(135deg, #ff6c2f 0%, #ff4500 100%);">
-                  <i class="fas fa-globe text-white"></i>
-                </div>
-                <div class="flex-grow-1">
-                  <h5 class="mb-1">Namecheap Domains</h5>
-                  <p class="text-muted small mb-0">Namecheap registrar API configuration</p>
-                </div>
-                <i class="fas fa-chevron-right text-muted"></i>
-              </div>
-            </div>
-          </Link>
-        </div>
-
-        <!-- ResellerClub Domains -->
-        <div class="col-md-4">
-          <Link :href="route('managit.settings.resellerclub')" class="text-decoration-none">
-            <div class="card border-0 shadow-sm h-100 settings-card">
-              <div class="card-body d-flex align-items-center">
-                <div class="icon-box me-3" style="background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);">
-                  <i class="fas fa-globe text-white"></i>
-                </div>
-                <div class="flex-grow-1">
-                  <h5 class="mb-1">ResellerClub Domains</h5>
-                  <p class="text-muted small mb-0">ResellerClub registrar API configuration</p>
-                </div>
-                <i class="fas fa-chevron-right text-muted"></i>
-              </div>
-            </div>
-          </Link>
-        </div>
-
-        <!-- Name.com Domains -->
-        <div class="col-md-4">
-          <Link :href="route('managit.settings.namecom')" class="text-decoration-none">
-            <div class="card border-0 shadow-sm h-100 settings-card">
-              <div class="card-body d-flex align-items-center">
-                <div class="icon-box me-3" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-                  <i class="fas fa-globe text-white"></i>
-                </div>
-                <div class="flex-grow-1">
-                  <h5 class="mb-1">Name.com Domains</h5>
-                  <p class="text-muted small mb-0">Name.com registrar REST API integration</p>
-                </div>
-                <i class="fas fa-chevron-right text-muted"></i>
-              </div>
-            </div>
-          </Link>
-        </div>
-
-        <!-- Coccaep (.mr Registry) -->
-        <div class="col-md-4">
-          <Link :href="route('managit.settings.coccaep')" class="text-decoration-none">
-            <div class="card border-0 shadow-sm h-100 settings-card">
-              <div class="card-body d-flex align-items-center">
-                <div class="icon-box me-3" style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);">
-                  <i class="fas fa-globe text-white"></i>
-                </div>
-                <div class="flex-grow-1">
-                  <h5 class="mb-1">Coccaep (.mr Registry) 🇲🇷</h5>
-                  <p class="text-muted small mb-0">Mauritanian national TLDs with IDN support</p>
-                </div>
-                <i class="fas fa-chevron-right text-muted"></i>
-              </div>
-            </div>
-          </Link>
-        </div>
-
-        <!-- Localization -->
-        <div class="col-md-4">
-          <Link :href="route('managit.settings.localization')" class="text-decoration-none">
-            <div class="card border-0 shadow-sm h-100 settings-card">
-              <div class="card-body d-flex align-items-center">
-                <div class="icon-box me-3" style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);">
-                  <i class="fas fa-language text-white"></i>
-                </div>
-                <div class="flex-grow-1">
-                  <h5 class="mb-1">Localization</h5>
-                  <p class="text-muted small mb-0">Languages, timezone, and regional settings</p>
-                </div>
-                <i class="fas fa-chevron-right text-muted"></i>
-              </div>
-            </div>
-          </Link>
-        </div>
-      </div>
-
-      <!-- Quick Stats -->
-      <div class="row g-3 mt-4">
-        <div class="col-md-4">
-          <div class="card border-0 shadow-sm">
-            <div class="card-body text-center">
-              <h2 class="text-primary mb-2">{{ auditLogs?.length || 0 }}</h2>
-              <p class="text-muted mb-0">Recent Changes</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="card border-0 shadow-sm">
-            <div class="card-body text-center">
-              <h2 class="text-primary mb-2">14</h2>
-              <p class="text-muted mb-0">Configured Pages</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="card border-0 shadow-sm">
-            <div class="card-body text-center">
-              <h2 class="text-primary mb-2">5</h2>
-              <p class="text-muted mb-0">Themes Available</p>
-            </div>
-          </div>
-        </div>
+      <div class="filter-sort">
+        <select class="form-select">
+          <option>Popularity</option>
+          <option>Alphabetical</option>
+          <option>Recently Updated</option>
+        </select>
       </div>
     </div>
+
+    <!-- Settings Grid -->
+    <div class="settings-grid">
+        <!-- General Settings -->
+        <Link :href="route('managit.settings.company')" class="settings-card-link">
+          <div class="settings-card">
+            <div class="settings-card-icon">
+              <i class="fas fa-cog"></i>
+            </div>
+            <div class="settings-card-content">
+              <h5 class="settings-card-title">General Settings</h5>
+              <p class="settings-card-desc">General settings and configuration</p>
+            </div>
+          </div>
+        </Link>
+
+        <!-- Apps & Integrations -->
+        <Link :href="route('managit.settings.stripe')" class="settings-card-link">
+          <div class="settings-card">
+            <div class="settings-card-icon">
+              <i class="fas fa-puzzle-piece"></i>
+            </div>
+            <div class="settings-card-content">
+              <h5 class="settings-card-title">Apps & Integrations</h5>
+              <span class="settings-badge">UPDATED</span>
+              <p class="settings-card-desc">Browse available modules and integrations</p>
+            </div>
+          </div>
+        </Link>
+
+        <!-- Automation Settings -->
+        <Link :href="route('managit.settings.email')" class="settings-card-link">
+          <div class="settings-card">
+            <div class="settings-card-icon">
+              <i class="fas fa-clock"></i>
+            </div>
+            <div class="settings-card-content">
+              <h5 class="settings-card-title">Automation Settings</h5>
+              <span class="settings-badge">UPDATED</span>
+              <p class="settings-card-desc">Timing and automation setup</p>
+            </div>
+          </div>
+        </Link>
+
+        <!-- MarketConnect -->
+        <Link href="#" class="settings-card-link">
+          <div class="settings-card">
+            <div class="settings-card-icon">
+              <i class="fas fa-bullseye"></i>
+            </div>
+            <div class="settings-card-content">
+              <h5 class="settings-card-title">MarketConnect</h5>
+              <span class="settings-badge settings-badge-green">NEW SERVICE</span>
+              <p class="settings-card-desc">Re-sell Market Leading Services</p>
+            </div>
+          </div>
+        </Link>
+
+        <!-- Products/Services -->
+        <Link :href="route('managit.products.index')" class="settings-card-link">
+          <div class="settings-card">
+            <div class="settings-card-icon">
+              <i class="fas fa-box"></i>
+            </div>
+            <div class="settings-card-content">
+              <h5 class="settings-card-title">Products/Services</h5>
+              <p class="settings-card-desc">Setup and manage products</p>
+            </div>
+          </div>
+        </Link>
+
+        <!-- Configurable Options -->
+        <Link href="#" class="settings-card-link">
+          <div class="settings-card">
+            <div class="settings-card-icon">
+              <i class="fas fa-sliders-h"></i>
+            </div>
+            <div class="settings-card-content">
+              <h5 class="settings-card-title">Configurable Options</h5>
+              <p class="settings-card-desc">Manage extras and options for products</p>
+            </div>
+          </div>
+        </Link>
+
+        <!-- Product Addons -->
+        <Link href="#" class="settings-card-link">
+          <div class="settings-card">
+            <div class="settings-card-icon">
+              <i class="fas fa-plus-square"></i>
+            </div>
+            <div class="settings-card-content">
+              <h5 class="settings-card-title">Product Addons</h5>
+              <span class="settings-badge">UPDATED</span>
+              <p class="settings-card-desc">Setup and manage product add-ons</p>
+            </div>
+          </div>
+        </Link>
+
+        <!-- Product Bundles -->
+        <Link href="#" class="settings-card-link">
+          <div class="settings-card">
+            <div class="settings-card-icon">
+              <i class="fas fa-layer-group"></i>
+            </div>
+            <div class="settings-card-content">
+              <h5 class="settings-card-title">Product Bundles</h5>
+              <p class="settings-card-desc">Create and manage product bundles</p>
+            </div>
+          </div>
+        </Link>
+
+        <!-- Email Templates -->
+        <Link :href="route('managit.settings.email')" class="settings-card-link">
+          <div class="settings-card">
+            <div class="settings-card-icon">
+              <i class="fas fa-envelope"></i>
+            </div>
+            <div class="settings-card-content">
+              <h5 class="settings-card-title">Email Templates</h5>
+              <span class="settings-badge">UPDATED</span>
+              <p class="settings-card-desc">Customise email templates</p>
+            </div>
+          </div>
+        </Link>
+
+        <!-- Payment Gateways -->
+        <Link :href="route('managit.settings.stripe')" class="settings-card-link">
+          <div class="settings-card">
+            <div class="settings-card-icon">
+              <i class="fas fa-university"></i>
+            </div>
+            <div class="settings-card-content">
+              <h5 class="settings-card-title">Payment Gateways</h5>
+              <p class="settings-card-desc">Setup and manage payment gateways</p>
+            </div>
+          </div>
+        </Link>
+
+        <!-- Tax Configuration -->
+        <Link href="#" class="settings-card-link">
+          <div class="settings-card">
+            <div class="settings-card-icon">
+              <i class="fas fa-percent"></i>
+            </div>
+            <div class="settings-card-content">
+              <h5 class="settings-card-title">Tax Configuration</h5>
+              <span class="settings-badge">UPDATED</span>
+              <p class="settings-card-desc">Configure Taxes and VAT</p>
+            </div>
+          </div>
+        </Link>
+
+        <!-- Administrator Users -->
+        <Link href="#" class="settings-card-link">
+          <div class="settings-card">
+            <div class="settings-card-icon">
+              <i class="fas fa-user-shield"></i>
+            </div>
+            <div class="settings-card-content">
+              <h5 class="settings-card-title">Administrator Users</h5>
+              <p class="settings-card-desc">Setup and manage staff members</p>
+            </div>
+          </div>
+        </Link>
+      </div>
   </WhmcsAdminLayout>
 </template>
 
 <style scoped>
-.settings-card {
-  transition: transform 0.2s, box-shadow 0.2s;
+/* Page Header */
+.page-header {
+  margin-bottom: 2rem;
+}
+
+.page-title {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 0.5rem 0;
+}
+
+.page-subtitle {
+  color: #6c757d;
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+/* Settings Filter */
+.settings-filter {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 2rem;
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.filter-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.filter-btn {
+  background: none;
+  border: none;
+  padding: 0.5rem 1rem;
+  text-align: left;
+  color: #495057;
+  font-size: 0.9rem;
+  border-radius: 4px;
+  transition: all 0.2s;
   cursor: pointer;
 }
 
-.settings-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+.filter-btn:hover {
+  background: #f8f9fa;
+  color: #FF6B35;
 }
 
-.icon-box {
-  width: 48px;
-  height: 48px;
+.filter-btn.active {
+  background: #FF6B35;
+  color: white;
+  font-weight: 600;
+}
+
+.filter-sort {
+  min-width: 200px;
+}
+
+.filter-sort .form-select {
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+}
+
+/* Settings Grid */
+.settings-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.settings-card-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.settings-card {
+  background: #fef5f1;
+  border-radius: 8px;
+  padding: 2rem 1.5rem;
+  text-align: center;
+  transition: all 0.2s;
+  cursor: pointer;
+  min-height: 180px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.settings-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.settings-card-icon {
+  width: 64px;
+  height: 64px;
+  background: #FF6B35;
   border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
+  margin: 0 auto 1rem;
 }
 
-.icon-box i {
-  font-size: 20px;
+.settings-card-icon i {
+  font-size: 2rem;
+  color: white;
+}
+
+.settings-card-content {
+  position: relative;
+}
+
+.settings-card-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 0.5rem 0;
+}
+
+.settings-card-desc {
+  font-size: 0.85rem;
+  color: #6c757d;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.settings-badge {
+  display: inline-block;
+  background: #FF6B35;
+  color: white;
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 0.25rem 0.5rem;
+  border-radius: 3px;
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.5px;
+}
+
+.settings-badge-green {
+  background: #28a745;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .settings-filter {
+    flex-direction: column;
+  }
+  
+  .filter-sidebar {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  
+  .filter-sort {
+    width: 100%;
+  }
+  
+  .settings-grid {
+    grid-template-columns: 1fr;
+  }
 }
 </style>
