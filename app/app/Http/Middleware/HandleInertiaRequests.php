@@ -4,6 +4,8 @@ namespace App\Http\Middleware;
 
 use Illuminate\Http\Request;
 use Inertia\Middleware;
+use App\Models\Order;
+use App\Models\Invoice;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -33,6 +35,10 @@ class HandleInertiaRequests extends Middleware
             ...parent::share($request),
             'auth' => [
                 'user' => $request->user(),
+            ],
+            'badgeCounts' => [
+                'pending_orders' => Order::where('status', 'pending')->count(),
+                'unpaid_invoices' => Invoice::where('status', 'unpaid')->count(),
             ],
         ];
     }

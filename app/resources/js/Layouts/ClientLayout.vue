@@ -118,10 +118,10 @@ const sidebarCollapsed = ref(false);
     background-color: #f5f7fa;
 }
 
-/* Purple Gradient Sidebar - Phoxca Theme */
+/* Phoxca Theme Sidebar - my.ip.mr Style */
 .phox-sidebar {
     width: 260px;
-    background: linear-gradient(180deg, #6c63ff 0%, #5449cc 100%);
+    background: #283194;
     color: white;
     display: flex;
     flex-direction: column;
@@ -258,7 +258,7 @@ const sidebarCollapsed = ref(false);
     background: none;
     border: none;
     font-size: 1.25rem;
-    color: #6c63ff;
+    color: #283194;
     cursor: pointer;
     padding: 0.5rem;
     border-radius: 6px;
@@ -297,7 +297,7 @@ const sidebarCollapsed = ref(false);
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    border: 2px solid #6c63ff;
+    border: 2px solid #283194;
 }
 
 /* Content Area */

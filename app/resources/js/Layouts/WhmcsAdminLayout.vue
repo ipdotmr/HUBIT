@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { Link, usePage } from '@inertiajs/vue3';
 import { useI18n } from 'vue-i18n';
 import LanguageSwitcher from '@/Components/LanguageSwitcher.vue';
@@ -17,9 +17,9 @@ const showReportsMenu = ref(false);
 const showUtilitiesMenu = ref(false);
 const showAddonsMenu = ref(false);
 
-// Badge counts (these would come from props in real implementation)
-const pendingOrders = ref(1);
-const unpaidInvoices = ref(73);
+// Badge counts from shared Inertia props
+const pendingOrders = computed(() => page.props.badgeCounts?.pending_orders || 0);
+const unpaidInvoices = computed(() => page.props.badgeCounts?.unpaid_invoices || 0);
 </script>
 
 <template>
