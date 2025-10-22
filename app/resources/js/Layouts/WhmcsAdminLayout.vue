@@ -6,72 +6,63 @@ import LanguageSwitcher from '@/Components/LanguageSwitcher.vue';
 
 const { t } = useI18n();
 const page = usePage();
-const showQuickCreate = ref(false);
 
-// Submenu states
+// Submenu states - all collapsed by default except Home
+const showHomeMenu = ref(false);
 const showClientsMenu = ref(false);
 const showOrdersMenu = ref(false);
 const showBillingMenu = ref(false);
 const showSupportMenu = ref(false);
-const showDomainsMenu = ref(false);
-const showProductsMenu = ref(false);
 const showReportsMenu = ref(false);
 const showUtilitiesMenu = ref(false);
-const showSettingsMenu = ref(false);
+const showAddonsMenu = ref(false);
+
+// Badge counts (these would come from props in real implementation)
+const pendingOrders = ref(1);
+const unpaidInvoices = ref(73);
 </script>
 
 <template>
     <div class="whmcs-admin-layout">
         <!-- Top Header Bar -->
-        <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom fixed-top">
-            <div class="container-fluid">
+        <nav class="whmcs-header">
+            <div class="header-container">
+                <!-- Hamburger Menu -->
+                <button class="hamburger-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
+
                 <!-- Logo -->
-                <Link href="/managit/dashboard" class="navbar-brand">
-                    <strong style="color: #0066cc;">HUBIT</strong>
+                <Link href="/managit/dashboard" class="logo">
+                    <img src="https://via.placeholder.com/120x40/2C3E7D/FFFFFF?text=WHMCS" alt="WHMCS" />
                 </Link>
 
                 <!-- Search Bar -->
-                <form class="d-flex mx-auto" style="width: 40%;">
-                    <input class="form-control" type="search" placeholder="Search clients, orders, invoices..." />
-                </form>
+                <div class="search-container">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="search" class="search-input" placeholder="Enter search term..." />
+                </div>
 
                 <!-- Right Side Icons -->
-                <div class="d-flex align-items-center gap-3">
-                    <!-- Quick Create Dropdown -->
-                    <div class="dropdown">
-                        <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                            <i class="fas fa-plus"></i> {{ t('admin.quick_create') || 'Quick Create' }}
-                        </button>
-                        <ul class="dropdown-menu dropdown-menu-end">
-                            <li><Link :href="route('managit.clients.create')" class="dropdown-item"><i class="fas fa-user me-2"></i>{{ t('admin.clients.add_new') }}</Link></li>
-                            <li><Link :href="route('managit.orders.create')" class="dropdown-item"><i class="fas fa-shopping-cart me-2"></i>{{ t('admin.orders.add_new') || 'New Order' }}</Link></li>
-                            <li><Link :href="route('managit.invoices.create')" class="dropdown-item"><i class="fas fa-file-invoice me-2"></i>{{ t('billing.invoices') }}</Link></li>
-                            <li><Link :href="route('managit.support.create')" class="dropdown-item"><i class="fas fa-ticket-alt me-2"></i>{{ t('support.open_ticket') }}</Link></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><Link :href="route('managit.domains.create')" class="dropdown-item"><i class="fas fa-globe me-2"></i>{{ t('domains.register') }}</Link></li>
-                            <li><Link :href="route('managit.products.create')" class="dropdown-item"><i class="fas fa-box me-2"></i>{{ t('admin.products.add_new') }}</Link></li>
-                        </ul>
-                    </div>
+                <div class="header-actions">
+                    <!-- Intelligence Icon -->
+                    <button class="icon-btn">
+                        <i class="fas fa-lightbulb"></i>
+                    </button>
+
+                    <!-- Help Icon -->
+                    <button class="icon-btn">
+                        <i class="fas fa-question-circle"></i>
+                    </button>
 
                     <!-- Language Switcher -->
                     <LanguageSwitcher />
 
-                    <!-- Settings Icon -->
-                    <Link :href="route('managit.settings.index')" class="text-dark">
-                        <i class="fas fa-cog fs-5"></i>
-                    </Link>
-
-                    <!-- Help Icon -->
-                    <a href="#" class="text-dark">
-                        <i class="fas fa-question-circle fs-5"></i>
-                    </a>
-
                     <!-- User Profile Dropdown -->
                     <div class="dropdown">
-                        <a class="d-flex align-items-center text-decoration-none dropdown-toggle" href="#" data-bs-toggle="dropdown">
-                            <img src="https://via.placeholder.com/32" class="rounded-circle me-2" width="32" height="32" />
-                            <span>{{ page.props.auth.user.name }}</span>
-                        </a>
+                        <button class="user-btn" data-bs-toggle="dropdown">
+                            <img src="https://via.placeholder.com/32" class="user-avatar" />
+                        </button>
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li><Link :href="route('profile.edit')" class="dropdown-item">{{ t('account.title') }}</Link></li>
                             <li><Link href="/dashboard" class="dropdown-item">Client Area</Link></li>
@@ -79,204 +70,352 @@ const showSettingsMenu = ref(false);
                             <li><Link :href="route('logout')" method="post" as="button" class="dropdown-item">{{ t('common.logout') }}</Link></li>
                         </ul>
                     </div>
+
+                    <!-- Menu Toggle -->
+                    <button class="icon-btn">
+                        <i class="fas fa-bars"></i>
+                    </button>
                 </div>
             </div>
         </nav>
 
         <!-- Main Container -->
-        <div class="d-flex" style="margin-top: 56px;">
+        <div class="main-container">
             <!-- Left Sidebar -->
-            <div class="sidebar bg-light border-end" style="width: 250px; min-height: calc(100vh - 56px);">
-                <ul class="nav flex-column p-3">
-                    <!-- Home -->
-                    <li class="nav-item mb-2">
-                        <Link :href="route('managit.dashboard')" class="nav-link" :class="{ 'active': route().current('managit.dashboard') }">
-                            <i class="fas fa-home me-2"></i> {{ t('common.home') }}
-                        </Link>
-                    </li>
-
-                    <!-- Clients with Submenu -->
-                    <li class="nav-item mb-2">
-                        <a @click="showClientsMenu = !showClientsMenu" class="nav-link d-flex justify-content-between align-items-center" style="cursor: pointer;">
-                            <span><i class="fas fa-users me-2"></i> {{ t('nav.clients') }}</span>
-                            <i class="fas" :class="showClientsMenu ? 'fa-chevron-down' : 'fa-chevron-right'"></i>
+            <aside class="whmcs-sidebar">
+                <nav class="sidebar-nav">
+                    <!-- Home with Submenu -->
+                    <div class="nav-item">
+                        <a @click="showHomeMenu = !showHomeMenu" class="nav-link" :class="{ 'active': showHomeMenu }">
+                            <i class="fas fa-home nav-icon"></i>
+                            <span class="nav-text">{{ t('common.home') }}</span>
+                            <i class="fas fa-chevron-down chevron" :class="{ 'rotated': showHomeMenu }"></i>
                         </a>
-                        <ul v-show="showClientsMenu" class="submenu">
-                            <li><Link :href="route('managit.clients.index')" class="submenu-link">{{ t('admin.clients.view_all') }}</Link></li>
-                            <li><Link :href="route('managit.clients.create')" class="submenu-link">{{ t('admin.clients.add_new') }}</Link></li>
-                        </ul>
-                    </li>
+                        <div v-show="showHomeMenu" class="submenu">
+                            <Link :href="route('managit.clients.create')" class="submenu-link">
+                                {{ t('admin.clients.new_client') || 'New Client' }}
+                            </Link>
+                            <Link :href="route('managit.orders.create')" class="submenu-link">
+                                {{ t('admin.orders.new_order') || 'New Order' }}
+                            </Link>
+                            <Link :href="route('managit.invoices.create')" class="submenu-link">
+                                {{ t('admin.invoices.new_invoice') || 'New Invoice' }}
+                            </Link>
+                            <Link :href="route('managit.support.create')" class="submenu-link">
+                                {{ t('admin.support.new_ticket') || 'New Ticket' }}
+                            </Link>
+                        </div>
+                    </div>
 
-                    <!-- Orders with Submenu -->
-                    <li class="nav-item mb-2">
-                        <a @click="showOrdersMenu = !showOrdersMenu" class="nav-link d-flex justify-content-between align-items-center" style="cursor: pointer;">
-                            <span><i class="fas fa-shopping-cart me-2"></i> {{ t('nav.orders') }}</span>
-                            <i class="fas" :class="showOrdersMenu ? 'fa-chevron-down' : 'fa-chevron-right'"></i>
+                    <!-- Clients -->
+                    <div class="nav-item">
+                        <a @click="showClientsMenu = !showClientsMenu" class="nav-link" :class="{ 'active': showClientsMenu }">
+                            <i class="fas fa-users nav-icon"></i>
+                            <span class="nav-text">{{ t('nav.clients') }}</span>
+                            <i class="fas fa-chevron-down chevron" :class="{ 'rotated': showClientsMenu }"></i>
                         </a>
-                        <ul v-show="showOrdersMenu" class="submenu">
-                            <li><Link :href="route('managit.orders.index')" class="submenu-link">{{ t('admin.orders.view_all') }}</Link></li>
-                            <li><Link :href="route('managit.orders.create')" class="submenu-link">{{ t('admin.orders.add_new') || 'Add New Order' }}</Link></li>
-                        </ul>
-                    </li>
+                    </div>
 
-                    <!-- Billing with Submenu -->
-                    <li class="nav-item mb-2">
-                        <a @click="showBillingMenu = !showBillingMenu" class="nav-link d-flex justify-content-between align-items-center" style="cursor: pointer;">
-                            <span><i class="fas fa-file-invoice-dollar me-2"></i> {{ t('nav.billing') }}</span>
-                            <i class="fas" :class="showBillingMenu ? 'fa-chevron-down' : 'fa-chevron-right'"></i>
+                    <!-- Orders -->
+                    <div class="nav-item">
+                        <a @click="showOrdersMenu = !showOrdersMenu" class="nav-link" :class="{ 'active': showOrdersMenu }">
+                            <i class="fas fa-shopping-cart nav-icon"></i>
+                            <span class="nav-text">{{ t('nav.orders') }}</span>
+                            <span v-if="pendingOrders > 0" class="badge-count">{{ pendingOrders }}</span>
+                            <i class="fas fa-chevron-down chevron" :class="{ 'rotated': showOrdersMenu }"></i>
                         </a>
-                        <ul v-show="showBillingMenu" class="submenu">
-                            <li><Link :href="route('managit.invoices.index')" class="submenu-link">{{ t('billing.invoices') }}</Link></li>
-                            <li><Link :href="route('managit.transactions.index')" class="submenu-link">{{ t('billing.payment_methods') }}</Link></li>
-                        </ul>
-                    </li>
+                    </div>
 
-                    <!-- Support with Submenu -->
-                    <li class="nav-item mb-2">
-                        <a @click="showSupportMenu = !showSupportMenu" class="nav-link d-flex justify-content-between align-items-center" style="cursor: pointer;">
-                            <span><i class="fas fa-life-ring me-2"></i> {{ t('nav.support') }}</span>
-                            <i class="fas" :class="showSupportMenu ? 'fa-chevron-down' : 'fa-chevron-right'"></i>
+                    <!-- Billing -->
+                    <div class="nav-item">
+                        <a @click="showBillingMenu = !showBillingMenu" class="nav-link" :class="{ 'active': showBillingMenu }">
+                            <i class="fas fa-credit-card nav-icon"></i>
+                            <span class="nav-text">{{ t('nav.billing') }}</span>
+                            <span v-if="unpaidInvoices > 0" class="badge-count">{{ unpaidInvoices }}</span>
+                            <i class="fas fa-chevron-down chevron" :class="{ 'rotated': showBillingMenu }"></i>
                         </a>
-                        <ul v-show="showSupportMenu" class="submenu">
-                            <li><Link :href="route('managit.support.index')" class="submenu-link">{{ t('support.tickets') }}</Link></li>
-                            <li><Link :href="route('managit.support.create')" class="submenu-link">{{ t('support.open_ticket') }}</Link></li>
-                        </ul>
-                    </li>
+                    </div>
 
-                    <!-- Domains with Submenu -->
-                    <li class="nav-item mb-2">
-                        <a @click="showDomainsMenu = !showDomainsMenu" class="nav-link d-flex justify-content-between align-items-center" style="cursor: pointer;">
-                            <span><i class="fas fa-globe me-2"></i> {{ t('nav.domains') }}</span>
-                            <i class="fas" :class="showDomainsMenu ? 'fa-chevron-down' : 'fa-chevron-right'"></i>
+                    <!-- Support -->
+                    <div class="nav-item">
+                        <a @click="showSupportMenu = !showSupportMenu" class="nav-link" :class="{ 'active': showSupportMenu }">
+                            <i class="fas fa-life-ring nav-icon"></i>
+                            <span class="nav-text">{{ t('nav.support') }}</span>
+                            <i class="fas fa-chevron-down chevron" :class="{ 'rotated': showSupportMenu }"></i>
                         </a>
-                        <ul v-show="showDomainsMenu" class="submenu">
-                            <li><Link :href="route('managit.domains.index')" class="submenu-link">{{ t('domains.view_all') }}</Link></li>
-                            <li><Link :href="route('managit.domains.create')" class="submenu-link">{{ t('domains.register') }}</Link></li>
-                        </ul>
-                    </li>
+                    </div>
 
-                    <!-- Products with Submenu -->
-                    <li class="nav-item mb-2">
-                        <a @click="showProductsMenu = !showProductsMenu" class="nav-link d-flex justify-content-between align-items-center" style="cursor: pointer;">
-                            <span><i class="fas fa-box me-2"></i> {{ t('nav.products') }}</span>
-                            <i class="fas" :class="showProductsMenu ? 'fa-chevron-down' : 'fa-chevron-right'"></i>
+                    <!-- Reports -->
+                    <div class="nav-item">
+                        <a @click="showReportsMenu = !showReportsMenu" class="nav-link" :class="{ 'active': showReportsMenu }">
+                            <i class="fas fa-chart-bar nav-icon"></i>
+                            <span class="nav-text">{{ t('nav.reports') }}</span>
+                            <i class="fas fa-chevron-down chevron" :class="{ 'rotated': showReportsMenu }"></i>
                         </a>
-                        <ul v-show="showProductsMenu" class="submenu">
-                            <li><Link :href="route('managit.products.index')" class="submenu-link">{{ t('admin.products.view_all') }}</Link></li>
-                            <li><Link :href="route('managit.products.create')" class="submenu-link">{{ t('admin.products.add_new') }}</Link></li>
-                        </ul>
-                    </li>
+                    </div>
 
-                    <!-- Reports with Submenu -->
-                    <li class="nav-item mb-2">
-                        <a @click="showReportsMenu = !showReportsMenu" class="nav-link d-flex justify-content-between align-items-center" style="cursor: pointer;">
-                            <span><i class="fas fa-chart-bar me-2"></i> {{ t('nav.reports') }}</span>
-                            <i class="fas" :class="showReportsMenu ? 'fa-chevron-down' : 'fa-chevron-right'"></i>
+                    <!-- Utilities -->
+                    <div class="nav-item">
+                        <a @click="showUtilitiesMenu = !showUtilitiesMenu" class="nav-link" :class="{ 'active': showUtilitiesMenu }">
+                            <i class="fas fa-file-alt nav-icon"></i>
+                            <span class="nav-text">{{ t('nav.utilities') }}</span>
+                            <i class="fas fa-chevron-down chevron" :class="{ 'rotated': showUtilitiesMenu }"></i>
                         </a>
-                        <ul v-show="showReportsMenu" class="submenu">
-                            <li><Link :href="route('managit.reports.services')" class="submenu-link">{{ t('services.title') }}</Link></li>
-                            <li><Link :href="route('managit.reports.wallet')" class="submenu-link">{{ t('billing.wallet') }}</Link></li>
-                        </ul>
-                    </li>
+                    </div>
 
-                    <!-- Utilities with Submenu -->
-                    <li class="nav-item mb-2">
-                        <a @click="showUtilitiesMenu = !showUtilitiesMenu" class="nav-link d-flex justify-content-between align-items-center" style="cursor: pointer;">
-                            <span><i class="fas fa-tools me-2"></i> {{ t('nav.utilities') }}</span>
-                            <i class="fas" :class="showUtilitiesMenu ? 'fa-chevron-down' : 'fa-chevron-right'"></i>
+                    <!-- Addons -->
+                    <div class="nav-item">
+                        <a @click="showAddonsMenu = !showAddonsMenu" class="nav-link" :class="{ 'active': showAddonsMenu }">
+                            <i class="fas fa-puzzle-piece nav-icon"></i>
+                            <span class="nav-text">{{ t('nav.addons') || 'Addons' }}</span>
+                            <i class="fas fa-chevron-down chevron" :class="{ 'rotated': showAddonsMenu }"></i>
                         </a>
-                        <ul v-show="showUtilitiesMenu" class="submenu">
-                            <li><Link href="/managit/utilities/system-cleanup" class="submenu-link">System Cleanup</Link></li>
-                            <li><Link href="/managit/utilities/logs" class="submenu-link">Activity Logs</Link></li>
-                        </ul>
-                    </li>
-
-                    <!-- Settings with Submenu -->
-                    <li class="nav-item mb-2">
-                        <a @click="showSettingsMenu = !showSettingsMenu" class="nav-link d-flex justify-content-between align-items-center" style="cursor: pointer;">
-                            <span><i class="fas fa-cog me-2"></i> {{ t('nav.settings') }}</span>
-                            <i class="fas" :class="showSettingsMenu ? 'fa-chevron-down' : 'fa-chevron-right'"></i>
-                        </a>
-                        <ul v-show="showSettingsMenu" class="submenu">
-                            <li><Link :href="route('managit.settings.index')" class="submenu-link">{{ t('nav.settings') }}</Link></li>
-                            <li><Link :href="route('managit.settings.company')" class="submenu-link">Company Info</Link></li>
-                            <li><Link :href="route('managit.settings.email')" class="submenu-link">Email Settings</Link></li>
-                            <li><Link :href="route('managit.settings.themes')" class="submenu-link">Client Theme</Link></li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
+                    </div>
+                </nav>
+            </aside>
 
             <!-- Main Content Area -->
-            <div class="flex-grow-1 p-4">
+            <main class="content-area">
                 <slot />
-            </div>
+            </main>
         </div>
     </div>
 </template>
 
 <style scoped>
+/* WHMCS Color Scheme */
+:root {
+    --whmcs-blue: #2C3E7D;
+    --whmcs-blue-dark: #1f2d5a;
+    --whmcs-blue-light: #3a4f9a;
+    --whmcs-orange: #FF6B35;
+    --whmcs-bg: #f4f6f9;
+}
+
 .whmcs-admin-layout {
     min-height: 100vh;
-    background-color: #f8f9fa;
+    background-color: var(--whmcs-bg);
 }
 
-.navbar {
+/* Header */
+.whmcs-header {
+    background: #2C3E7D;
+    height: 60px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
     z-index: 1030;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-.sidebar {
-    position: sticky;
-    top: 56px;
-    height: calc(100vh - 56px);
+.header-container {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    padding: 0 1rem;
+    gap: 1rem;
+}
+
+.hamburger-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.25rem;
+    cursor: pointer;
+    padding: 0.5rem;
+}
+
+.logo img {
+    height: 32px;
+}
+
+.search-container {
+    flex: 1;
+    max-width: 600px;
+    position: relative;
+}
+
+.search-icon {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #999;
+}
+
+.search-input {
+    width: 100%;
+    padding: 0.5rem 1rem 0.5rem 2.5rem;
+    border: none;
+    border-radius: 4px;
+    background: white;
+    font-size: 0.9rem;
+}
+
+.search-input:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3);
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-left: auto;
+}
+
+.icon-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.1rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+
+.icon-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.user-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.user-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 2px solid white;
+}
+
+/* Main Container */
+.main-container {
+    display: flex;
+    margin-top: 60px;
+    min-height: calc(100vh - 60px);
+}
+
+/* Sidebar */
+.whmcs-sidebar {
+    width: 240px;
+    background: #2C3E7D;
+    color: white;
+    position: fixed;
+    top: 60px;
+    left: 0;
+    bottom: 0;
     overflow-y: auto;
+    box-shadow: 2px 0 4px rgba(0,0,0,0.1);
+}
+
+.sidebar-nav {
+    padding: 0.5rem 0;
+}
+
+.nav-item {
+    margin-bottom: 2px;
 }
 
 .nav-link {
-    color: #333;
-    border-radius: 4px;
+    display: flex;
+    align-items: center;
     padding: 0.75rem 1rem;
+    color: rgba(255, 255, 255, 0.9);
+    text-decoration: none;
+    cursor: pointer;
     transition: all 0.2s;
+    position: relative;
 }
 
 .nav-link:hover {
-    background-color: #e9ecef;
-    color: #0066cc;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
 }
 
 .nav-link.active {
-    background-color: #0066cc;
-    color: white !important;
+    background: rgba(255, 255, 255, 0.15);
+    color: white;
 }
 
-.nav-link i {
+.nav-icon {
     width: 20px;
     text-align: center;
+    margin-right: 0.75rem;
+    font-size: 1rem;
 }
 
-.badge {
+.nav-text {
+    flex: 1;
+    font-size: 0.9rem;
+}
+
+.chevron {
     font-size: 0.75rem;
-    padding: 0.25rem 0.5rem;
+    transition: transform 0.2s;
+}
+
+.chevron.rotated {
+    transform: rotate(180deg);
+}
+
+.badge-count {
+    background: #FF6B35;
+    color: white;
+    font-size: 0.7rem;
+    padding: 0.15rem 0.4rem;
+    border-radius: 10px;
+    margin-right: 0.5rem;
+    font-weight: 600;
 }
 
 .submenu {
-    list-style: none;
-    padding-left: 2.5rem;
-    margin: 0.5rem 0;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 0.25rem 0;
 }
 
 .submenu-link {
     display: block;
-    padding: 0.5rem 1rem;
-    color: #666;
+    padding: 0.5rem 1rem 0.5rem 3rem;
+    color: rgba(255, 255, 255, 0.8);
     text-decoration: none;
-    border-radius: 4px;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     transition: all 0.2s;
 }
 
 .submenu-link:hover {
-    background-color: #e9ecef;
-    color: #0066cc;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+/* Content Area */
+.content-area {
+    flex: 1;
+    margin-left: 240px;
+    padding: 2rem;
+    background: var(--whmcs-bg);
+}
+
+/* Scrollbar Styling */
+.whmcs-sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.whmcs-sidebar::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.whmcs-sidebar::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 3px;
+}
+
+.whmcs-sidebar::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.5);
 }
 </style>
